@@ -10,7 +10,6 @@ type SwapAccountPositionInfoResponse struct {
 		MarginPosition    float64 `json:"margin_position"`
 		MarginFrozen      float64 `json:"margin_frozen"`
 		MarginAvailable   float64 `json:"margin_available"`
-		ProfitReal        float64 `json:"profit_real"`
 		ProfitUnreal      float64 `json:"profit_unreal"`
 		RiskRate          float64 `json:"risk_rate"`
 		LiquidationPrice  float64 `json:"liquidation_price"`
