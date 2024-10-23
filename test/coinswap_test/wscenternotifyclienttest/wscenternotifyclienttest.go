@@ -12,7 +12,7 @@ func RunAllExamples() {
 	Heartbeat()
 }
 func Heartbeat() {
-	var wscnfClient = new(ws.WSCenterNotifyClient).Init(config.AccessKey, config.SecretKey, "")
+	var wscnfClient = new(ws.WSCenterNotifyClient).Init(config.AccessKey, config.SecretKey, "", config.Sign)
 	wscnfClient.SubHeartbeat("*", func(m *centernotify.SubHeartbeatResponse) {
 		log.Info("%v", *m)
 	}, "")

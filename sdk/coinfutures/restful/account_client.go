@@ -13,11 +13,11 @@ type AccountClient struct {
 	PUrlBuilder *reqbuilder.PrivateUrlBuilder
 }
 
-func (ac *AccountClient) Init(accessKey string, secretKey string, host string) *AccountClient {
+func (ac *AccountClient) Init(accessKey string, secretKey string, host string, sign string) *AccountClient {
 	if host == "" {
 		host = coinfutures.COIN_FUTURES_DEFAULT_HOST
 	}
-	ac.PUrlBuilder = new(reqbuilder.PrivateUrlBuilder).Init(accessKey, secretKey, host)
+	ac.PUrlBuilder = new(reqbuilder.PrivateUrlBuilder).Init(accessKey, secretKey, host, sign)
 	return ac
 }
 
@@ -25,6 +25,7 @@ func (ac *AccountClient) Init(accessKey string, secretKey string, host string) *
 func (ac *AccountClient) ContractBalanceValuationAsync(data chan account.ContractBalanceValuationResponse, valuationAsset string) {
 	// ulr
 	url := ac.PUrlBuilder.Build(coinfutures.POST_METHOD, "/api/v1/contract_balance_valuation", nil)
+	print(url)
 
 	// content
 	content := ""

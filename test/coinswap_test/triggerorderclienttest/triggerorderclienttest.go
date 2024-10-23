@@ -27,7 +27,7 @@ func RunAllExamples() {
 }
 
 func SwapTriggerOrderAsync() {
-	client := new(restful.TriggerOrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.TriggerOrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan triggerorder.SwapTriggerOrderResponse)
 	go client.SwapTriggerOrderAsync(resp, "", "", "", "", "", "", "", "", "")
 	x := <-resp
@@ -35,7 +35,7 @@ func SwapTriggerOrderAsync() {
 }
 
 func SwapTriggerCancelAsync() {
-	client := new(restful.TriggerOrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.TriggerOrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan triggerorder.SwapTriggerCancelResponse)
 	go client.SwapTriggerCancelAsync(resp, "", "")
 	x := <-resp
@@ -43,7 +43,7 @@ func SwapTriggerCancelAsync() {
 }
 
 func SwapTriggerCancelAllAsync() {
-	client := new(restful.TriggerOrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.TriggerOrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan triggerorder.SwapTriggerCancelAllResponse)
 	go client.SwapTriggerCancelAllAsync(resp, "", "", "")
 	x := <-resp
@@ -51,7 +51,7 @@ func SwapTriggerCancelAllAsync() {
 }
 
 func SwapTriggerOpenOrdersAsync() {
-	client := new(restful.TriggerOrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.TriggerOrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan triggerorder.SwapTriggerOpenOrdersResponse)
 	go client.SwapTriggerOpenOrdersAsync(resp, "", "", "", "")
 	x := <-resp
@@ -59,7 +59,7 @@ func SwapTriggerOpenOrdersAsync() {
 }
 
 func SwapTriggerHisOrdersAsync() {
-	client := new(restful.TriggerOrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.TriggerOrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan triggerorder.SwapTriggerHisOrdersResponse)
 	go client.SwapTriggerHisOrdersAsync(resp, "", "", "", "", "", "", "")
 	x := <-resp
@@ -67,7 +67,7 @@ func SwapTriggerHisOrdersAsync() {
 }
 
 func SwapTpslOrderAsync() {
-	client := new(restful.TriggerOrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.TriggerOrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan triggerorder.SwapTpslOrderResponse)
 	go client.SwapTpslOrderAsync(resp, "", "", "", "", "", "", "", "", "")
 	x := <-resp
@@ -75,7 +75,7 @@ func SwapTpslOrderAsync() {
 }
 
 func SwapTpslCancelAsync() {
-	client := new(restful.TriggerOrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.TriggerOrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan triggerorder.SwapTpslCancelResponse)
 	go client.SwapTpslCancelAsync(resp, "", "")
 	x := <-resp
@@ -83,7 +83,7 @@ func SwapTpslCancelAsync() {
 }
 
 func SwapTpslCancelAllAsync() {
-	client := new(restful.TriggerOrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.TriggerOrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan triggerorder.SwapTpslCancelAllResponse)
 	go client.SwapTpslCancelAllAsync(resp, "", "")
 	x := <-resp
@@ -91,7 +91,7 @@ func SwapTpslCancelAllAsync() {
 }
 
 func SwapTpslOpenOrdersAsync() {
-	client := new(restful.TriggerOrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.TriggerOrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan triggerorder.SwapTpslOpenOrdersResponse)
 	go client.SwapTpslOpenOrdersAsync(resp, "", "", "", "")
 	x := <-resp
@@ -99,7 +99,7 @@ func SwapTpslOpenOrdersAsync() {
 }
 
 func SwapTpslHisOrdersAsync() {
-	client := new(restful.TriggerOrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.TriggerOrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan triggerorder.SwapTpslHisOrdersResponse)
 	go client.SwapTpslHisOrdersAsync(resp, "", "", "", "", "", "")
 	x := <-resp
@@ -107,7 +107,7 @@ func SwapTpslHisOrdersAsync() {
 }
 
 func SwapRelationTpslOrderAsync() {
-	client := new(restful.TriggerOrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.TriggerOrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan triggerorder.SwapRelationTpslOrderResponse)
 	go client.SwapRelationTpslOrderAsync(resp, "", "")
 	x := <-resp
@@ -115,7 +115,7 @@ func SwapRelationTpslOrderAsync() {
 }
 
 func SwapTrackOrderAsync() {
-	client := new(restful.TriggerOrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.TriggerOrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan triggerorder.SwapTrackOrderResponse)
 	go client.SwapTrackOrderAsync(resp, "", "", "", "", "", "", "", "")
 	x := <-resp
@@ -123,7 +123,7 @@ func SwapTrackOrderAsync() {
 }
 
 func SwapTrackCancelAsync() {
-	client := new(restful.TriggerOrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.TriggerOrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan triggerorder.SwapTrackCancelResponse)
 	go client.SwapTrackCancelAsync(resp, "", "")
 	x := <-resp
@@ -131,7 +131,7 @@ func SwapTrackCancelAsync() {
 }
 
 func SwapTrackCancelAllAsync() {
-	client := new(restful.TriggerOrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.TriggerOrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan triggerorder.SwapTrackCancelAllResponse)
 	go client.SwapTrackCancelAllAsync(resp, "", "", "")
 	x := <-resp
@@ -139,7 +139,7 @@ func SwapTrackCancelAllAsync() {
 }
 
 func SwapTrackOpenOrdersAsync() {
-	client := new(restful.TriggerOrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.TriggerOrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan triggerorder.SwapTrackOpenOrdersResponse)
 	go client.SwapTrackOpenOrdersAsync(resp, "", "", "", "")
 	x := <-resp
@@ -147,7 +147,7 @@ func SwapTrackOpenOrdersAsync() {
 }
 
 func SwapTrackHisOrdersAsync() {
-	client := new(restful.TriggerOrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.TriggerOrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan triggerorder.SwapTrackHisOrdersResponse)
 	go client.SwapTrackHisOrdersAsync(resp, "", "", "", "", "", "", "")
 	x := <-resp

@@ -13,11 +13,11 @@ type UnifiedAccountClient struct {
 	PUrlBuilder *reqbuilder.PrivateUrlBuilder
 }
 
-func (uac *UnifiedAccountClient) Init(accessKey string, secretKey string, host string) *UnifiedAccountClient {
+func (uac *UnifiedAccountClient) Init(accessKey string, secretKey string, host string, sign string) *UnifiedAccountClient {
 	if host == "" {
 		host = linearswap.LINEAR_SWAP_DEFAULT_HOST
 	}
-	uac.PUrlBuilder = new(reqbuilder.PrivateUrlBuilder).Init(accessKey, secretKey, host)
+	uac.PUrlBuilder = new(reqbuilder.PrivateUrlBuilder).Init(accessKey, secretKey, host, sign)
 	return uac
 }
 

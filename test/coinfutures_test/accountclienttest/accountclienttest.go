@@ -32,7 +32,7 @@ func RunAllExamples() {
 }
 
 func ContractBalanceValuationAsync() {
-	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan account.ContractBalanceValuationResponse)
 	go client.ContractBalanceValuationAsync(resp, "")
 	x := <-resp
@@ -40,7 +40,7 @@ func ContractBalanceValuationAsync() {
 }
 
 func ContractAccountInfoAsync() {
-	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan account.ContractAccountInfoResponse)
 	go client.ContractAccountInfoAsync(resp, "")
 	x := <-resp
@@ -48,7 +48,7 @@ func ContractAccountInfoAsync() {
 }
 
 func ContractPositionInfoAsync() {
-	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan account.ContractPositionInfoResponse)
 	go client.ContractPositionInfoAsync(resp, "")
 	x := <-resp
@@ -56,7 +56,7 @@ func ContractPositionInfoAsync() {
 }
 
 func ContractSubAuthAsync() {
-	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan account.ContractSubAuthResponse)
 	go client.ContractSubAuthAsync(resp, "", "")
 	x := <-resp
@@ -64,7 +64,7 @@ func ContractSubAuthAsync() {
 }
 
 func ContractSubAuthListAsync() {
-	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan account.ContractSubAuthListResponse)
 	go client.ContractSubAuthListAsync(resp, "", "", "", "", "")
 	x := <-resp
@@ -72,7 +72,7 @@ func ContractSubAuthListAsync() {
 }
 
 func ContractSubAccountListAsync() {
-	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan account.ContractSubAccountListResponse)
 	go client.ContractSubAccountListAsync(resp, "", "", "")
 	x := <-resp
@@ -80,7 +80,7 @@ func ContractSubAccountListAsync() {
 }
 
 func ContractSubAccountInfoListAsync() {
-	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan account.ContractSubAccountInfoListResponse)
 	go client.ContractSubAccountInfoListAsync(resp, "", "", "")
 	x := <-resp
@@ -88,7 +88,7 @@ func ContractSubAccountInfoListAsync() {
 }
 
 func ContractSubAccountInfoAsync() {
-	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan account.ContractSubAccountInfoResponse)
 	go client.ContractSubAccountInfoAsync(resp, "", "")
 	x := <-resp
@@ -96,7 +96,7 @@ func ContractSubAccountInfoAsync() {
 }
 
 func ContractSubPositionInfoAsync() {
-	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan account.ContractSubPositionInfoResponse)
 	go client.ContractSubPositionInfoAsync(resp, "", "")
 	x := <-resp
@@ -104,7 +104,7 @@ func ContractSubPositionInfoAsync() {
 }
 
 func ContractFinancialRecordAsync() {
-	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan account.ContractFinancialRecordResponse)
 	go client.ContractFinancialRecordAsync(resp, "", "", "", "", "", "")
 	x := <-resp
@@ -112,7 +112,7 @@ func ContractFinancialRecordAsync() {
 }
 
 func ContractFinancialRecordExactAsync() {
-	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan account.ContractFinancialRecordExactResponse)
 	go client.ContractFinancialRecordExactAsync(resp, "", "", "", "", "", "")
 	x := <-resp
@@ -120,7 +120,7 @@ func ContractFinancialRecordExactAsync() {
 }
 
 func ContractUserSettlementRecordsAsync() {
-	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan account.ContractUserSettlementRecordsResponse)
 	go client.ContractUserSettlementRecordsAsync(resp, "", "", "", "", "")
 	x := <-resp
@@ -128,7 +128,7 @@ func ContractUserSettlementRecordsAsync() {
 }
 
 func ContractOrderLimitAsync() {
-	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan account.ContractOrderLimitResponse)
 	go client.ContractOrderLimitAsync(resp, "", "")
 	x := <-resp
@@ -136,7 +136,7 @@ func ContractOrderLimitAsync() {
 }
 
 func ContractFeeAsync() {
-	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan account.ContractFeeResponse)
 	go client.ContractFeeAsync(resp, "")
 	x := <-resp
@@ -144,7 +144,7 @@ func ContractFeeAsync() {
 }
 
 func ContractTransferLimitAsync() {
-	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan account.ContractTransferLimitResponse)
 	go client.ContractTransferLimitAsync(resp, "")
 	x := <-resp
@@ -152,7 +152,7 @@ func ContractTransferLimitAsync() {
 }
 
 func ContractPositionLimitAsync() {
-	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan account.ContractPositionLimitResponse)
 	go client.ContractPositionLimitAsync(resp, "")
 	x := <-resp
@@ -160,7 +160,7 @@ func ContractPositionLimitAsync() {
 }
 
 func ContractAccountPositionInfoAsync() {
-	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan account.ContractAccountPositionInfoResponse)
 	go client.ContractAccountPositionInfoAsync(resp, "")
 	x := <-resp
@@ -168,7 +168,7 @@ func ContractAccountPositionInfoAsync() {
 }
 
 func ContractMasterSubTransferAsync() {
-	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan account.ContractMasterSubTransferResponse)
 	go client.ContractMasterSubTransferAsync(resp, "", "", "", "", "")
 	x := <-resp
@@ -176,7 +176,7 @@ func ContractMasterSubTransferAsync() {
 }
 
 func ContractMasterSubTransferRecordAsync() {
-	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan account.ContractMasterSubTransferRecordResponse)
 	go client.ContractMasterSubTransferRecordAsync(resp, "", "", "", "", "")
 	x := <-resp
@@ -184,7 +184,7 @@ func ContractMasterSubTransferRecordAsync() {
 }
 
 func GetContractApiTradingStatusAsync() {
-	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan account.GetContractApiTradingStatusResponse)
 	go client.GetContractApiTradingStatusAsync(resp)
 	x := <-resp
@@ -192,7 +192,7 @@ func GetContractApiTradingStatusAsync() {
 }
 
 func ContractAvailableLevelRateAsync() {
-	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan account.ContractAvailableLevelRateResponse)
 	go client.ContractAvailableLevelRateAsync(resp, "")
 	x := <-resp

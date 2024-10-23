@@ -13,11 +13,11 @@ type WSIndexClient struct {
 	WebSocketOp
 }
 
-func (wsIx *WSIndexClient) Init(host string) *WSIndexClient {
+func (wsIx *WSIndexClient) Init(host string, sign string) *WSIndexClient {
 	if host == "" {
 		host = coinfutures.COIN_FUTURES_DEFAULT_HOST
 	}
-	wsIx.open("/ws_index", host, "", "", true)
+	wsIx.open("/ws_index", host, "", "", true, sign)
 	return wsIx
 }
 
