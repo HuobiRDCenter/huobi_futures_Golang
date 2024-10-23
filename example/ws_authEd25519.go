@@ -1,19 +1,19 @@
 package main
 
 import (
-	"compress/gzip"
-	"errors"
-	"encoding/pem"
-	"encoding/base64"
-	"fmt"
-	"strings"
-	"crypto/ed25519"
-	"time"
-	"crypto/x509"
-	"net/url"
-	"github.com/gorilla/websocket"
 	"bytes"
+	"compress/gzip"
+	"crypto/ed25519"
+	"crypto/x509"
+	"encoding/base64"
+	"encoding/pem"
+	"errors"
+	"fmt"
+	"github.com/gorilla/websocket"
 	"io/ioutil"
+	"net/url"
+	"strings"
+	"time"
 )
 
 func sign2(privateKeyBase64 string, method string, host string, path string, parameters string) (string, error) {
