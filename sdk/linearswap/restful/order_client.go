@@ -945,3 +945,658 @@ func (oc *OrderClient) SwapHisordersAsync(data chan responseorder.SwapHisordersR
 	}
 	data <- result
 }
+
+func (oc *OrderClient) SwapTradeOrderAsync(data chan responseorder.SwapTradeOrderResponse, contractCode string, marginMode string, positionSide string,
+	side string, type_ string, priceMatch string, clientOrderId string, price string, volume string, reduceOnly int, timeInForce string,
+	tpTriggerPrice string, tpOrderPrice string, tpType string, tpTriggerPriceType string, slTriggerPrice string, slOrderPrice string,
+	slType string, slTriggerPriceType string) {
+	// url
+	url := oc.PUrlBuilder.Build(linearswap.POST_METHOD, "/v5/trade/order", nil)
+
+	// content
+	content := ""
+	if contractCode != "" {
+		content += fmt.Sprintf(",\"contract_code\": \"%s\"", contractCode)
+	}
+	if marginMode != "" {
+		content += fmt.Sprintf(",\"margin_mode\": \"%s\"", marginMode)
+	}
+	if positionSide != "" {
+		content += fmt.Sprintf(",\"position_side\": \"%s\"", positionSide)
+	}
+	if side != "" {
+		content += fmt.Sprintf(",\"side\": \"%s\"", side)
+	}
+	if type_ != "" {
+		content += fmt.Sprintf(",\"type\": \"%s\"", type_)
+	}
+	if priceMatch != "" {
+		content += fmt.Sprintf(",\"price_match\": \"%s\"", priceMatch)
+	}
+	if clientOrderId != "" {
+		content += fmt.Sprintf(",\"client_order_id\": \"%s\"", clientOrderId)
+	}
+	if price != "" {
+		content += fmt.Sprintf(",\"price\": \"%s\"", price)
+	}
+	if volume != "" {
+		content += fmt.Sprintf(",\"volume\": \"%s\"", volume)
+	}
+	content += fmt.Sprintf(",\"reduce_only\": \"%s\"", reduceOnly)
+	if timeInForce != "" {
+		content += fmt.Sprintf(",\"time_in_force\": \"%s\"", timeInForce)
+	}
+	if tpTriggerPrice != "" {
+		content += fmt.Sprintf(",\"tp_trigger_price\": \"%s\"", tpTriggerPrice)
+	}
+	if tpOrderPrice != "" {
+		content += fmt.Sprintf(",\"tp_order_price\": \"%s\"", tpOrderPrice)
+	}
+	if tpType != "" {
+		content += fmt.Sprintf(",\"tp_type\": \"%s\"", tpType)
+	}
+	if tpTriggerPriceType != "" {
+		content += fmt.Sprintf(",\"tp_trigger_price_type\": \"%s\"", tpTriggerPriceType)
+	}
+	if slTriggerPrice != "" {
+		content += fmt.Sprintf(",\"sl_trigger_price\": \"%s\"", slTriggerPrice)
+	}
+	if slOrderPrice != "" {
+		content += fmt.Sprintf(",\"sl_order_price\": \"%s\"", slOrderPrice)
+	}
+	if slType != "" {
+		content += fmt.Sprintf(",\"sl_type\": \"%s\"", slType)
+	}
+	if slTriggerPriceType != "" {
+		content += fmt.Sprintf(",\"sl_trigger_price_type\": \"%s\"", slTriggerPriceType)
+	}
+
+	if content != "" {
+		content = fmt.Sprintf("{%s}", content[1:])
+	}
+
+	getResp, getErr := reqbuilder.HttpPost(url, content)
+	if getErr != nil {
+		log.Error("http get error: %s", getErr)
+	}
+	result := responseorder.SwapTradeOrderResponse{}
+	jsonErr := json.Unmarshal([]byte(getResp), &result)
+	if jsonErr != nil {
+		log.Error("convert json error: %s", getErr)
+	}
+	data <- result
+}
+
+func (oc *OrderClient) SwapTradeBatchOrderAsync(data chan responseorder.SwapTradeBatchOrderResponse, contractCode string, marginMode string,
+	side string, type_ string, priceMatch string, clientOrderId string, price string, volume string, reduceOnly int, timeInForce string,
+	tpTriggerPrice string, tpOrderPrice string, tpType string, tpTriggerPriceType string, slTriggerPrice string, slOrderPrice string,
+	slType string, slTriggerPriceType string) {
+	// url
+	url := oc.PUrlBuilder.Build(linearswap.POST_METHOD, "/v5/trade/batchorder", nil)
+
+	// content
+	content := ""
+	if contractCode != "" {
+		content += fmt.Sprintf(",\"contract_code\": \"%s\"", contractCode)
+	}
+	if marginMode != "" {
+		content += fmt.Sprintf(",\"margin_mode\": \"%s\"", marginMode)
+	}
+	if side != "" {
+		content += fmt.Sprintf(",\"side\": \"%s\"", side)
+	}
+	if type_ != "" {
+		content += fmt.Sprintf(",\"type\": \"%s\"", type_)
+	}
+	if priceMatch != "" {
+		content += fmt.Sprintf(",\"price_match\": \"%s\"", priceMatch)
+	}
+	if clientOrderId != "" {
+		content += fmt.Sprintf(",\"client_order_id\": \"%s\"", clientOrderId)
+	}
+	if price != "" {
+		content += fmt.Sprintf(",\"price\": \"%s\"", price)
+	}
+	if volume != "" {
+		content += fmt.Sprintf(",\"volume\": \"%s\"", volume)
+	}
+	content += fmt.Sprintf(",\"reduce_only\": \"%s\"", reduceOnly)
+	if timeInForce != "" {
+		content += fmt.Sprintf(",\"time_in_force\": \"%s\"", timeInForce)
+	}
+	if tpTriggerPrice != "" {
+		content += fmt.Sprintf(",\"tp_trigger_price\": \"%s\"", tpTriggerPrice)
+	}
+	if tpOrderPrice != "" {
+		content += fmt.Sprintf(",\"tp_order_price\": \"%s\"", tpOrderPrice)
+	}
+	if tpType != "" {
+		content += fmt.Sprintf(",\"tp_type\": \"%s\"", tpType)
+	}
+	if tpTriggerPriceType != "" {
+		content += fmt.Sprintf(",\"tp_trigger_price_type\": \"%s\"", tpTriggerPriceType)
+	}
+	if slTriggerPrice != "" {
+		content += fmt.Sprintf(",\"sl_trigger_price\": \"%s\"", slTriggerPrice)
+	}
+	if slOrderPrice != "" {
+		content += fmt.Sprintf(",\"sl_order_price\": \"%s\"", slOrderPrice)
+	}
+	if slType != "" {
+		content += fmt.Sprintf(",\"sl_type\": \"%s\"", slType)
+	}
+	if slTriggerPriceType != "" {
+		content += fmt.Sprintf(",\"sl_trigger_price_type\": \"%s\"", slTriggerPriceType)
+	}
+
+	if content != "" {
+		content = fmt.Sprintf("{%s}", content[1:])
+	}
+
+	getResp, getErr := reqbuilder.HttpPost(url, content)
+	if getErr != nil {
+		log.Error("http get error: %s", getErr)
+	}
+	result := responseorder.SwapTradeBatchOrderResponse{}
+	jsonErr := json.Unmarshal([]byte(getResp), &result)
+	if jsonErr != nil {
+		log.Error("convert json error: %s", getErr)
+	}
+	data <- result
+}
+
+func (oc *OrderClient) SwapTradeCancelOrderAsync(data chan responseorder.SwapTradeCancelOrderResponse, contractCode string,
+	orderId string, clientOrderId string) {
+	// url
+	url := oc.PUrlBuilder.Build(linearswap.POST_METHOD, "/v5/trade/order", nil)
+
+	// content
+	content := ""
+	if contractCode != "" {
+		content += fmt.Sprintf(",\"contract_code\": \"%s\"", contractCode)
+	}
+	if orderId != "" {
+		content += fmt.Sprintf(",\"order_id\": \"%s\"", orderId)
+	}
+	if clientOrderId != "" {
+		content += fmt.Sprintf(",\"client_order_id\": \"%s\"", clientOrderId)
+	}
+
+	if content != "" {
+		content = fmt.Sprintf("{%s}", content[1:])
+	}
+
+	getResp, getErr := reqbuilder.HttpPost(url, content)
+	if getErr != nil {
+		log.Error("http get error: %s", getErr)
+	}
+	result := responseorder.SwapTradeCancelOrderResponse{}
+	jsonErr := json.Unmarshal([]byte(getResp), &result)
+	if jsonErr != nil {
+		log.Error("convert json error: %s", getErr)
+	}
+	data <- result
+}
+
+func (oc *OrderClient) SwapTradeCancelBatchOrdersAsync(data chan responseorder.SwapTradeCancelBatchOrdersResponse, contractCode string,
+	orderId string, clientOrderId string) {
+	// url
+	url := oc.PUrlBuilder.Build(linearswap.POST_METHOD, "/v5/trade/batchOrders", nil)
+
+	// content
+	content := ""
+	if contractCode != "" {
+		content += fmt.Sprintf(",\"contract_code\": \"%s\"", contractCode)
+	}
+	if orderId != "" {
+		content += fmt.Sprintf(",\"order_id\": \"%s\"", orderId)
+	}
+	if clientOrderId != "" {
+		content += fmt.Sprintf(",\"client_order_id\": \"%s\"", clientOrderId)
+	}
+
+	if content != "" {
+		content = fmt.Sprintf("{%s}", content[1:])
+	}
+
+	getResp, getErr := reqbuilder.HttpPost(url, content)
+	if getErr != nil {
+		log.Error("http get error: %s", getErr)
+	}
+	result := responseorder.SwapTradeCancelBatchOrdersResponse{}
+	jsonErr := json.Unmarshal([]byte(getResp), &result)
+	if jsonErr != nil {
+		log.Error("convert json error: %s", getErr)
+	}
+	data <- result
+}
+
+func (oc *OrderClient) SwapTradeAllOrdersAsync(data chan responseorder.SwapTradeAllOrdersResponse, contractCode string,
+	side string, positionSide string) {
+	// url
+	url := oc.PUrlBuilder.Build(linearswap.POST_METHOD, "/v5/trade/allOrders", nil)
+
+	// content
+	content := ""
+	if contractCode != "" {
+		content += fmt.Sprintf(",\"contract_code\": \"%s\"", contractCode)
+	}
+	if side != "" {
+		content += fmt.Sprintf(",\"side\": \"%s\"", side)
+	}
+	if positionSide != "" {
+		content += fmt.Sprintf(",\"position_side\": \"%s\"", positionSide)
+	}
+
+	if content != "" {
+		content = fmt.Sprintf("{%s}", content[1:])
+	}
+
+	getResp, getErr := reqbuilder.HttpPost(url, content)
+	if getErr != nil {
+		log.Error("http get error: %s", getErr)
+	}
+	result := responseorder.SwapTradeAllOrdersResponse{}
+	jsonErr := json.Unmarshal([]byte(getResp), &result)
+	if jsonErr != nil {
+		log.Error("convert json error: %s", getErr)
+	}
+	data <- result
+}
+
+func (oc *OrderClient) SwapTradePositionAsync(data chan responseorder.SwapTradePositionResponse, contractCode string,
+	marginMode string, positionSide string, clientOrderId string) {
+	// url
+	url := oc.PUrlBuilder.Build(linearswap.POST_METHOD, "/v5/trade/position", nil)
+
+	// content
+	content := ""
+	if contractCode != "" {
+		content += fmt.Sprintf(",\"contract_code\": \"%s\"", contractCode)
+	}
+	if marginMode != "" {
+		content += fmt.Sprintf(",\"margin_mode\": \"%s\"", marginMode)
+	}
+	if positionSide != "" {
+		content += fmt.Sprintf(",\"position_side\": \"%s\"", positionSide)
+	}
+	if clientOrderId != "" {
+		content += fmt.Sprintf(",\"client_order_id\": \"%s\"", clientOrderId)
+	}
+
+	if content != "" {
+		content = fmt.Sprintf("{%s}", content[1:])
+	}
+
+	getResp, getErr := reqbuilder.HttpPost(url, content)
+	if getErr != nil {
+		log.Error("http get error: %s", getErr)
+	}
+	result := responseorder.SwapTradePositionResponse{}
+	jsonErr := json.Unmarshal([]byte(getResp), &result)
+	if jsonErr != nil {
+		log.Error("convert json error: %s", getErr)
+	}
+	data <- result
+}
+
+func (oc *OrderClient) SwapTradePositionAllAsync(data chan responseorder.SwapTradePositionAllResponse) {
+	// url
+	url := oc.PUrlBuilder.Build(linearswap.POST_METHOD, "/v5/trade/positionAll", nil)
+
+	// content
+	content := ""
+
+	if content != "" {
+		content = fmt.Sprintf("{%s}", content[1:])
+	}
+
+	getResp, getErr := reqbuilder.HttpPost(url, content)
+	if getErr != nil {
+		log.Error("http get error: %s", getErr)
+	}
+	result := responseorder.SwapTradePositionAllResponse{}
+	jsonErr := json.Unmarshal([]byte(getResp), &result)
+	if jsonErr != nil {
+		log.Error("convert json error: %s", getErr)
+	}
+	data <- result
+}
+
+func (ac *AccountClient) GetTradeOpensAsync(data chan responseorder.GetTradeOpensResponse, contractCode string, side string,
+	marginMode string, orderId string, clientOrderId string, from int, limit int, direct string) {
+	// ulr
+	url := ac.PUrlBuilder.Build(linearswap.GET_METHOD, "/v5/trade/order/opens", nil)
+	// option
+	option := ""
+	if contractCode != "" {
+		option += fmt.Sprintf("?contract_code=%s", contractCode)
+	}
+	if side != "" {
+		option += fmt.Sprintf("&side=%s", side)
+	}
+	if marginMode != "" {
+		option += fmt.Sprintf("&margin_mode=%s", marginMode)
+	}
+	if orderId != "" {
+		option += fmt.Sprintf("&order_id=%s", orderId)
+	}
+	if clientOrderId != "" {
+		option += fmt.Sprintf("&client_order_id=%s", clientOrderId)
+	}
+	option += fmt.Sprintf("&from=%s", from)
+	option += fmt.Sprintf("&limit=%s", limit)
+	if direct != "" {
+		option += fmt.Sprintf("&direct=%s", direct)
+	}
+	if option != "" {
+		url += option
+	}
+	getResp, getErr := reqbuilder.HttpGet(url)
+	if getErr != nil {
+		log.Error("http get error: %s", getErr)
+	}
+	result := responseorder.GetTradeOpensResponse{}
+	jsonErr := json.Unmarshal([]byte(getResp), &result)
+	if jsonErr != nil {
+		log.Error("convert json error: %s", jsonErr)
+	}
+	data <- result
+}
+
+func (ac *AccountClient) GetTradeOrderTradesAsync(data chan responseorder.GetTradeOpensResponse, contractCode string, side string,
+	marginMode string, orderId string, clientOrderId string, from int, limit int, direct string) {
+	// ulr
+	url := ac.PUrlBuilder.Build(linearswap.GET_METHOD, "/api/v5/trade/order/trades", nil)
+	// option
+	option := ""
+	if contractCode != "" {
+		option += fmt.Sprintf("?contract_code=%s", contractCode)
+	}
+	if side != "" {
+		option += fmt.Sprintf("&side=%s", side)
+	}
+	if marginMode != "" {
+		option += fmt.Sprintf("&margin_mode=%s", marginMode)
+	}
+	if orderId != "" {
+		option += fmt.Sprintf("&order_id=%s", orderId)
+	}
+	if clientOrderId != "" {
+		option += fmt.Sprintf("&client_order_id=%s", clientOrderId)
+	}
+	option += fmt.Sprintf("&from=%s", from)
+	option += fmt.Sprintf("&limit=%s", limit)
+	if direct != "" {
+		option += fmt.Sprintf("&direct=%s", direct)
+	}
+	if option != "" {
+		url += option
+	}
+	getResp, getErr := reqbuilder.HttpGet(url)
+	if getErr != nil {
+		log.Error("http get error: %s", getErr)
+	}
+	result := responseorder.GetTradeOpensResponse{}
+	jsonErr := json.Unmarshal([]byte(getResp), &result)
+	if jsonErr != nil {
+		log.Error("convert json error: %s", jsonErr)
+	}
+	data <- result
+}
+
+func (ac *AccountClient) GetTradeOrderHistoryAsync(data chan responseorder.GetTradeOrderHistoryResponse,
+	contractCode string, side string, orderId string, clientOrderId string, state string, type_ string,
+	priceMatch string, startTime string, endTime string, from int, limit int, direct string) {
+	// ulr
+	url := ac.PUrlBuilder.Build(linearswap.GET_METHOD, "/api/v5/trade/order/history", nil)
+	// option
+	option := ""
+	if contractCode != "" {
+		option += fmt.Sprintf("?contract_code=%s", contractCode)
+	}
+	if side != "" {
+		option += fmt.Sprintf("&side=%s", side)
+	}
+	if orderId != "" {
+		option += fmt.Sprintf("&order_id=%s", orderId)
+	}
+	if clientOrderId != "" {
+		option += fmt.Sprintf("&client_order_id=%s", clientOrderId)
+	}
+	if state != "" {
+		option += fmt.Sprintf("&state=%s", state)
+	}
+	if type_ != "" {
+		option += fmt.Sprintf("&type=%s", type_)
+	}
+	if priceMatch != "" {
+		option += fmt.Sprintf("&price_match=%s", priceMatch)
+	}
+	if startTime != "" {
+		option += fmt.Sprintf("&start_time=%s", startTime)
+	}
+	if endTime != "" {
+		option += fmt.Sprintf("&end_time=%s", endTime)
+	}
+	option += fmt.Sprintf("&from=%s", from)
+	option += fmt.Sprintf("&limit=%s", limit)
+	if direct != "" {
+		option += fmt.Sprintf("&direct=%s", direct)
+	}
+	if option != "" {
+		url += option
+	}
+	getResp, getErr := reqbuilder.HttpGet(url)
+	if getErr != nil {
+		log.Error("http get error: %s", getErr)
+	}
+	result := responseorder.GetTradeOrderHistoryResponse{}
+	jsonErr := json.Unmarshal([]byte(getResp), &result)
+	if jsonErr != nil {
+		log.Error("convert json error: %s", jsonErr)
+	}
+	data <- result
+}
+
+func (ac *AccountClient) GetTradePositionOpensAsync(data chan responseorder.GetTradePositionOpensResponse,
+	contractCode string) {
+	// ulr
+	url := ac.PUrlBuilder.Build(linearswap.GET_METHOD, "/v5/trade/position/opens", nil)
+	// option
+	option := ""
+	if contractCode != "" {
+		option += fmt.Sprintf("?contract_code=%s", contractCode)
+	}
+	if option != "" {
+		url += option
+	}
+	getResp, getErr := reqbuilder.HttpGet(url)
+	if getErr != nil {
+		log.Error("http get error: %s", getErr)
+	}
+	result := responseorder.GetTradePositionOpensResponse{}
+	jsonErr := json.Unmarshal([]byte(getResp), &result)
+	if jsonErr != nil {
+		log.Error("convert json error: %s", jsonErr)
+	}
+	data <- result
+}
+
+func (ac *AccountClient) GetTradePositionHistoryAsync(data chan responseorder.GetTradePositionHistoryResponse,
+	contractCode string, contractType string, marginMode string, startTime string, endTime string, from int,
+	limit int, direct string) {
+	// ulr
+	url := ac.PUrlBuilder.Build(linearswap.GET_METHOD, "/v5/trade/position/history", nil)
+	// option
+	option := ""
+	if contractCode != "" {
+		option += fmt.Sprintf("?contract_code=%s", contractCode)
+	}
+	if contractType != "" {
+		option += fmt.Sprintf("&contract_type=%s", contractType)
+	}
+	if marginMode != "" {
+		option += fmt.Sprintf("&margin_mode=%s", marginMode)
+	}
+	if startTime != "" {
+		option += fmt.Sprintf("&start_time=%s", startTime)
+	}
+	if endTime != "" {
+		option += fmt.Sprintf("&end_time=%s", endTime)
+	}
+	option += fmt.Sprintf("&from=%s", from)
+	option += fmt.Sprintf("&limit=%s", limit)
+	if direct != "" {
+		option += fmt.Sprintf("&direct=%s", direct)
+	}
+	if option != "" {
+		url += option
+	}
+	getResp, getErr := reqbuilder.HttpGet(url)
+	if getErr != nil {
+		log.Error("http get error: %s", getErr)
+	}
+	result := responseorder.GetTradePositionHistoryResponse{}
+	jsonErr := json.Unmarshal([]byte(getResp), &result)
+	if jsonErr != nil {
+		log.Error("convert json error: %s", jsonErr)
+	}
+	data <- result
+}
+
+func (ac *AccountClient) GetTradePositionLeverAsync(data chan responseorder.GetTradePositionLeverResponse,
+	contractCode string, marginMode string) {
+	// ulr
+	url := ac.PUrlBuilder.Build(linearswap.GET_METHOD, "/v5/position/lever", nil)
+	// option
+	option := ""
+	if contractCode != "" {
+		option += fmt.Sprintf("?contract_code=%s", contractCode)
+	}
+	if marginMode != "" {
+		option += fmt.Sprintf("&margin_mode=%s", marginMode)
+	}
+	if option != "" {
+		url += option
+	}
+	getResp, getErr := reqbuilder.HttpGet(url)
+	if getErr != nil {
+		log.Error("http get error: %s", getErr)
+	}
+	result := responseorder.GetTradePositionLeverResponse{}
+	jsonErr := json.Unmarshal([]byte(getResp), &result)
+	if jsonErr != nil {
+		log.Error("convert json error: %s", jsonErr)
+	}
+	data <- result
+}
+
+func (oc *OrderClient) SwapTradePositionLeverAsync(data chan responseorder.SwapTradePositionLeverResponse, contractCode string,
+	marginMode string, leverRate string) {
+	// url
+	url := oc.PUrlBuilder.Build(linearswap.POST_METHOD, "/v5/position/lever", nil)
+
+	// content
+	content := ""
+	if contractCode != "" {
+		content += fmt.Sprintf(",\"contract_code\": \"%s\"", contractCode)
+	}
+	if marginMode != "" {
+		content += fmt.Sprintf(",\"margin_mode\": \"%s\"", marginMode)
+	}
+	if leverRate != "" {
+		content += fmt.Sprintf(",\"lever_rate\": \"%s\"", leverRate)
+	}
+
+	if content != "" {
+		content = fmt.Sprintf("{%s}", content[1:])
+	}
+
+	getResp, getErr := reqbuilder.HttpPost(url, content)
+	if getErr != nil {
+		log.Error("http get error: %s", getErr)
+	}
+	result := responseorder.SwapTradePositionLeverResponse{}
+	jsonErr := json.Unmarshal([]byte(getResp), &result)
+	if jsonErr != nil {
+		log.Error("convert json error: %s", getErr)
+	}
+	data <- result
+}
+
+func (ac *AccountClient) GetTradePositionModeAsync(data chan responseorder.GetTradePositionModeResponse) {
+	// ulr
+	url := ac.PUrlBuilder.Build(linearswap.GET_METHOD, "/api/v5/position/mode", nil)
+	// option
+	option := ""
+	if option != "" {
+		url += option
+	}
+	getResp, getErr := reqbuilder.HttpGet(url)
+	if getErr != nil {
+		log.Error("http get error: %s", getErr)
+	}
+	result := responseorder.GetTradePositionModeResponse{}
+	jsonErr := json.Unmarshal([]byte(getResp), &result)
+	if jsonErr != nil {
+		log.Error("convert json error: %s", jsonErr)
+	}
+	data <- result
+}
+
+func (oc *OrderClient) SwapTradePositionModeAsync(data chan responseorder.GetTradePositionModeResponse, positionMode string) {
+	// url
+	url := oc.PUrlBuilder.Build(linearswap.POST_METHOD, "/api/v5/position/mode", nil)
+
+	// content
+	content := ""
+	if positionMode != "" {
+		content += fmt.Sprintf(",\"position_mode\": \"%s\"", positionMode)
+	}
+
+	if content != "" {
+		content = fmt.Sprintf("{%s}", content[1:])
+	}
+
+	getResp, getErr := reqbuilder.HttpPost(url, content)
+	if getErr != nil {
+		log.Error("http get error: %s", getErr)
+	}
+	result := responseorder.GetTradePositionModeResponse{}
+	jsonErr := json.Unmarshal([]byte(getResp), &result)
+	if jsonErr != nil {
+		log.Error("convert json error: %s", getErr)
+	}
+	data <- result
+}
+
+func (ac *AccountClient) GetTradePositionRiskLimitAsync(data chan responseorder.GetTradePositionRiskLimitResponse,
+	contractCode string, marginMode string, positionSide string) {
+	// ulr
+	url := ac.PUrlBuilder.Build(linearswap.GET_METHOD, "/v5/position/riskLimit", nil)
+	// option
+	option := ""
+	if contractCode != "" {
+		option += fmt.Sprintf("?contract_code=%s", contractCode)
+	}
+	if marginMode != "" {
+		option += fmt.Sprintf("&margin_mode=%s", marginMode)
+	}
+	if positionSide != "" {
+		option += fmt.Sprintf("&position_side=%s", positionSide)
+	}
+	if option != "" {
+		url += option
+	}
+	getResp, getErr := reqbuilder.HttpGet(url)
+	if getErr != nil {
+		log.Error("http get error: %s", getErr)
+	}
+	result := responseorder.GetTradePositionRiskLimitResponse{}
+	jsonErr := json.Unmarshal([]byte(getResp), &result)
+	if jsonErr != nil {
+		log.Error("convert json error: %s", jsonErr)
+	}
+	data <- result
+}
