@@ -1140,7 +1140,7 @@ func (oc *OrderClient) SwapTradeCancelOrderAsync(data chan responseorder.SwapTra
 }
 
 func (oc *OrderClient) SwapTradeCancelBatchOrdersAsync(data chan responseorder.SwapTradeCancelBatchOrdersResponse, contractCode string,
-	orderId string, clientOrderId string, bool price_protect, bool trigger_protect) {
+	orderId string, clientOrderId string, priceProtect bool, triggerProtect bool) {
 	// url
 	url := oc.PUrlBuilder.Build(linearswap.POST_METHOD, "/v5/trade/cancel_batch_orders", nil)
 
@@ -1155,7 +1155,8 @@ func (oc *OrderClient) SwapTradeCancelBatchOrdersAsync(data chan responseorder.S
 	if clientOrderId != "" {
 		content += fmt.Sprintf(",\"client_order_id\": \"%s\"", clientOrderId)
 	}
-
+	content += fmt.Sprintf(",\"price_protect\": \"%s\"", priceProtect)
+	content += fmt.Sprintf(",\"trigger_protect\": \"%s\"", triggerProtect)
 	if content != "" {
 		content = fmt.Sprintf("{%s}", content[1:])
 	}
