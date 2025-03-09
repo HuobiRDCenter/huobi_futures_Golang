@@ -949,7 +949,7 @@ func (oc *OrderClient) SwapHisordersAsync(data chan responseorder.SwapHisordersR
 func (oc *OrderClient) SwapTradeOrderAsync(data chan responseorder.SwapTradeOrderResponse, contractCode string, marginMode string, positionSide string,
 	side string, type_ string, priceMatch string, clientOrderId string, price string, volume string, reduceOnly int, timeInForce string,
 	tpTriggerPrice string, tpOrderPrice string, tpType string, tpTriggerPriceType string, slTriggerPrice string, slOrderPrice string,
-	slType string, slTriggerPriceType string) {
+	slType string, slTriggerPriceType string, priceProtect bool, triggerProtect bool) {
 	// url
 	url := oc.PUrlBuilder.Build(linearswap.POST_METHOD, "/v5/trade/order", nil)
 
@@ -1010,7 +1010,8 @@ func (oc *OrderClient) SwapTradeOrderAsync(data chan responseorder.SwapTradeOrde
 	if slTriggerPriceType != "" {
 		content += fmt.Sprintf(",\"sl_trigger_price_type\": \"%s\"", slTriggerPriceType)
 	}
-
+	content += fmt.Sprintf(",\"price_protect\": \"%s\"", priceProtect)
+	content += fmt.Sprintf(",\"trigger_protect\": \"%s\"", triggerProtect)
 	if content != "" {
 		content = fmt.Sprintf("{%s}", content[1:])
 	}
@@ -1032,7 +1033,7 @@ func (oc *OrderClient) SwapTradeBatchOrderAsync(data chan responseorder.SwapTrad
 	tpTriggerPrice string, tpOrderPrice string, tpType string, tpTriggerPriceType string, slTriggerPrice string, slOrderPrice string,
 	slType string, slTriggerPriceType string) {
 	// url
-	url := oc.PUrlBuilder.Build(linearswap.POST_METHOD, "/v5/trade/batchorder", nil)
+	url := oc.PUrlBuilder.Build(linearswap.POST_METHOD, "/v5/trade/batch_orders", nil)
 
 	// content
 	content := ""
@@ -1108,7 +1109,7 @@ func (oc *OrderClient) SwapTradeBatchOrderAsync(data chan responseorder.SwapTrad
 func (oc *OrderClient) SwapTradeCancelOrderAsync(data chan responseorder.SwapTradeCancelOrderResponse, contractCode string,
 	orderId string, clientOrderId string) {
 	// url
-	url := oc.PUrlBuilder.Build(linearswap.POST_METHOD, "/v5/trade/order", nil)
+	url := oc.PUrlBuilder.Build(linearswap.POST_METHOD, "/v5/trade/cancel_order", nil)
 
 	// content
 	content := ""
@@ -1139,9 +1140,9 @@ func (oc *OrderClient) SwapTradeCancelOrderAsync(data chan responseorder.SwapTra
 }
 
 func (oc *OrderClient) SwapTradeCancelBatchOrdersAsync(data chan responseorder.SwapTradeCancelBatchOrdersResponse, contractCode string,
-	orderId string, clientOrderId string) {
+	orderId string, clientOrderId string, bool price_protect, bool trigger_protect) {
 	// url
-	url := oc.PUrlBuilder.Build(linearswap.POST_METHOD, "/v5/trade/batchOrders", nil)
+	url := oc.PUrlBuilder.Build(linearswap.POST_METHOD, "/v5/trade/cancel_batch_orders", nil)
 
 	// content
 	content := ""
@@ -1174,7 +1175,7 @@ func (oc *OrderClient) SwapTradeCancelBatchOrdersAsync(data chan responseorder.S
 func (oc *OrderClient) SwapTradeAllOrdersAsync(data chan responseorder.SwapTradeAllOrdersResponse, contractCode string,
 	side string, positionSide string) {
 	// url
-	url := oc.PUrlBuilder.Build(linearswap.POST_METHOD, "/v5/trade/allOrders", nil)
+	url := oc.PUrlBuilder.Build(linearswap.POST_METHOD, "/v5/trade/cancel_all_orders", nil)
 
 	// content
 	content := ""
@@ -1242,7 +1243,7 @@ func (oc *OrderClient) SwapTradePositionAsync(data chan responseorder.SwapTradeP
 
 func (oc *OrderClient) SwapTradePositionAllAsync(data chan responseorder.SwapTradePositionAllResponse) {
 	// url
-	url := oc.PUrlBuilder.Build(linearswap.POST_METHOD, "/v5/trade/positionAll", nil)
+	url := oc.PUrlBuilder.Build(linearswap.POST_METHOD, "/v5/trade/position_all", nil)
 
 	// content
 	content := ""
@@ -1263,7 +1264,7 @@ func (oc *OrderClient) SwapTradePositionAllAsync(data chan responseorder.SwapTra
 	data <- result
 }
 
-func (ac *AccountClient) GetTradeOpensAsync(data chan responseorder.GetTradeOpensResponse, contractCode string, side string,
+func (ac *AccountClient) GetTradeOpensAsync(data chan responseorder.GetTradeOpensResponse, contractCode string,
 	marginMode string, orderId string, clientOrderId string, from int, limit int, direct string) {
 	// ulr
 	url := ac.PUrlBuilder.Build(linearswap.GET_METHOD, "/v5/trade/order/opens", nil)
@@ -1271,9 +1272,6 @@ func (ac *AccountClient) GetTradeOpensAsync(data chan responseorder.GetTradeOpen
 	option := ""
 	if contractCode != "" {
 		option += fmt.Sprintf("?contract_code=%s", contractCode)
-	}
-	if side != "" {
-		option += fmt.Sprintf("&side=%s", side)
 	}
 	if marginMode != "" {
 		option += fmt.Sprintf("&margin_mode=%s", marginMode)
@@ -1307,7 +1305,7 @@ func (ac *AccountClient) GetTradeOpensAsync(data chan responseorder.GetTradeOpen
 func (ac *AccountClient) GetTradeOrderTradesAsync(data chan responseorder.GetTradeOpensResponse, contractCode string, side string,
 	marginMode string, orderId string, clientOrderId string, from int, limit int, direct string) {
 	// ulr
-	url := ac.PUrlBuilder.Build(linearswap.GET_METHOD, "/api/v5/trade/order/trades", nil)
+	url := ac.PUrlBuilder.Build(linearswap.GET_METHOD, "/api/V5/trade/order/details", nil)
 	// option
 	option := ""
 	if contractCode != "" {
@@ -1346,23 +1344,14 @@ func (ac *AccountClient) GetTradeOrderTradesAsync(data chan responseorder.GetTra
 }
 
 func (ac *AccountClient) GetTradeOrderHistoryAsync(data chan responseorder.GetTradeOrderHistoryResponse,
-	contractCode string, side string, orderId string, clientOrderId string, state string, type_ string,
-	priceMatch string, startTime string, endTime string, from int, limit int, direct string) {
+	contractCode string, state string, type_ string,
+	priceMatch string, startTime string, endTime string, from int, limit int, direct string, businessType string) {
 	// ulr
 	url := ac.PUrlBuilder.Build(linearswap.GET_METHOD, "/api/v5/trade/order/history", nil)
 	// option
 	option := ""
 	if contractCode != "" {
 		option += fmt.Sprintf("?contract_code=%s", contractCode)
-	}
-	if side != "" {
-		option += fmt.Sprintf("&side=%s", side)
-	}
-	if orderId != "" {
-		option += fmt.Sprintf("&order_id=%s", orderId)
-	}
-	if clientOrderId != "" {
-		option += fmt.Sprintf("&client_order_id=%s", clientOrderId)
 	}
 	if state != "" {
 		option += fmt.Sprintf("&state=%s", state)
@@ -1378,6 +1367,9 @@ func (ac *AccountClient) GetTradeOrderHistoryAsync(data chan responseorder.GetTr
 	}
 	if endTime != "" {
 		option += fmt.Sprintf("&end_time=%s", endTime)
+	}
+	if businessType != "" {
+		option += fmt.Sprintf("&business_type=%s", businessType)
 	}
 	option += fmt.Sprintf("&from=%s", from)
 	option += fmt.Sprintf("&limit=%s", limit)

@@ -1155,7 +1155,7 @@ func (mc *MarketClient) GetMarketAssetsDeductionCurrencyAsync(data chan market.G
 
 func (mc *MarketClient) GetMarketMultiAssetsMarginListAsync(data chan market.GetMarketMultiAssetsMarginListResponse) {
 	// location
-	location := "/v5/market/multi_assets_margin/list"
+	location := "/v5/market/multi_assets_margin"
 
 	// option
 	option := ""

@@ -6,7 +6,6 @@ type GetAccountBalanceResponse struct {
 	Data []struct {
 		State                 string `json:"state"`
 		Equity                string `json:"equity"`
-		IsolatedEquity        string `json:"isolated_equity"`
 		InitialMargin         string `json:"initial_margin"`
 		MaintenanceMargin     string `json:"maintenance_margin"`
 		MaintenanceMarginRate string `json:"maintenance_margin_rate"`
@@ -20,9 +19,6 @@ type GetAccountBalanceResponse struct {
 			IsolatedEquity        string `json:"isolated_equity"`
 			Available             string `json:"available"`
 			ProfitUnreal          string `json:"profit_unreal"`
-			IsolatedAvailable     string `json:"isolated_available"`
-			IsolatedHold          string `json:"isolated_hold"`
-			IsolatedProfitUnreal  string `json:"isolated_profit_unreal"`
 			InitialMargin         string `json:"initial_margin"`
 			MaintenanceMargin     string `json:"maintenance_margin"`
 			MaintenanceMarginRate string `json:"maintenance_margin_rate"`

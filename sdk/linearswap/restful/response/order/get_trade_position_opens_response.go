@@ -15,7 +15,6 @@ type GetTradePositionOpensResponse struct {
 		LiquidationPrice  string  `json:"liquidation_price"`
 		InitialMargin     string  `json:"initial_margin"`
 		MaintenanceMargin string  `json:"maintenance_margin"`
-		Margin            string  `json:"margin"`
 		ProfitUnreal      string  `json:"profit_unreal"`
 		ProfitRate        string  `json:"profit_rate"`
 		MarginRate        string  `json:"margin_rate"`
