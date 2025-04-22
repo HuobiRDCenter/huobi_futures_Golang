@@ -44,6 +44,8 @@ type SubAccountsResponse struct {
 
 		MarginAccount string `json:"margin_account"`
 
-		MarginMode string `json:"margin_mode"`
+		MarginMode   string `json:"margin_mode"`
+		Voucher      string `json:"voucher"`
+		VoucherValue string `json:"voucher_value"`
 	} `json:"data"`
 }
