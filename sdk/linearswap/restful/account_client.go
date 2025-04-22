@@ -1020,3 +1020,41 @@ func (ac *AccountClient) GetSwapSubAuthListAsync(data chan account.GetSwapSubAut
 	}
 	data <- result
 }
+
+func (ac *AccountClient) GetAccountBalanceAsync(data chan account.GetAccountBalanceResponse) {
+	// ulr
+	url := ac.PUrlBuilder.Build(linearswap.GET_METHOD, "/v5/account/balance", nil)
+
+	getResp, getErr := reqbuilder.HttpGet(url)
+	if getErr != nil {
+		log.Error("http get error: %s", getErr)
+	}
+	result := account.GetAccountBalanceResponse{}
+	jsonErr := json.Unmarshal([]byte(getResp), &result)
+	if jsonErr != nil {
+		log.Error("convert json error: %s", jsonErr)
+	}
+	data <- result
+}
+
+func (ac *AccountClient) SwapMultiAssetsMarginAsync(data chan account.SwapMultiAssetsMarginResponse, assetsMode int) {
+	// ulr
+	url := ac.PUrlBuilder.Build(linearswap.POST_METHOD, "/v5/account/multi_assets_margin", nil)
+
+	// content
+	content := ""
+	content += fmt.Sprintf(",\"assets_mode\": \"%s\"", assetsMode)
+	if content != "" {
+		content = fmt.Sprintf("{%s}", content[1:])
+	}
+	getResp, getErr := reqbuilder.HttpPost(url, content)
+	if getErr != nil {
+		log.Error("http get error: %s", getErr)
+	}
+	result := account.SwapMultiAssetsMarginResponse{}
+	jsonErr := json.Unmarshal([]byte(getResp), &result)
+	if jsonErr != nil {
+		log.Error("convert json error: %s", jsonErr)
+	}
+	data <- result
+}

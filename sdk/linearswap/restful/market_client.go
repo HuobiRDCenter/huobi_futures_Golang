@@ -1093,3 +1093,85 @@ func (mc *MarketClient) GetBatchMergedV2Async(data chan market.GetBatchMergedV2R
 	}
 	data <- result
 }
+
+func (mc *MarketClient) GetMarketRiskLimitAsync(data chan market.GetMarketRiskLimitResponse, contractCode string,
+	contractType string, marginMode string, tier string) {
+	// location
+	location := "/v5/market/risk_limit"
+
+	// option
+	option := ""
+	if contractCode != "" {
+		option += fmt.Sprintf("?contract_code=%s", contractCode)
+	}
+	if contractType != "" {
+		option += fmt.Sprintf("&contract_type=%s", contractType)
+	}
+	if marginMode != "" {
+		option += fmt.Sprintf("&margin_mode=%s", marginMode)
+	}
+	if tier != "" {
+		option += fmt.Sprintf("&tier=%s", tier)
+	}
+	if option != "" {
+		location += option
+	}
+
+	url := mc.PUrlBuilder.Build(location, nil)
+	getResp, getErr := reqbuilder.HttpGet(url)
+	if getErr != nil {
+		log.Error("http get error: %s", getErr)
+	}
+	result := market.GetMarketRiskLimitResponse{}
+	jsonErr := json.Unmarshal([]byte(getResp), &result)
+	if jsonErr != nil {
+		log.Error("convert json error: %s", getErr)
+	}
+	data <- result
+}
+
+func (mc *MarketClient) GetMarketAssetsDeductionCurrencyAsync(data chan market.GetMarketAssetsDeductionCurrencyResponse) {
+	// location
+	location := "/v5/assets_deduction_currency"
+
+	// option
+	option := ""
+	if option != "" {
+		location += option
+	}
+
+	url := mc.PUrlBuilder.Build(location, nil)
+	getResp, getErr := reqbuilder.HttpGet(url)
+	if getErr != nil {
+		log.Error("http get error: %s", getErr)
+	}
+	result := market.GetMarketAssetsDeductionCurrencyResponse{}
+	jsonErr := json.Unmarshal([]byte(getResp), &result)
+	if jsonErr != nil {
+		log.Error("convert json error: %s", getErr)
+	}
+	data <- result
+}
+
+func (mc *MarketClient) GetMarketMultiAssetsMarginListAsync(data chan market.GetMarketMultiAssetsMarginListResponse) {
+	// location
+	location := "/v5/market/multi_assets_margin"
+
+	// option
+	option := ""
+	if option != "" {
+		location += option
+	}
+
+	url := mc.PUrlBuilder.Build(location, nil)
+	getResp, getErr := reqbuilder.HttpGet(url)
+	if getErr != nil {
+		log.Error("http get error: %s", getErr)
+	}
+	result := market.GetMarketMultiAssetsMarginListResponse{}
+	jsonErr := json.Unmarshal([]byte(getResp), &result)
+	if jsonErr != nil {
+		log.Error("convert json error: %s", getErr)
+	}
+	data <- result
+}
