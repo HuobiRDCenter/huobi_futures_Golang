@@ -18,6 +18,7 @@ type GetAccountBalanceResponse struct {
 			Equity                string `json:"equity"`
 			IsolatedEquity        string `json:"isolated_equity"`
 			Available             string `json:"available"`
+			WithdrawAvailable     string `json:"withdraw_available"`
 			ProfitUnreal          string `json:"profit_unreal"`
 			InitialMargin         string `json:"initial_margin"`
 			MaintenanceMargin     string `json:"maintenance_margin"`
