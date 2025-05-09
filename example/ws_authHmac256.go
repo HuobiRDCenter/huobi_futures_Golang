@@ -91,11 +91,11 @@ func gzipDecompress(input []byte) (string, error) {
 	return string(result), nil
 }
 
-func main() {
+func main2() {
 	host := "api.hbdm.com"
 	path := "/swap-notification"
-	ak := "x-x-x-x"
-	sk := "x-x-x-x"
+	ak := ""
+	sk := ""
 
 	url := fmt.Sprintf("wss://%s%s", host, path)
 	fmt.Println("url:", url)

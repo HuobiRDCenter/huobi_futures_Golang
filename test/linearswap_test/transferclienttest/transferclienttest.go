@@ -12,7 +12,7 @@ func RunAllExamples() {
 }
 
 func TransferAsync() {
-	client := new(restful.TransferClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.TransferClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan transfer.TransferResponse)
 	go client.TransferAsync(resp, "", "", 0, "", "")
 	x := <-resp

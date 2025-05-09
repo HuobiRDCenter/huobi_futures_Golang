@@ -13,11 +13,11 @@ type TransferClient struct {
 	PUrlBuilder *reqbuilder.PrivateUrlBuilder
 }
 
-func (tc *TransferClient) Init(accessKey string, secretKey string, host string) *TransferClient {
+func (tc *TransferClient) Init(accessKey string, secretKey string, host string, sign string) *TransferClient {
 	if host == "" {
 		host = linearswap.SPOT_DEFAULT_HOST
 	}
-	tc.PUrlBuilder = new(reqbuilder.PrivateUrlBuilder).Init(accessKey, secretKey, host)
+	tc.PUrlBuilder = new(reqbuilder.PrivateUrlBuilder).Init(accessKey, secretKey, host, sign)
 	return tc
 }
 

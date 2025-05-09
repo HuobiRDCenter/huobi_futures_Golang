@@ -26,7 +26,7 @@ func RunAllExamples() {
 }
 
 func SwapCancelAfterAsync() {
-	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan order.SwapCancelAfterResponse)
 	go client.SwapCancelAfterAsync(resp, "", "")
 	x := <-resp
@@ -34,7 +34,7 @@ func SwapCancelAfterAsync() {
 }
 
 func SwapOrderAsync() {
-	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan order.SwapOrderResponse)
 	go client.SwapOrderAsync(resp, requestorder.SwapOrderRequest{})
 	x := <-resp
@@ -42,7 +42,7 @@ func SwapOrderAsync() {
 }
 
 func SwapBatchOrderAsync() {
-	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan order.SwapBatchOrderResponse)
 	go client.SwapBatchOrderAsync(resp, requestorder.BatchSwapOrderRequest{})
 	x := <-resp
@@ -50,7 +50,7 @@ func SwapBatchOrderAsync() {
 }
 
 func SwapCancelAsync() {
-	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan order.SwapCancelResponse)
 	go client.SwapCancelAsync(resp, "", "", "")
 	x := <-resp
@@ -58,7 +58,7 @@ func SwapCancelAsync() {
 }
 
 func SwapCancelAllAsync() {
-	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan order.SwapCancelAllResponse)
 	go client.SwapCancelAllAsync(resp, "", "", "")
 	x := <-resp
@@ -66,7 +66,7 @@ func SwapCancelAllAsync() {
 }
 
 func SwapSwitchLeverRateAsync() {
-	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan order.SwapSwitchLeverRateResponse)
 	go client.SwapSwitchLeverRateAsync(resp, "", "")
 	x := <-resp
@@ -74,7 +74,7 @@ func SwapSwitchLeverRateAsync() {
 }
 
 func SwapOrderInfoAsync() {
-	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan order.SwapOrderInfoResponse)
 	go client.SwapOrderInfoAsync(resp, "", "", "")
 	x := <-resp
@@ -82,7 +82,7 @@ func SwapOrderInfoAsync() {
 }
 
 func SwapOrderDetailAsync() {
-	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan order.SwapOrderDetailResponse)
 	go client.SwapOrderDetailAsync(resp, "", "", "", "", "", "")
 	x := <-resp
@@ -90,7 +90,7 @@ func SwapOrderDetailAsync() {
 }
 
 func SwapOpenOrdersAsync() {
-	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan order.SwapOpenOrdersResponse)
 	go client.SwapOpenOrdersAsync(resp, "", "", "", "", "")
 	x := <-resp
@@ -98,7 +98,7 @@ func SwapOpenOrdersAsync() {
 }
 
 func SwapHisOrdersAsync() {
-	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan order.SwapHisOrdersResponse)
 	go client.SwapHisOrdersAsync(resp, "", "", "", "", "", "", "", "")
 	x := <-resp
@@ -106,7 +106,7 @@ func SwapHisOrdersAsync() {
 }
 
 func SwapHisOrdersExactAsync() {
-	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan order.SwapHisOrdersExactResponse)
 	go client.SwapHisOrdersExactAsync(resp, "", "", "", "", "", "", "", "", "")
 	x := <-resp
@@ -114,7 +114,7 @@ func SwapHisOrdersExactAsync() {
 }
 
 func SwapMatchResultsAsync() {
-	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan order.SwapMatchResultsResponse)
 	go client.SwapMatchResultsAsync(resp, "", "", "", "", "", "")
 	x := <-resp
@@ -122,7 +122,7 @@ func SwapMatchResultsAsync() {
 }
 
 func SwapMatchResultsExactAsync() {
-	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan order.SwapMatchResultsExactResponse)
 	go client.SwapMatchResultsExactAsync(resp, "", "", "", "", "", "")
 	x := <-resp
@@ -130,7 +130,7 @@ func SwapMatchResultsExactAsync() {
 }
 
 func SwapLightningClosePositionAsync() {
-	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan order.SwapLightningClosePositionResponse)
 	go client.SwapLightningClosePositionAsync(resp, "", "", "", "", "")
 	x := <-resp

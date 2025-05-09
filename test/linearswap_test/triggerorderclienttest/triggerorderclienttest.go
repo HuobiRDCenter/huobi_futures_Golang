@@ -30,7 +30,7 @@ func RunAllExamples() {
 }
 
 func IsolatedPlaceOrderAsync() {
-	client := new(restful.TriggerOrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.TriggerOrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan triggerorder.PlaceOrderResponse)
 	go client.IsolatedPlaceOrderAsync(resp, requesttiggerorder.PlaceOrderRequest{})
 	x := <-resp
@@ -38,7 +38,7 @@ func IsolatedPlaceOrderAsync() {
 }
 
 func CrossPlaceOrderAsync() {
-	client := new(restful.TriggerOrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.TriggerOrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan triggerorder.PlaceOrderResponse)
 	go client.CrossPlaceOrderAsync(resp, requesttiggerorder.PlaceOrderRequest{})
 	x := <-resp
@@ -46,7 +46,7 @@ func CrossPlaceOrderAsync() {
 }
 
 func IsolatedCancelOrderAsync() {
-	client := new(restful.TriggerOrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.TriggerOrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan triggerorder.CancelOrderResponse)
 	go client.IsolatedCancelOrderAsync(resp, "", "", "", "")
 	x := <-resp
@@ -54,7 +54,7 @@ func IsolatedCancelOrderAsync() {
 }
 
 func CrossCancelOrderAsync() {
-	client := new(restful.TriggerOrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.TriggerOrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan triggerorder.CancelOrderResponse)
 	go client.CrossCancelOrderAsync(resp, "", "", "", "", "", "")
 	x := <-resp
@@ -62,7 +62,7 @@ func CrossCancelOrderAsync() {
 }
 
 func IsolatedGetOpenOrderAsync() {
-	client := new(restful.TriggerOrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.TriggerOrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan triggerorder.GetOpenOrderResponse)
 	go client.IsolatedGetOpenOrderAsync(resp, "", 0, 100, 0)
 	x := <-resp
@@ -70,7 +70,7 @@ func IsolatedGetOpenOrderAsync() {
 }
 
 func CrossGetOpenOrderAsync() {
-	client := new(restful.TriggerOrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.TriggerOrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan triggerorder.GetOpenOrderResponse)
 	go client.CrossGetOpenOrderAsync(resp, "", 0, 100, 0, "")
 	x := <-resp
@@ -78,7 +78,7 @@ func CrossGetOpenOrderAsync() {
 }
 
 func IsolatedGetHisOrderAsync() {
-	client := new(restful.TriggerOrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.TriggerOrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan triggerorder.GetHisOrderResponse)
 	go client.IsolatedGetHisOrderAsync(resp, "", 0, "", 0, 0, 100, "")
 	x := <-resp
@@ -86,7 +86,7 @@ func IsolatedGetHisOrderAsync() {
 }
 
 func CrossGetHisOrderAsync() {
-	client := new(restful.TriggerOrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.TriggerOrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan triggerorder.GetHisOrderResponse)
 	go client.CrossGetHisOrderAsync(resp, "", 0, "", 0, 0, 100, "", "")
 	x := <-resp
@@ -94,7 +94,7 @@ func CrossGetHisOrderAsync() {
 }
 
 func IsolatedTpslOrderAsync() {
-	client := new(restful.TriggerOrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.TriggerOrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan triggerorder.TpslOrderResponse)
 	go client.IsolatedTpslOrderAsync(resp, requesttiggerorder.TpslOrderRequest{})
 	x := <-resp
@@ -102,7 +102,7 @@ func IsolatedTpslOrderAsync() {
 }
 
 func CrossTpslOrderAsync() {
-	client := new(restful.TriggerOrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.TriggerOrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan triggerorder.TpslOrderResponse)
 	go client.CrossTpslOrderAsync(resp, requesttiggerorder.TpslOrderRequest{})
 	x := <-resp
@@ -110,7 +110,7 @@ func CrossTpslOrderAsync() {
 }
 
 func IsolatedTpslCancelAsync() {
-	client := new(restful.TriggerOrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.TriggerOrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan triggerorder.CancelOrderResponse)
 	go client.IsolatedTpslCancelAsync(resp, "", "", "")
 	x := <-resp
@@ -118,7 +118,7 @@ func IsolatedTpslCancelAsync() {
 }
 
 func CrossTpslCancelAsync() {
-	client := new(restful.TriggerOrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.TriggerOrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan triggerorder.CancelOrderResponse)
 	go client.CrossTpslCancelAsync(resp, "", "", "", "", "")
 	x := <-resp
@@ -126,7 +126,7 @@ func CrossTpslCancelAsync() {
 }
 
 func IsolatedGetTpslOpenOrderAsync() {
-	client := new(restful.TriggerOrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.TriggerOrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan triggerorder.GetOpenOrderResponse)
 	go client.IsolatedGetTpslOpenOrderAsync(resp, "", 0, 100, 0)
 	x := <-resp
@@ -134,7 +134,7 @@ func IsolatedGetTpslOpenOrderAsync() {
 }
 
 func CrossGetTpslOpenOrderAsync() {
-	client := new(restful.TriggerOrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.TriggerOrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan triggerorder.GetOpenOrderResponse)
 	go client.CrossGetTpslOpenOrderAsync(resp, "", 0, 100, 0, "")
 	x := <-resp
@@ -142,7 +142,7 @@ func CrossGetTpslOpenOrderAsync() {
 }
 
 func IsolatedGetTpslHisOrderAsync() {
-	client := new(restful.TriggerOrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.TriggerOrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan triggerorder.GetHisOrderResponse)
 	go client.IsolatedGetTpslHisOrderAsync(resp, "", "", 0, 0, 100, "")
 	x := <-resp
@@ -150,7 +150,7 @@ func IsolatedGetTpslHisOrderAsync() {
 }
 
 func CrossGetTpslHisOrderAsync() {
-	client := new(restful.TriggerOrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.TriggerOrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan triggerorder.GetHisOrderResponse)
 	go client.CrossGetTpslHisOrderAsync(resp, "", "", 0, 0, 100, "", "")
 	x := <-resp
@@ -158,7 +158,7 @@ func CrossGetTpslHisOrderAsync() {
 }
 
 func IsolatedGetRelationTpslOrderAsync() {
-	client := new(restful.TriggerOrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.TriggerOrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan triggerorder.GetRelationTpslOrderResponse)
 	go client.IsolatedGetRelationTpslOrderAsync(resp, "", 1234)
 	x := <-resp
@@ -166,7 +166,7 @@ func IsolatedGetRelationTpslOrderAsync() {
 }
 
 func CrossGetRelationTpslOrderAsync() {
-	client := new(restful.TriggerOrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.TriggerOrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan triggerorder.GetRelationTpslOrderResponse)
 	go client.CrossGetRelationTpslOrderAsync(resp, "", 1234, "")
 	x := <-resp

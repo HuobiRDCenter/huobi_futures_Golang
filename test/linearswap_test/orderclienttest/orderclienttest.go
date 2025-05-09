@@ -40,7 +40,7 @@ func RunAllExamples() {
 }
 
 func IsolatedPlaceOrderAsync() {
-	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan order.PlaceOrderResponse)
 	go client.IsolatedPlaceOrderAsync(resp, requestorder.PlaceOrderRequest{})
 	x := <-resp
@@ -48,7 +48,7 @@ func IsolatedPlaceOrderAsync() {
 }
 
 func CrossPlaceOrderAsync() {
-	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan order.PlaceOrderResponse)
 	go client.CrossPlaceOrderAsync(resp, requestorder.PlaceOrderRequest{})
 	x := <-resp
@@ -56,7 +56,7 @@ func CrossPlaceOrderAsync() {
 }
 
 func IsolatedPlaceBatchOrderAsync() {
-	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan order.PlaceBatchOrderResponse)
 	go client.IsolatedPlaceBatchOrderAsync(resp, requestorder.BatchPlaceOrderRequest{})
 	x := <-resp
@@ -64,7 +64,7 @@ func IsolatedPlaceBatchOrderAsync() {
 }
 
 func CrossPlaceBatchOrderAsync() {
-	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan order.PlaceBatchOrderResponse)
 	go client.CrossPlaceBatchOrderAsync(resp, requestorder.BatchPlaceOrderRequest{})
 	x := <-resp
@@ -72,7 +72,7 @@ func CrossPlaceBatchOrderAsync() {
 }
 
 func IsolatedCancelOrderAsync() {
-	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan order.CancelOrderResponse)
 	go client.IsolatedCancelOrderAsync(resp, "", "", "", "", "")
 	x := <-resp
@@ -80,7 +80,7 @@ func IsolatedCancelOrderAsync() {
 }
 
 func CrossCancelOrderAsync() {
-	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan order.CancelOrderResponse)
 	go client.CrossCancelOrderAsync(resp, "", "", "", "", "", "")
 	x := <-resp
@@ -88,7 +88,7 @@ func CrossCancelOrderAsync() {
 }
 
 func IsolatedSwitchLeverRateAsync() {
-	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan order.SwitchLeverRateResponse)
 	go client.IsolatedSwitchLeverRateAsync(resp, "", 0)
 	x := <-resp
@@ -96,7 +96,7 @@ func IsolatedSwitchLeverRateAsync() {
 }
 
 func CrossSwitchLeverRateAsync() {
-	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan order.SwitchLeverRateResponse)
 	go client.CrossSwitchLeverRateAsync(resp, "", 0, "", "")
 	x := <-resp
@@ -104,7 +104,7 @@ func CrossSwitchLeverRateAsync() {
 }
 
 func IsolatedGetOrderInfoAsync() {
-	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan order.GetOrderInfoResponse)
 	go client.IsolatedGetOrderInfoAsync(resp, "", "", "")
 	x := <-resp
@@ -112,7 +112,7 @@ func IsolatedGetOrderInfoAsync() {
 }
 
 func CrossGetOrderInfoAsync() {
-	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan order.GetOrderInfoResponse)
 	go client.CrossGetOrderInfoAsync(resp, "", "", "", "")
 	x := <-resp
@@ -120,7 +120,7 @@ func CrossGetOrderInfoAsync() {
 }
 
 func IsolatedGetOrderDetailAsync() {
-	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan order.GetOrderDetailResponse)
 	go client.IsolatedGetOrderDetailAsync(resp, "", 1234, 0, 0, 0, 100)
 	x := <-resp
@@ -128,7 +128,7 @@ func IsolatedGetOrderDetailAsync() {
 }
 
 func CrossGetOrderDetailAsync() {
-	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan order.GetOrderDetailResponse)
 	go client.CrossGetOrderDetailAsync(resp, "", 1234, 0, 0, 0, 100, "")
 	x := <-resp
@@ -136,7 +136,7 @@ func CrossGetOrderDetailAsync() {
 }
 
 func IsolatedGetOpenOrderAsync() {
-	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan order.GetOpenOrderResponse)
 	go client.IsolatedGetOpenOrderAsync(resp, "", 0, 100, "", 0)
 	x := <-resp
@@ -144,7 +144,7 @@ func IsolatedGetOpenOrderAsync() {
 }
 
 func CrossGetOpenOrderAsync() {
-	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan order.GetOpenOrderResponse)
 	go client.CrossGetOpenOrderAsync(resp, "", 0, 100, "", 0)
 	x := <-resp
@@ -152,7 +152,7 @@ func CrossGetOpenOrderAsync() {
 }
 
 func IsolatedGetHisOrderAsync() {
-	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan order.GetHisOrderResponse)
 	go client.IsolatedGetHisOrderAsync(resp, "", 0, 0, "", 0, 0, 100, "")
 	x := <-resp
@@ -160,7 +160,7 @@ func IsolatedGetHisOrderAsync() {
 }
 
 func CrossGetHisOrderAsync() {
-	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan order.GetHisOrderResponse)
 	go client.CrossGetHisOrderAsync(resp, "", 0, 0, "", 0, 0, 100, "")
 	x := <-resp
@@ -168,7 +168,7 @@ func CrossGetHisOrderAsync() {
 }
 
 func IsolatedGetHisOrderExactAsync() {
-	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan order.GetHisOrderExactResponse)
 	go client.IsolatedGetHisOrderExactAsync(resp, "", 0, 0, "", "", 0, 100, 0, 100, "")
 	x := <-resp
@@ -176,14 +176,14 @@ func IsolatedGetHisOrderExactAsync() {
 }
 
 func CrossGetHisOrderExactAsync() {
-	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan order.GetHisOrderExactResponse)
 	go client.CrossGetHisOrderExactAsync(resp, "", 0, 0, "", "", 0, 100, 0, 100, "")
 	x := <-resp
 	log.Info("%v", x)
 }
 func IsolatedGetHisMatchAsync() {
-	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan order.GetHisMatchResponse)
 	go client.IsolatedGetHisMatchAsync(resp, "", 0, 0, 0, 100)
 	x := <-resp
@@ -191,7 +191,7 @@ func IsolatedGetHisMatchAsync() {
 }
 
 func CrossGetHisMatchAsync() {
-	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan order.GetHisMatchResponse)
 	go client.CrossGetHisMatchAsync(resp, "", 0, 0, 0, 100)
 	x := <-resp
@@ -199,7 +199,7 @@ func CrossGetHisMatchAsync() {
 }
 
 func IsolatedGetHisMatchExactAsync() {
-	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan order.GetHisMatchExactResponse)
 	go client.IsolatedGetHisMatchExactAsync(resp, "", 0, 0, 100, 0, 0, "")
 	x := <-resp
@@ -207,7 +207,7 @@ func IsolatedGetHisMatchExactAsync() {
 }
 
 func CrossGetHisMatchExactAsync() {
-	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan order.GetHisMatchExactResponse)
 	go client.CrossGetHisMatchExactAsync(resp, "", 0, 0, 100, 0, 100, "")
 	x := <-resp
@@ -215,7 +215,7 @@ func CrossGetHisMatchExactAsync() {
 }
 
 func IsolatedLightningCloseAsync() {
-	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan order.LightningCloseResponse)
 	go client.IsolatedLightningCloseAsync(resp, "", 0, "", 1234, "")
 	x := <-resp
@@ -223,7 +223,7 @@ func IsolatedLightningCloseAsync() {
 }
 
 func CrossLightningCloseAsync() {
-	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan order.LightningCloseResponse)
 	go client.CrossLightningCloseAsync(resp, "", 0, "", 1234, "", "")
 	x := <-resp
@@ -231,7 +231,7 @@ func CrossLightningCloseAsync() {
 }
 
 func LinearCancelAfterAsync() {
-	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan order.LinearCancelAfterResponse)
 	go client.LinearCancelAfterAsync(resp, "", "")
 	x := <-resp
@@ -239,7 +239,7 @@ func LinearCancelAfterAsync() {
 }
 
 func SwapSwitchPositionModeAsync() {
-	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan order.SwapSwitchPositionModeResponse)
 	go client.SwapSwitchPositionModeAsync(resp, "", "")
 	x := <-resp
@@ -247,7 +247,7 @@ func SwapSwitchPositionModeAsync() {
 }
 
 func SwapCrossSwitchPositionModeAsync() {
-	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan order.SwapSwitchPositionModeResponse)
 	go client.SwapCrossSwitchPositionModeAsync(resp, "", "")
 	x := <-resp
@@ -255,7 +255,7 @@ func SwapCrossSwitchPositionModeAsync() {
 }
 
 func SwapHisordersAsync() {
-	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan order.SwapHisordersResponse)
 	go client.SwapHisordersAsync(resp, "", "", "", "", "", "", "", "")
 	x := <-resp
