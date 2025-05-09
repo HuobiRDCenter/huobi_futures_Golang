@@ -1346,7 +1346,7 @@ func (ac *AccountClient) GetTradeOrderTradesAsync(data chan responseorder.GetTra
 
 func (ac *AccountClient) GetTradeOrderHistoryAsync(data chan responseorder.GetTradeOrderHistoryResponse,
 	contractCode string, state string, type_ string,
-	priceMatch string, startTime string, endTime string, from int, limit int, direct string, businessType string) {
+	priceMatch string, startTime string, endTime string, from int, limit int, direct string, businessType string, marginMode string) {
 	// ulr
 	url := ac.PUrlBuilder.Build(linearswap.GET_METHOD, "/api/v5/trade/order/history", nil)
 	// option
@@ -1371,6 +1371,9 @@ func (ac *AccountClient) GetTradeOrderHistoryAsync(data chan responseorder.GetTr
 	}
 	if businessType != "" {
 		option += fmt.Sprintf("&business_type=%s", businessType)
+	}
+	if marginMode != "" {
+		option += fmt.Sprintf("&margin_mode=%s", marginMode)
 	}
 	option += fmt.Sprintf("&from=%s", from)
 	option += fmt.Sprintf("&limit=%s", limit)
@@ -1587,6 +1590,39 @@ func (ac *AccountClient) GetTradePositionRiskLimitAsync(data chan responseorder.
 		log.Error("http get error: %s", getErr)
 	}
 	result := responseorder.GetTradePositionRiskLimitResponse{}
+	jsonErr := json.Unmarshal([]byte(getResp), &result)
+	if jsonErr != nil {
+		log.Error("convert json error: %s", jsonErr)
+	}
+	data <- result
+}
+
+func (ac *AccountClient) GetTradeOrderAsync(data chan responseorder.GetTradeOrderResponse,
+	contractCode string, marginMode string, orderId string, clientOrderId string) {
+	// ulr
+	url := ac.PUrlBuilder.Build(linearswap.GET_METHOD, "/api/v5/trade/order/history", nil)
+	// option
+	option := ""
+	if contractCode != "" {
+		option += fmt.Sprintf("?contract_code=%s", contractCode)
+	}
+	if orderId != "" {
+		option += fmt.Sprintf("&order_id=%s", orderId)
+	}
+	if clientOrderId != "" {
+		option += fmt.Sprintf("&client_order_id=%s", clientOrderId)
+	}
+	if marginMode != "" {
+		option += fmt.Sprintf("&margin_mode=%s", marginMode)
+	}
+	if option != "" {
+		url += option
+	}
+	getResp, getErr := reqbuilder.HttpGet(url)
+	if getErr != nil {
+		log.Error("http get error: %s", getErr)
+	}
+	result := responseorder.GetTradeOrderResponse{}
 	jsonErr := json.Unmarshal([]byte(getResp), &result)
 	if jsonErr != nil {
 		log.Error("convert json error: %s", jsonErr)
