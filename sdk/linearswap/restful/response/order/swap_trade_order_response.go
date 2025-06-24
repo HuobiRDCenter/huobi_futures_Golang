@@ -6,6 +6,7 @@ type SwapTradeOrderResponse struct {
 	Data []struct {
 		OrderId       string `json:"order_id"`
 		ClientOrderId string `json:"client_order_id"`
+		CancelReason  string `json:"cancel_reason"`
 	} `json:"data,omitempty"`
 
 	Message int `json:"message,omitempty"`

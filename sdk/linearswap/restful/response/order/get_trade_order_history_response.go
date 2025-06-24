@@ -14,6 +14,7 @@ type GetTradeOrderHistoryResponse struct {
 		ClientOrderID      string `json:"client_order_id"`
 		MarginMode         string `json:"margin_mode"`
 		Price              string `json:"price"`
+		CancelReason       string `json:"cancel_reason"`
 		Volume             string `json:"volume"`
 		LeverRate          string `json:"lever_rate"`
 		State              string `json:"state"`
