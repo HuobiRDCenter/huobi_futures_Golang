@@ -3,6 +3,7 @@ package restful
 import (
 	"encoding/json"
 	"fmt"
+
 	"github.com/HuobiRDCenter/huobi_futures_Golang/sdk/linearswap"
 	"github.com/HuobiRDCenter/huobi_futures_Golang/sdk/linearswap/restful/response/account"
 	"github.com/HuobiRDCenter/huobi_futures_Golang/sdk/log"
@@ -1052,6 +1053,61 @@ func (ac *AccountClient) SwapMultiAssetsMarginAsync(data chan account.SwapMultiA
 		log.Error("http get error: %s", getErr)
 	}
 	result := account.SwapMultiAssetsMarginResponse{}
+	jsonErr := json.Unmarshal([]byte(getResp), &result)
+	if jsonErr != nil {
+		log.Error("convert json error: %s", jsonErr)
+	}
+	data <- result
+}
+
+func (ac *AccountClient) InviteeRebateAllRebateDetailAsync(data chan account.InviteeRebateAllRebateDetailResponse, direct string, fromId string,
+	limit int64) {
+	// ulr
+	url := ac.PUrlBuilder.Build(linearswap.GET_METHOD, "/v2/invitee/rebate/all_rebate/detail", nil)
+
+	// option
+	option := ""
+	if direct != "" {
+		option += fmt.Sprintf("?direct=%s", direct)
+	}
+	if fromId != "" {
+		option += fmt.Sprintf("&fromId=%s", fromId)
+	}
+	if limit != 0 {
+		option += fmt.Sprintf("&limit=%s", limit)
+	}
+	if option != "" {
+		url += option
+	}
+	getResp, getErr := reqbuilder.HttpGet(url)
+	if getErr != nil {
+		log.Error("http get error: %s", getErr)
+	}
+	result := account.InviteeRebateAllRebateDetailResponse{}
+	jsonErr := json.Unmarshal([]byte(getResp), &result)
+	if jsonErr != nil {
+		log.Error("convert json error: %s", jsonErr)
+	}
+	data <- result
+}
+
+func (ac *AccountClient) InviteeRebateBatcherRebateDetailAsync(data chan account.InviteeRebateBatcherRebateDetailResponse, inviteeUidList string) {
+	// ulr
+	url := ac.PUrlBuilder.Build(linearswap.GET_METHOD, "/v2/invitee/rebate/batcher_rebate/detail", nil)
+
+	// option
+	option := ""
+	if inviteeUidList != "" {
+		option += fmt.Sprintf("?inviteeUidList=%s", inviteeUidList)
+	}
+	if option != "" {
+		url += option
+	}
+	getResp, getErr := reqbuilder.HttpGet(url)
+	if getErr != nil {
+		log.Error("http get error: %s", getErr)
+	}
+	result := account.InviteeRebateBatcherRebateDetailResponse{}
 	jsonErr := json.Unmarshal([]byte(getResp), &result)
 	if jsonErr != nil {
 		log.Error("convert json error: %s", jsonErr)
