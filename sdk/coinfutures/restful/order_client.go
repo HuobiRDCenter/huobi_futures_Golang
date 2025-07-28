@@ -14,11 +14,11 @@ type OrderClient struct {
 	PUrlBuilder *reqbuilder.PrivateUrlBuilder
 }
 
-func (oc *OrderClient) Init(accessKey string, secretKey string, host string) *OrderClient {
+func (oc *OrderClient) Init(accessKey string, secretKey string, host string, sign string) *OrderClient {
 	if host == "" {
 		host = coinfutures.COIN_FUTURES_DEFAULT_HOST
 	}
-	oc.PUrlBuilder = new(reqbuilder.PrivateUrlBuilder).Init(accessKey, secretKey, host)
+	oc.PUrlBuilder = new(reqbuilder.PrivateUrlBuilder).Init(accessKey, secretKey, host, sign)
 	return oc
 }
 

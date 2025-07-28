@@ -14,11 +14,11 @@ type TriggerOrderClient struct {
 	PUrlBuilder *reqbuilder.PrivateUrlBuilder
 }
 
-func (toc *TriggerOrderClient) Init(accessKey string, secretKey string, host string) *TriggerOrderClient {
+func (toc *TriggerOrderClient) Init(accessKey string, secretKey string, host string, sign string) *TriggerOrderClient {
 	if host == "" {
 		host = coinfutures.COIN_FUTURES_DEFAULT_HOST
 	}
-	toc.PUrlBuilder = new(reqbuilder.PrivateUrlBuilder).Init(accessKey, secretKey, host)
+	toc.PUrlBuilder = new(reqbuilder.PrivateUrlBuilder).Init(accessKey, secretKey, host, sign)
 	return toc
 }
 

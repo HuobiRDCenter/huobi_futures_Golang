@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="276b106e-2e2d-4590-bb56-32d3b1f93640" name="变更" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/huobi_futures_Golang.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/huobi_futures_Golang.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/key.go" beforeDir="false" afterPath="$PROJECT_DIR$/config/key.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ws_auth.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sdk/coinfutures/restful/account_client.go" beforeDir="false" afterPath="$PROJECT_DIR$/sdk/coinfutures/restful/account_client.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sdk/coinfutures/restful/order_client.go" beforeDir="false" afterPath="$PROJECT_DIR$/sdk/coinfutures/restful/order_client.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sdk/coinfutures/restful/transfer_client.go" beforeDir="false" afterPath="$PROJECT_DIR$/sdk/coinfutures/restful/transfer_client.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sdk/coinfutures/restful/trigger_order_client.go" beforeDir="false" afterPath="$PROJECT_DIR$/sdk/coinfutures/restful/trigger_order_client.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sdk/coinfutures/ws/web_socket_op.go" beforeDir="false" afterPath="$PROJECT_DIR$/sdk/coinfutures/ws/web_socket_op.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sdk/coinfutures/ws/ws_center_notify_client.go" beforeDir="false" afterPath="$PROJECT_DIR$/sdk/coinfutures/ws/ws_center_notify_client.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sdk/coinfutures/ws/ws_index_client.go" beforeDir="false" afterPath="$PROJECT_DIR$/sdk/coinfutures/ws/ws_index_client.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sdk/coinfutures/ws/ws_market_client.go" beforeDir="false" afterPath="$PROJECT_DIR$/sdk/coinfutures/ws/ws_market_client.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sdk/coinfutures/ws/ws_notify_client.go" beforeDir="false" afterPath="$PROJECT_DIR$/sdk/coinfutures/ws/ws_notify_client.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sdk/coinswap/restful/account_client.go" beforeDir="false" afterPath="$PROJECT_DIR$/sdk/coinswap/restful/account_client.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sdk/coinswap/restful/order_client.go" beforeDir="false" afterPath="$PROJECT_DIR$/sdk/coinswap/restful/order_client.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sdk/coinswap/restful/transfer_client.go" beforeDir="false" afterPath="$PROJECT_DIR$/sdk/coinswap/restful/transfer_client.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sdk/coinswap/restful/trigger_order_client.go" beforeDir="false" afterPath="$PROJECT_DIR$/sdk/coinswap/restful/trigger_order_client.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sdk/coinswap/ws/web_socket_op.go" beforeDir="false" afterPath="$PROJECT_DIR$/sdk/coinswap/ws/web_socket_op.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sdk/coinswap/ws/ws_center_notify_client.go" beforeDir="false" afterPath="$PROJECT_DIR$/sdk/coinswap/ws/ws_center_notify_client.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sdk/coinswap/ws/ws_index_client.go" beforeDir="false" afterPath="$PROJECT_DIR$/sdk/coinswap/ws/ws_index_client.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sdk/coinswap/ws/ws_market_client.go" beforeDir="false" afterPath="$PROJECT_DIR$/sdk/coinswap/ws/ws_market_client.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sdk/coinswap/ws/ws_notify_client.go" beforeDir="false" afterPath="$PROJECT_DIR$/sdk/coinswap/ws/ws_notify_client.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sdk/linearswap/restful/account_client.go" beforeDir="false" afterPath="$PROJECT_DIR$/sdk/linearswap/restful/account_client.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sdk/linearswap/restful/common_client.go" beforeDir="false" afterPath="$PROJECT_DIR$/sdk/linearswap/restful/common_client.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sdk/linearswap/restful/order_client.go" beforeDir="false" afterPath="$PROJECT_DIR$/sdk/linearswap/restful/order_client.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sdk/linearswap/restful/transfer_client.go" beforeDir="false" afterPath="$PROJECT_DIR$/sdk/linearswap/restful/transfer_client.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sdk/linearswap/restful/trigger_order_client.go" beforeDir="false" afterPath="$PROJECT_DIR$/sdk/linearswap/restful/trigger_order_client.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sdk/linearswap/restful/unified_account_client.go" beforeDir="false" afterPath="$PROJECT_DIR$/sdk/linearswap/restful/unified_account_client.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sdk/linearswap/ws/web_socket_op.go" beforeDir="false" afterPath="$PROJECT_DIR$/sdk/linearswap/ws/web_socket_op.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sdk/linearswap/ws/ws_center_notify_client.go" beforeDir="false" afterPath="$PROJECT_DIR$/sdk/linearswap/ws/ws_center_notify_client.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sdk/linearswap/ws/ws_index_client.go" beforeDir="false" afterPath="$PROJECT_DIR$/sdk/linearswap/ws/ws_index_client.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sdk/linearswap/ws/ws_market_client.go" beforeDir="false" afterPath="$PROJECT_DIR$/sdk/linearswap/ws/ws_market_client.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sdk/linearswap/ws/ws_notify_client.go" beforeDir="false" afterPath="$PROJECT_DIR$/sdk/linearswap/ws/ws_notify_client.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sdk/reqbuilder/private_url_builder.go" beforeDir="false" afterPath="$PROJECT_DIR$/sdk/reqbuilder/private_url_builder.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sdk/reqbuilder/signer.go" beforeDir="false" afterPath="$PROJECT_DIR$/sdk/reqbuilder/signer.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/coinfutures_test/accountclienttest/accountclienttest.go" beforeDir="false" afterPath="$PROJECT_DIR$/test/coinfutures_test/accountclienttest/accountclienttest.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/coinfutures_test/orderclienttest/orderclienttest.go" beforeDir="false" afterPath="$PROJECT_DIR$/test/coinfutures_test/orderclienttest/orderclienttest.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/coinfutures_test/transferclienttest/transferclienttest.go" beforeDir="false" afterPath="$PROJECT_DIR$/test/coinfutures_test/transferclienttest/transferclienttest.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/coinfutures_test/triggerorderclienttest/triggerorderclienttest.go" beforeDir="false" afterPath="$PROJECT_DIR$/test/coinfutures_test/triggerorderclienttest/triggerorderclienttest.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/coinfutures_test/wscenternotifyclienttest/wscenternotifyclienttest.go" beforeDir="false" afterPath="$PROJECT_DIR$/test/coinfutures_test/wscenternotifyclienttest/wscenternotifyclienttest.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/coinfutures_test/wsindexclienttest/wsindexclienttest.go" beforeDir="false" afterPath="$PROJECT_DIR$/test/coinfutures_test/wsindexclienttest/wsindexclienttest.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/coinfutures_test/wsmarketclienttest/wsmarketclienttest.go" beforeDir="false" afterPath="$PROJECT_DIR$/test/coinfutures_test/wsmarketclienttest/wsmarketclienttest.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/coinfutures_test/wsnotifyclienttest/wsnotifyclienttest.go" beforeDir="false" afterPath="$PROJECT_DIR$/test/coinfutures_test/wsnotifyclienttest/wsnotifyclienttest.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/coinswap_test/accountclienttest/accountclienttest.go" beforeDir="false" afterPath="$PROJECT_DIR$/test/coinswap_test/accountclienttest/accountclienttest.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/coinswap_test/orderclienttest/orderclienttest.go" beforeDir="false" afterPath="$PROJECT_DIR$/test/coinswap_test/orderclienttest/orderclienttest.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/coinswap_test/transferclienttest/transferclienttest.go" beforeDir="false" afterPath="$PROJECT_DIR$/test/coinswap_test/transferclienttest/transferclienttest.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/coinswap_test/triggerorderclienttest/triggerorderclienttest.go" beforeDir="false" afterPath="$PROJECT_DIR$/test/coinswap_test/triggerorderclienttest/triggerorderclienttest.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/coinswap_test/wscenternotifyclienttest/wscenternotifyclienttest.go" beforeDir="false" afterPath="$PROJECT_DIR$/test/coinswap_test/wscenternotifyclienttest/wscenternotifyclienttest.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/coinswap_test/wsindexclienttest/wsindexclienttest.go" beforeDir="false" afterPath="$PROJECT_DIR$/test/coinswap_test/wsindexclienttest/wsindexclienttest.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/coinswap_test/wsmarketclienttest/wsmarketclienttest.go" beforeDir="false" afterPath="$PROJECT_DIR$/test/coinswap_test/wsmarketclienttest/wsmarketclienttest.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/coinswap_test/wsnotifyclienttest/wsnotifyclienttest.go" beforeDir="false" afterPath="$PROJECT_DIR$/test/coinswap_test/wsnotifyclienttest/wsnotifyclienttest.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/linearswap_test/accountclienttest/accountclienttest.go" beforeDir="false" afterPath="$PROJECT_DIR$/test/linearswap_test/accountclienttest/accountclienttest.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/linearswap_test/commonclienttest/commonclienttest.go" beforeDir="false" afterPath="$PROJECT_DIR$/test/linearswap_test/commonclienttest/commonclienttest.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/linearswap_test/orderclienttest/orderclienttest.go" beforeDir="false" afterPath="$PROJECT_DIR$/test/linearswap_test/orderclienttest/orderclienttest.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/linearswap_test/transferclienttest/transferclienttest.go" beforeDir="false" afterPath="$PROJECT_DIR$/test/linearswap_test/transferclienttest/transferclienttest.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/linearswap_test/triggerorderclienttest/triggerorderclienttest.go" beforeDir="false" afterPath="$PROJECT_DIR$/test/linearswap_test/triggerorderclienttest/triggerorderclienttest.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/linearswap_test/unifiedaccountclienttest/unifiedaccountclienttest.go" beforeDir="false" afterPath="$PROJECT_DIR$/test/linearswap_test/unifiedaccountclienttest/unifiedaccountclienttest.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/linearswap_test/wscenternotifyclienttest/wscenternotifyclienttest.go" beforeDir="false" afterPath="$PROJECT_DIR$/test/linearswap_test/wscenternotifyclienttest/wscenternotifyclienttest.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/linearswap_test/wsindexclienttest/wsindexclienttest.go" beforeDir="false" afterPath="$PROJECT_DIR$/test/linearswap_test/wsindexclienttest/wsindexclienttest.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/linearswap_test/wsmarketclienttest/wsmarketclienttest.go" beforeDir="false" afterPath="$PROJECT_DIR$/test/linearswap_test/wsmarketclienttest/wsmarketclienttest.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/linearswap_test/wsnotifyclienttest/wsnotifyclienttest.go" beforeDir="false" afterPath="$PROJECT_DIR$/test/linearswap_test/wsnotifyclienttest/wsnotifyclienttest.go" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2npgGymXmDx8kwYtswSUeAtFX0q" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="go.format.on.save.advertiser.fired" value="true" />
+    <property name="go.formatter.settings.were.checked" value="true" />
+    <property name="go.import.settings.migrated" value="true" />
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="应用程序级" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="默认任务">
+      <changelist id="276b106e-2e2d-4590-bb56-32d3b1f93640" name="变更" comment="" />
+      <created>1729675339701</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1729675339701</updated>
+      <workItem from="1729675340944" duration="1669000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>

@@ -13,11 +13,11 @@ type WSCenterNotifyClient struct {
 	WebSocketOp
 }
 
-func (wsNf *WSCenterNotifyClient) Init(accessKey string, secretKey string, host string) *WSCenterNotifyClient {
+func (wsNf *WSCenterNotifyClient) Init(accessKey string, secretKey string, host string, sign string) *WSCenterNotifyClient {
 	if host == "" {
 		host = coinswap.COIN_SWAP_DEFAULT_HOST
 	}
-	wsNf.open("/center-notification", host, accessKey, secretKey, true)
+	wsNf.open("/center-notification", host, accessKey, secretKey, true, sign)
 	return wsNf
 }
 

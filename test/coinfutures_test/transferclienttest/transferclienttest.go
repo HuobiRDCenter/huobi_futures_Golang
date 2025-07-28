@@ -13,7 +13,7 @@ func RunAllExamples() {
 }
 
 func FuturesTransferAsync() {
-	client := new(restful.TransferClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.TransferClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan transfer.FuturesTransferResponse)
 	go client.FuturesTransferAsync(resp, "", "", "")
 	x := <-resp
@@ -21,7 +21,7 @@ func FuturesTransferAsync() {
 }
 
 func AccountTransferAsync() {
-	client := new(restful.TransferClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.TransferClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan transfer.AccountTransferResponse)
 	go client.AccountTransferAsync(resp, "", "", 0, "", "")
 	x := <-resp

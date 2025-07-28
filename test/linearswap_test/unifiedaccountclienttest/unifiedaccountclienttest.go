@@ -18,7 +18,7 @@ func RunAllExamples() {
 }
 
 func GetUnifiedAccountInfoAsync() {
-	client := new(restful.UnifiedAccountClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.UnifiedAccountClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan unifiedaccount.GetUnifiedAccountInfoResponse)
 	go client.GetUnifiedAccountInfoAsync(resp, "")
 	x := <-resp
@@ -26,7 +26,7 @@ func GetUnifiedAccountInfoAsync() {
 }
 
 func GetLinearSwapOverviewAccountInfoAsync() {
-	client := new(restful.UnifiedAccountClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.UnifiedAccountClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan unifiedaccount.GetLinearSwapOverviewAccountInfoResponse)
 	go client.GetLinearSwapOverviewAccountInfoAsync(resp, "")
 	x := <-resp
@@ -34,7 +34,7 @@ func GetLinearSwapOverviewAccountInfoAsync() {
 }
 
 func LinearSwapFeeSwitchAsync() {
-	client := new(restful.UnifiedAccountClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.UnifiedAccountClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan unifiedaccount.LinearSwapFeeSwitchResponse)
 	go client.LinearSwapFeeSwitchAsync(resp, "", "")
 	x := <-resp
@@ -42,7 +42,7 @@ func LinearSwapFeeSwitchAsync() {
 }
 
 func FixPositionMarginChangeAsync() {
-	client := new(restful.UnifiedAccountClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.UnifiedAccountClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan unifiedaccount.FixPositionMarginChangeResponse)
 	go client.FixPositionMarginChangeAsync(resp, "", "", "", "", "", "")
 	x := <-resp
@@ -50,7 +50,7 @@ func FixPositionMarginChangeAsync() {
 }
 
 func FixPositionMarginChangeRecordAsync() {
-	client := new(restful.UnifiedAccountClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.UnifiedAccountClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan unifiedaccount.FixPositionMarginChangeRecordResponse)
 	go client.FixPositionMarginChangeRecordAsync(resp, "", "", "", "", "", "")
 	x := <-resp
@@ -58,7 +58,7 @@ func FixPositionMarginChangeRecordAsync() {
 }
 
 func SwapUnifiedAccountTypeAsync() {
-	client := new(restful.UnifiedAccountClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.UnifiedAccountClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan unifiedaccount.SwapUnifiedAccountTypeResponse)
 	go client.SwapUnifiedAccountTypeAsync(resp)
 	x := <-resp
@@ -66,7 +66,7 @@ func SwapUnifiedAccountTypeAsync() {
 }
 
 func SwapSwitchAccountTypeAsync() {
-	client := new(restful.UnifiedAccountClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.UnifiedAccountClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan unifiedaccount.SwapSwitchAccountTypeResponse)
 	go client.SwapSwitchAccountTypeAsync(resp, "")
 	x := <-resp
