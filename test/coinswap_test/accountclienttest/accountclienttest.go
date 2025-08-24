@@ -32,7 +32,7 @@ func RunAllExamples() {
 }
 
 func SwapBalanceValuationAsync() {
-	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan account.SwapBalanceValuationResponse)
 	go client.SwapBalanceValuationAsync(resp, "")
 	x := <-resp
@@ -40,7 +40,7 @@ func SwapBalanceValuationAsync() {
 }
 
 func SwapAccountInfoAsync() {
-	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan account.SwapAccountInfoResponse)
 	go client.SwapAccountInfoAsync(resp, "")
 	x := <-resp
@@ -48,7 +48,7 @@ func SwapAccountInfoAsync() {
 }
 
 func SwapPositionInfoAsync() {
-	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan account.SwapPositionInfoResponse)
 	go client.SwapPositionInfoAsync(resp, "")
 	x := <-resp
@@ -56,7 +56,7 @@ func SwapPositionInfoAsync() {
 }
 
 func SwapAccountPositionInfoAsync() {
-	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan account.SwapAccountPositionInfoResponse)
 	go client.SwapAccountPositionInfoAsync(resp, "")
 	x := <-resp
@@ -64,7 +64,7 @@ func SwapAccountPositionInfoAsync() {
 }
 
 func SwapSubAuthAsync() {
-	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan account.SwapSubAuthResponse)
 	go client.SwapSubAuthAsync(resp, "", "")
 	x := <-resp
@@ -72,7 +72,7 @@ func SwapSubAuthAsync() {
 }
 
 func SwapSubAuthListAsync() {
-	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan account.SwapSubAuthListResponse)
 	go client.SwapSubAuthListAsync(resp, "", "", "", "", "")
 	x := <-resp
@@ -80,7 +80,7 @@ func SwapSubAuthListAsync() {
 }
 
 func SwapSubAccountListAsync() {
-	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan account.SwapSubAccountListResponse)
 	go client.SwapSubAccountListAsync(resp, "", "", "")
 	x := <-resp
@@ -88,7 +88,7 @@ func SwapSubAccountListAsync() {
 }
 
 func SwapSubAccountInfoListAsync() {
-	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan account.SwapSubAccountInfoListResponse)
 	go client.SwapSubAccountInfoListAsync(resp, "", "", "")
 	x := <-resp
@@ -96,7 +96,7 @@ func SwapSubAccountInfoListAsync() {
 }
 
 func SwapSubAccountInfoAsync() {
-	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan account.SwapSubAccountInfoResponse)
 	go client.SwapSubAccountInfoAsync(resp, "", "")
 	x := <-resp
@@ -104,7 +104,7 @@ func SwapSubAccountInfoAsync() {
 }
 
 func SwapSubPositionInfoAsync() {
-	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan account.SwapSubPositionInfoResponse)
 	go client.SwapSubPositionInfoAsync(resp, "", "")
 	x := <-resp
@@ -112,7 +112,7 @@ func SwapSubPositionInfoAsync() {
 }
 
 func SwapFinancialRecordAsync() {
-	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan account.SwapFinancialRecordResponse)
 	go client.SwapFinancialRecordAsync(resp, "", "", "", "", "", "")
 	x := <-resp
@@ -120,7 +120,7 @@ func SwapFinancialRecordAsync() {
 }
 
 func SwapFinancialRecordExactAsync() {
-	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan account.SwapFinancialRecordExactResponse)
 	go client.SwapFinancialRecordExactAsync(resp, "", "", "", "", "", "")
 	x := <-resp
@@ -128,7 +128,7 @@ func SwapFinancialRecordExactAsync() {
 }
 
 func SwapUserSettlementRecordsAsync() {
-	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan account.SwapUserSettlementRecordsResponse)
 	go client.SwapUserSettlementRecordsAsync(resp, "", "", "", "", "")
 	x := <-resp
@@ -136,7 +136,7 @@ func SwapUserSettlementRecordsAsync() {
 }
 
 func SwapAvailableLevelRateAsync() {
-	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan account.SwapAvailableLevelRateResponse)
 	go client.SwapAvailableLevelRateAsync(resp, "")
 	x := <-resp
@@ -144,7 +144,7 @@ func SwapAvailableLevelRateAsync() {
 }
 
 func SwapOrderLimitAsync() {
-	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan account.SwapOrderLimitResponse)
 	go client.SwapOrderLimitAsync(resp, "", "")
 	x := <-resp
@@ -152,7 +152,7 @@ func SwapOrderLimitAsync() {
 }
 
 func SwapFeeAsync() {
-	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan account.SwapFeeResponse)
 	go client.SwapFeeAsync(resp, "")
 	x := <-resp
@@ -160,7 +160,7 @@ func SwapFeeAsync() {
 }
 
 func SwapTransferLimitAsync() {
-	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan account.SwapTransferLimitResponse)
 	go client.SwapTransferLimitAsync(resp, "")
 	x := <-resp
@@ -168,7 +168,7 @@ func SwapTransferLimitAsync() {
 }
 
 func SwapPositionLimitAsync() {
-	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan account.SwapPositionLimitResponse)
 	go client.SwapPositionLimitAsync(resp, "")
 	x := <-resp
@@ -176,7 +176,7 @@ func SwapPositionLimitAsync() {
 }
 
 func SwapMasterSubTransferAsync() {
-	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan account.SwapMasterSubTransferResponse)
 	go client.SwapMasterSubTransferAsync(resp, "", "", "", "", "")
 	x := <-resp
@@ -184,7 +184,7 @@ func SwapMasterSubTransferAsync() {
 }
 
 func SwapMasterSubTransferRecordAsync() {
-	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan account.SwapMasterSubTransferRecordResponse)
 	go client.SwapMasterSubTransferRecordAsync(resp, "", "", "", "", "")
 	x := <-resp
@@ -192,7 +192,7 @@ func SwapMasterSubTransferRecordAsync() {
 }
 
 func SwapApiTradingStatusAsync() {
-	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan account.SwapApiTradingStatusResponse)
 	go client.SwapApiTradingStatusAsync(resp)
 	x := <-resp

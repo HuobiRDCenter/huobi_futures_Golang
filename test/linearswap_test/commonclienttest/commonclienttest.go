@@ -13,7 +13,7 @@ func RunAllExamples() {
 }
 
 func GetSwapUnifiedAccountTypeAsync() {
-	client := new(restful.CommonClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.CommonClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan common.GetSwapUnifiedAccountTypeResponse)
 	go client.GetSwapUnifiedAccountTypeAsync(resp)
 	x := <-resp
@@ -21,7 +21,7 @@ func GetSwapUnifiedAccountTypeAsync() {
 }
 
 func SwapSwitchAccountTypeAsync() {
-	client := new(restful.CommonClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.CommonClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan common.SwapSwitchAccountTypeResponse)
 	go client.SwapSwitchAccountTypeAsync(resp, 0)
 	x := <-resp

@@ -26,7 +26,7 @@ func RunAllExamples() {
 }
 
 func ContractCancelAfterAsync() {
-	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan order.ContractCancelAfterResponse)
 	go client.ContractCancelAfterAsync(resp, "", "")
 	x := <-resp
@@ -34,7 +34,7 @@ func ContractCancelAfterAsync() {
 }
 
 func ContractOrderAsync() {
-	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan order.ContractOrderResponse)
 	go client.ContractOrderAsync(resp, requestorder.ContractOrderRequest{})
 	x := <-resp
@@ -42,7 +42,7 @@ func ContractOrderAsync() {
 }
 
 func ContractBatchOrderAsync() {
-	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan order.ContractBatchOrderResponse)
 	go client.ContractBatchOrderAsync(resp, requestorder.BatchContractOrderRequest{})
 	x := <-resp
@@ -50,7 +50,7 @@ func ContractBatchOrderAsync() {
 }
 
 func ContractCancelAsync() {
-	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan order.ContractCancelResponse)
 	go client.ContractCancelAsync(resp, "", "", "")
 	x := <-resp
@@ -58,7 +58,7 @@ func ContractCancelAsync() {
 }
 
 func ContractCancelAllAsync() {
-	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan order.ContractCancelAllResponse)
 	go client.ContractCancelAllAsync(resp, "", "", "", "", "")
 	x := <-resp
@@ -66,7 +66,7 @@ func ContractCancelAllAsync() {
 }
 
 func ContractSwitchLeverRateAsync() {
-	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan order.ContractSwitchLeverRateResponse)
 	go client.ContractSwitchLeverRateAsync(resp, "", "")
 	x := <-resp
@@ -74,7 +74,7 @@ func ContractSwitchLeverRateAsync() {
 }
 
 func ContractOrderInfoAsync() {
-	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan order.ContractOrderInfoResponse)
 	go client.ContractOrderInfoAsync(resp, "", "", "")
 	x := <-resp
@@ -82,7 +82,7 @@ func ContractOrderInfoAsync() {
 }
 
 func ContractOrderDetailAsync() {
-	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan order.ContractOrderDetailResponse)
 	go client.ContractOrderDetailAsync(resp, "", "", "", "", "", "")
 	x := <-resp
@@ -90,7 +90,7 @@ func ContractOrderDetailAsync() {
 }
 
 func ContractOpenOrdersAsync() {
-	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan order.ContractOpenOrdersResponse)
 	go client.ContractOpenOrdersAsync(resp, "", "", "", "", "")
 	x := <-resp
@@ -98,7 +98,7 @@ func ContractOpenOrdersAsync() {
 }
 
 func ContractHisordersAsync() {
-	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan order.ContractHisordersResponse)
 	go client.ContractHisordersAsync(resp, "", "", "", "", "", "", "", "", "", "")
 	x := <-resp
@@ -106,7 +106,7 @@ func ContractHisordersAsync() {
 }
 
 func ContractHisOrdersExactAsync() {
-	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan order.ContractHisOrdersExactResponse)
 	go client.ContractHisOrdersExactAsync(resp, "", "", "", "", "", "", "", "", "", "", "")
 	x := <-resp
@@ -114,7 +114,7 @@ func ContractHisOrdersExactAsync() {
 }
 
 func ContractMatchResultsAsync() {
-	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan order.ContractMatchResultsResponse)
 	go client.ContractMatchResultsAsync(resp, "", "", "", "", "", "")
 	x := <-resp
@@ -122,7 +122,7 @@ func ContractMatchResultsAsync() {
 }
 
 func ContractMatchResultsExactAsync() {
-	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan order.ContractMatchResultsExactResponse)
 	go client.ContractMatchResultsExactAsync(resp, "", "", "", "", "", "", "")
 	x := <-resp
@@ -130,7 +130,7 @@ func ContractMatchResultsExactAsync() {
 }
 
 func LightningClosePositionAsync() {
-	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.OrderClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan order.LightningClosePositionResponse)
 	go client.LightningClosePositionAsync(resp, "", "", "", "", "", "", "")
 	x := <-resp
