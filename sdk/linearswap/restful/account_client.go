@@ -1114,3 +1114,137 @@ func (ac *AccountClient) InviteeRebateBatcherRebateDetailAsync(data chan account
 	}
 	data <- result
 }
+
+func (ac *AccountClient) FeeDeductionCurrency(data chan account.FeeDeductionCurrencyResponse, feeOption int, deductionCurrency string) {
+	// ulr
+	url := ac.PUrlBuilder.Build(linearswap.POST_METHOD, "/v5/account/fee_deduction_currency", nil)
+
+	// content
+	content := ""
+	content += fmt.Sprintf(",\"fee_option\": \"%s\"", feeOption)
+	content += fmt.Sprintf(",\"deduction_currency\": \"%s\"", deductionCurrency)
+	if content != "" {
+		content = fmt.Sprintf("{%s}", content[1:])
+	}
+	getResp, getErr := reqbuilder.HttpPost(url, content)
+	if getErr != nil {
+		log.Error("http get error: %s", getErr)
+	}
+	result := account.FeeDeductionCurrencyResponse{}
+	jsonErr := json.Unmarshal([]byte(getResp), &result)
+	if jsonErr != nil {
+		log.Error("convert json error: %s", jsonErr)
+	}
+	data <- result
+}
+
+func (ac *AccountClient) QueryEarnProjectList(data chan account.QueryEarnProjectListResponse, currency string, pageNum int, pageSize int) {
+	// ulr
+	url := ac.PUrlBuilder.Build(linearswap.GET_METHOD, "/v1/earn/project/queryEarnProjectList", nil)
+
+	// option
+	option := ""
+	if currency != "" {
+		option += fmt.Sprintf("?currency=%s", currency)
+	}
+	if pageNum != 0 {
+		option += fmt.Sprintf("?pageNum=%s", pageNum)
+	}
+	if pageSize != 0 {
+		option += fmt.Sprintf("?pageSize=%s", pageSize)
+	}
+	if option != "" {
+		url += option
+	}
+	getResp, getErr := reqbuilder.HttpGet(url)
+	if getErr != nil {
+		log.Error("http get error: %s", getErr)
+	}
+	result := account.QueryEarnProjectListResponse{}
+	jsonErr := json.Unmarshal([]byte(getResp), &result)
+	if jsonErr != nil {
+		log.Error("convert json error: %s", jsonErr)
+	}
+	data <- result
+}
+
+func (ac *AccountClient) EarnOrderDemandAdd(data chan account.EarnOrderDemandAddResponse, id int64, amount int64, requestId string) {
+	// ulr
+	url := ac.PUrlBuilder.Build(linearswap.POST_METHOD, "/v1/earn/order/demand/add", nil)
+
+	// content
+	content := ""
+	content += fmt.Sprintf(",\"id\": \"%s\"", id)
+	content += fmt.Sprintf(",\"amount\": \"%s\"", amount)
+	content += fmt.Sprintf(",\"requestId\": \"%s\"", requestId)
+	if content != "" {
+		content = fmt.Sprintf("{%s}", content[1:])
+	}
+	getResp, getErr := reqbuilder.HttpPost(url, content)
+	if getErr != nil {
+		log.Error("http get error: %s", getErr)
+	}
+	result := account.EarnOrderDemandAddResponse{}
+	jsonErr := json.Unmarshal([]byte(getResp), &result)
+	if jsonErr != nil {
+		log.Error("convert json error: %s", jsonErr)
+	}
+	data <- result
+}
+
+func (ac *AccountClient) DemandRedeemOrder(data chan account.DemandRedeemOrderResponse, orderId int64, requestId int64, amount string) {
+	// ulr
+	url := ac.PUrlBuilder.Build(linearswap.POST_METHOD, "/v1/earn/order/demand/redeem-order", nil)
+
+	// content
+	content := ""
+	content += fmt.Sprintf(",\"orderId\": \"%s\"", orderId)
+	content += fmt.Sprintf(",\"amount\": \"%s\"", amount)
+	content += fmt.Sprintf(",\"requestId\": \"%s\"", requestId)
+	if content != "" {
+		content = fmt.Sprintf("{%s}", content[1:])
+	}
+	getResp, getErr := reqbuilder.HttpPost(url, content)
+	if getErr != nil {
+		log.Error("http get error: %s", getErr)
+	}
+	result := account.DemandRedeemOrderResponse{}
+	jsonErr := json.Unmarshal([]byte(getResp), &result)
+	if jsonErr != nil {
+		log.Error("convert json error: %s", jsonErr)
+	}
+	data <- result
+}
+
+func (ac *AccountClient) EarnOrderUserAssetsList(data chan account.EarnOrderUserAssetsListResponse, projectType int, currency string, pageNum int, pageSize int) {
+	// ulr
+	url := ac.PUrlBuilder.Build(linearswap.GET_METHOD, "/v1/earn/order/user/assets/list", nil)
+
+	// option
+	option := ""
+	if currency != "" {
+		option += fmt.Sprintf("?currency=%s", currency)
+	}
+	if pageNum != 0 {
+		option += fmt.Sprintf("?pageNum=%s", pageNum)
+	}
+	if pageSize != 0 {
+		option += fmt.Sprintf("?pageSize=%s", pageSize)
+	}
+	if projectType != 0 {
+		option += fmt.Sprintf("?projectType=%s", projectType)
+	}
+	if option != "" {
+		url += option
+	}
+	getResp, getErr := reqbuilder.HttpGet(url)
+	if getErr != nil {
+		log.Error("http get error: %s", getErr)
+	}
+	result := account.EarnOrderUserAssetsListResponse{}
+	jsonErr := json.Unmarshal([]byte(getResp), &result)
+	if jsonErr != nil {
+		log.Error("convert json error: %s", jsonErr)
+	}
+	data <- result
+}
