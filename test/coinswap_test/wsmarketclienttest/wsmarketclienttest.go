@@ -1,6 +1,7 @@
 package wsmarketclienttest
 
 import (
+	"github.com/HuobiRDCenter/huobi_futures_Golang/config"
 	"github.com/HuobiRDCenter/huobi_futures_Golang/sdk/coinswap/ws"
 	"github.com/HuobiRDCenter/huobi_futures_Golang/sdk/coinswap/ws/response/market"
 	"github.com/HuobiRDCenter/huobi_futures_Golang/sdk/log"
@@ -18,7 +19,7 @@ func RunAllExamples() {
 	ReqTradeDetail()
 }
 func SubKLine() {
-	var wsmkClient = new(ws.WSMarketClient).Init("api.hbdm.com")
+	var wsmkClient = new(ws.WSMarketClient).Init("api.hbdm.com", config.Sign)
 	wsmkClient.SubKLine("BTC-USDT", "15min", func(m *market.SubKLineResponse) {
 		log.Info("%v", *m)
 	}, "")
@@ -26,7 +27,7 @@ func SubKLine() {
 }
 
 func ReqKLine() {
-	var wsmkClient = new(ws.WSMarketClient).Init("api.hbdm.com")
+	var wsmkClient = new(ws.WSMarketClient).Init("api.hbdm.com", config.Sign)
 	wsmkClient.ReqKLine("BTC-USDT", "1min", func(m *market.ReqKLineResponse) {
 		log.Info("%v", *m)
 	}, 1604395758, 1604396758, "")
@@ -34,7 +35,7 @@ func ReqKLine() {
 }
 
 func SubDepth() {
-	var wsmkClient = new(ws.WSMarketClient).Init("api.hbdm.com")
+	var wsmkClient = new(ws.WSMarketClient).Init("api.hbdm.com", config.Sign)
 	wsmkClient.SubDepth("BTC-USDT", "step0", func(m *market.SubDepthResponse) {
 		log.Info("%v", *m)
 	}, "")
@@ -42,7 +43,7 @@ func SubDepth() {
 }
 
 func SubIncrementalDepth() {
-	var wsmkClient = new(ws.WSMarketClient).Init("api.hbdm.com")
+	var wsmkClient = new(ws.WSMarketClient).Init("api.hbdm.com", config.Sign)
 	wsmkClient.SubIncrementalDepth("BTC-USDT", "20", func(m *market.SubDepthResponse) {
 		log.Info("%v", *m)
 	}, "")
@@ -50,7 +51,7 @@ func SubIncrementalDepth() {
 }
 
 func SubDetail() {
-	var wsmkClient = new(ws.WSMarketClient).Init("api.hbdm.com")
+	var wsmkClient = new(ws.WSMarketClient).Init("api.hbdm.com", config.Sign)
 	wsmkClient.SubDetail("BTC-USDT", func(m *market.SubKLineResponse) {
 		log.Info("%v", *m)
 	}, "")
@@ -58,7 +59,7 @@ func SubDetail() {
 }
 
 func SubBBO() {
-	var wsmkClient = new(ws.WSMarketClient).Init("api.hbdm.com")
+	var wsmkClient = new(ws.WSMarketClient).Init("api.hbdm.com", config.Sign)
 	wsmkClient.SubBBO("BTC-USDT", func(m *market.SubBBOResponse) {
 		log.Info("%v", *m)
 	}, "")
@@ -66,7 +67,7 @@ func SubBBO() {
 }
 
 func SubTradeDetail() {
-	var wsmkClient = new(ws.WSMarketClient).Init("api.hbdm.com")
+	var wsmkClient = new(ws.WSMarketClient).Init("api.hbdm.com", config.Sign)
 	wsmkClient.SubTradeDetail("BTC-USDT", func(m *market.SubTradeDetailResponse) {
 		log.Info("%v", *m)
 	}, "")
@@ -74,7 +75,7 @@ func SubTradeDetail() {
 }
 
 func ReqTradeDetail() {
-	var wsmkClient = new(ws.WSMarketClient).Init("api.hbdm.com")
+	var wsmkClient = new(ws.WSMarketClient).Init("api.hbdm.com", config.Sign)
 	wsmkClient.ReqTradeDetail("BTC-USDT", func(m *market.ReqTradeDetailResponse) {
 		log.Info("%v", *m)
 	}, "")

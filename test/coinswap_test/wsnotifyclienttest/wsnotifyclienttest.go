@@ -20,7 +20,7 @@ func RunAllExamples() {
 }
 
 func Orders() {
-	var wsnfClient = new(ws.WSNotifyClient).Init(config.AccessKey, config.SecretKey, "")
+	var wsnfClient = new(ws.WSNotifyClient).Init(config.AccessKey, config.SecretKey, "", config.Sign)
 	wsnfClient.IsolatedSubOrders("*", func(m *notify.SubOrdersResponse) {
 		log.Info("%v", *m)
 	}, "")
@@ -30,7 +30,7 @@ func Orders() {
 }
 
 func Accounts() {
-	var wsnfClient = new(ws.WSNotifyClient).Init(config.AccessKey, config.SecretKey, "")
+	var wsnfClient = new(ws.WSNotifyClient).Init(config.AccessKey, config.SecretKey, "", config.Sign)
 	wsnfClient.IsolatedSubAcounts("*", func(m *notify.SubAccountsResponse) {
 		log.Info("%v", *m)
 	}, "")
@@ -40,7 +40,7 @@ func Accounts() {
 }
 
 func Positions() {
-	var wsnfClient = new(ws.WSNotifyClient).Init(config.AccessKey, config.SecretKey, "")
+	var wsnfClient = new(ws.WSNotifyClient).Init(config.AccessKey, config.SecretKey, "", config.Sign)
 	wsnfClient.IsolatedSubPositions("xrp-usdt", func(m *notify.SubPositionsResponse) {
 		log.Info("%v", *m)
 	}, "")
@@ -50,7 +50,7 @@ func Positions() {
 }
 
 func MathOrders() {
-	var wsnfClient = new(ws.WSNotifyClient).Init(config.AccessKey, config.SecretKey, "")
+	var wsnfClient = new(ws.WSNotifyClient).Init(config.AccessKey, config.SecretKey, "", config.Sign)
 	wsnfClient.IsolatedSubMatchOrders("*", func(m *notify.SubOrdersResponse) {
 		log.Info("%v", *m)
 	}, "")
@@ -60,7 +60,7 @@ func MathOrders() {
 }
 
 func LiquidationOrders() {
-	var wsnfClient = new(ws.WSNotifyClient).Init(config.AccessKey, config.SecretKey, "")
+	var wsnfClient = new(ws.WSNotifyClient).Init(config.AccessKey, config.SecretKey, "", config.Sign)
 	wsnfClient.SubLiquidationOrders("*", func(m *notify.SubLiquidationOrdersResponse) {
 		log.Info("%v", *m)
 	}, "")
@@ -70,7 +70,7 @@ func LiquidationOrders() {
 }
 
 func FundingRate() {
-	var wsnfClient = new(ws.WSNotifyClient).Init(config.AccessKey, config.SecretKey, "")
+	var wsnfClient = new(ws.WSNotifyClient).Init(config.AccessKey, config.SecretKey, "", config.Sign)
 	wsnfClient.SubFundingRate("BTC-USDT", func(m *notify.SubFundingRateResponse) {
 		log.Info("%v", *m)
 	}, "")
@@ -80,7 +80,7 @@ func FundingRate() {
 }
 
 func ContractInfo() {
-	var wsnfClient = new(ws.WSNotifyClient).Init(config.AccessKey, config.SecretKey, "")
+	var wsnfClient = new(ws.WSNotifyClient).Init(config.AccessKey, config.SecretKey, "", config.Sign)
 	wsnfClient.SubContractInfo("*", func(m *notify.SubContractInfoResponse) {
 		log.Info("%v", *m)
 	}, "")
@@ -90,7 +90,7 @@ func ContractInfo() {
 }
 
 func TriggerOrder() {
-	var wsnfClient = new(ws.WSNotifyClient).Init(config.AccessKey, config.SecretKey, "")
+	var wsnfClient = new(ws.WSNotifyClient).Init(config.AccessKey, config.SecretKey, "", config.Sign)
 	wsnfClient.IsolatedSubTriggerOrder("*", func(m *notify.SubTriggerOrderResponse) {
 		log.Info("%v", *m)
 	}, "")

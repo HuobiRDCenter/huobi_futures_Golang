@@ -43,7 +43,7 @@ func RunAllExamples() {
 }
 
 func GetBalanceValuationAsync() {
-	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan account.GetBalanceValuationResponse)
 	go client.GetBalanceValuationAsync(resp, "BTC")
 	x := <-resp
@@ -51,7 +51,7 @@ func GetBalanceValuationAsync() {
 }
 
 func IsolatedGetAccountInfoAsync() {
-	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan account.GetAccountInfoResponse)
 	go client.IsolatedGetAccountInfoAsync(resp, "BTC-USDT", 0)
 	x := <-resp
@@ -59,7 +59,7 @@ func IsolatedGetAccountInfoAsync() {
 }
 
 func CrossGetAccountInfoAsync() {
-	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan account.GetCrossAccountInfoResponse)
 	go client.CrossGetAccountInfoAsync(resp, "", 0)
 	x := <-resp
@@ -67,7 +67,7 @@ func CrossGetAccountInfoAsync() {
 }
 
 func IsolatedGetAccountPositionAsync() {
-	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan account.GetAccountPositionResponse)
 	go client.IsolatedGetAccountPositionAsync(resp, "", 0)
 	x := <-resp
@@ -75,7 +75,7 @@ func IsolatedGetAccountPositionAsync() {
 }
 
 func CrossGetAccountPositionAsync() {
-	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan account.GetAccountPositionResponse)
 	go client.CrossGetAccountPositionAsync(resp, "BTC-USDT", "swap", "BTC-USDT", 0)
 	x := <-resp
@@ -83,7 +83,7 @@ func CrossGetAccountPositionAsync() {
 }
 
 func IsolatedGetAssetsPositionAsync() {
-	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan account.GetAssetsPositionResponse)
 	go client.IsolatedGetAssetsPositionAsync(resp, "BTC-USDT")
 	x := <-resp
@@ -91,7 +91,7 @@ func IsolatedGetAssetsPositionAsync() {
 }
 
 func CrossGetAssetsPositionAsync() {
-	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan account.GetAssetsPositionResponseSingle)
 	go client.CrossGetAssetsPositionAsync(resp, "USDT")
 	x := <-resp
@@ -99,7 +99,7 @@ func CrossGetAssetsPositionAsync() {
 }
 
 func SetSubAuthAsync() {
-	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan account.SetSubAuthResponse)
 	go client.SetSubAuthAsync(resp, "123456", 1)
 	x := <-resp
@@ -107,7 +107,7 @@ func SetSubAuthAsync() {
 }
 
 func IsolatedGetSubAccountListResponseAsync() {
-	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan account.GetSubAccountListResponse)
 	go client.IsolatedGetSubAccountListResponseAsync(resp, "BTC-USDT", "", 0)
 	x := <-resp
@@ -115,7 +115,7 @@ func IsolatedGetSubAccountListResponseAsync() {
 }
 
 func CrossGetSubAccountListAsync() {
-	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan account.GetSubAccountListResponse)
 	go client.CrossGetSubAccountListAsync(resp, "USDT", "", 0)
 	x := <-resp
@@ -123,7 +123,7 @@ func CrossGetSubAccountListAsync() {
 }
 
 func IsolatedGetSubAccountInfoListAsync() {
-	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan account.GetSubAccountInfoListResponse)
 	go client.IsolatedGetSubAccountInfoListAsync(resp, "BTC-USDT", 1, 100)
 	x := <-resp
@@ -131,7 +131,7 @@ func IsolatedGetSubAccountInfoListAsync() {
 }
 
 func CrossGetSubAccountInfoListAsync() {
-	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan account.GetSubAccountInfoListResponse)
 	go client.CrossGetSubAccountInfoListAsync(resp, "BTC-USDT", 1, 100)
 	x := <-resp
@@ -139,7 +139,7 @@ func CrossGetSubAccountInfoListAsync() {
 }
 
 func AccountTransferAsync() {
-	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan account.AccountTransferResponse)
 	go client.AccountTransferAsync(resp, "USDT", "BTC-USDT", "USDT", 20, 123456, "master_to_sub", 456321)
 	x := <-resp
@@ -147,7 +147,7 @@ func AccountTransferAsync() {
 }
 
 func GetAccountTransHisAsync() {
-	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan account.GetAccountTransHisResponse)
 	go client.GetAccountTransHisAsync(resp, "BTC-USDT", true, "", 0, 0, 100)
 	x := <-resp
@@ -155,7 +155,7 @@ func GetAccountTransHisAsync() {
 }
 
 func GetFinancialRecordExactAsync() {
-	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan account.GetFinancialRecordExactResponse)
 	go client.GetFinancialRecordExactAsync(resp, "", "", "", 0, 100, 0, 100, "")
 	x := <-resp
@@ -163,7 +163,7 @@ func GetFinancialRecordExactAsync() {
 }
 
 func IsolatedGetSettlementRecordsAsync() {
-	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan account.IsolatedGetSettlementRecordsResponse)
 	go client.IsolatedGetSettlementRecordsAsync(resp, "", 0, 100, 0, 100)
 	x := <-resp
@@ -171,7 +171,7 @@ func IsolatedGetSettlementRecordsAsync() {
 }
 
 func CrossGetSettlementRecordsAsync() {
-	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan account.CrossGetSettlementRecordsResponse)
 	go client.CrossGetSettlementRecordsAsync(resp, "", 0, 100, 0, 10)
 	x := <-resp
@@ -179,7 +179,7 @@ func CrossGetSettlementRecordsAsync() {
 }
 
 func IsolatedGetValidLeverRateAsync() {
-	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan account.GetValidLeverRateResponse)
 	go client.IsolatedGetValidLeverRateAsync(resp, "")
 	x := <-resp
@@ -187,7 +187,7 @@ func IsolatedGetValidLeverRateAsync() {
 }
 
 func CrossGetValidLeverRateAsync() {
-	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan account.GetValidLeverRateResponse)
 	go client.CrossGetValidLeverRateAsync(resp, "", "", "", "")
 	x := <-resp
@@ -195,7 +195,7 @@ func CrossGetValidLeverRateAsync() {
 }
 
 func GetOrderLimitAsync() {
-	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan account.GetOrderLimitResponse)
 	go client.GetOrderLimitAsync(resp, "", "", "", "", "")
 	x := <-resp
@@ -203,7 +203,7 @@ func GetOrderLimitAsync() {
 }
 
 func GetFeeAsync() {
-	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan account.GetFeeResponse)
 	go client.GetFeeAsync(resp, "", "", "", "")
 	x := <-resp
@@ -211,7 +211,7 @@ func GetFeeAsync() {
 }
 
 func IsolatedGetTransferLimitAsync() {
-	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan account.GetTransferLimitResponse)
 	go client.IsolatedGetTransferLimitAsync(resp, "")
 	x := <-resp
@@ -219,7 +219,7 @@ func IsolatedGetTransferLimitAsync() {
 }
 
 func CrossGetTransferLimitAsync() {
-	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan account.GetTransferLimitResponse)
 	go client.CrossGetTransferLimitAsync(resp, "")
 	x := <-resp
@@ -227,7 +227,7 @@ func CrossGetTransferLimitAsync() {
 }
 
 func IsolatedGetPositionLimitAsync() {
-	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan account.GetPositionLimitResponse)
 	go client.IsolatedGetPositionLimitAsync(resp, "")
 	x := <-resp
@@ -235,7 +235,7 @@ func IsolatedGetPositionLimitAsync() {
 }
 
 func CrossGetPositionLimitAsync() {
-	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan account.GetPositionLimitResponse)
 	go client.CrossGetPositionLimitAsync(resp, "", "", "", "")
 	x := <-resp
@@ -243,7 +243,7 @@ func CrossGetPositionLimitAsync() {
 }
 
 func GetApiTradingStatusAsync() {
-	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan account.GetApiTradingStatusResponse)
 	go client.GetApiTradingStatusAsync(resp)
 	x := <-resp
@@ -251,7 +251,7 @@ func GetApiTradingStatusAsync() {
 }
 
 func SwapSubPositionInfoAsync() {
-	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan account.SwapSubPositionInfoResponse)
 	go client.SwapSubPositionInfoAsync(resp, "BTC-USDT", "")
 	x := <-resp
@@ -259,7 +259,7 @@ func SwapSubPositionInfoAsync() {
 }
 
 func SwapFinancialRecordAsync() {
-	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan account.SwapFinancialRecordResponse)
 	go client.SwapFinancialRecordAsync(resp, "", "", "", "", "", "", "")
 	x := <-resp
@@ -267,7 +267,7 @@ func SwapFinancialRecordAsync() {
 }
 
 func SwapFinancialRecordExactAsync() {
-	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan account.SwapFinancialRecordResponse)
 	go client.SwapFinancialRecordExactAsync(resp, "", "", "", "", "", "", "")
 	x := <-resp
@@ -275,7 +275,7 @@ func SwapFinancialRecordExactAsync() {
 }
 
 func SwapLeverPositionLimitAsync() {
-	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan account.SwapLeverPositionLimitResponse)
 	go client.SwapLeverPositionLimitAsync(resp, "", "")
 	x := <-resp
@@ -283,7 +283,7 @@ func SwapLeverPositionLimitAsync() {
 }
 
 func SwapCrossLeverPositionLimitAsync() {
-	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan account.SwapCrossLeverPositionLimitResponse)
 	go client.SwapCrossLeverPositionLimitAsync(resp, "", "", "", "", "")
 	x := <-resp
@@ -291,7 +291,7 @@ func SwapCrossLeverPositionLimitAsync() {
 }
 
 func GetSwapSubAuthListAsync() {
-	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host)
+	client := new(restful.AccountClient).Init(config.AccessKey, config.SecretKey, config.Host, config.Sign)
 	resp := make(chan account.GetSwapSubAuthListResponse)
 	go client.GetSwapSubAuthListAsync(resp, "", "", "", "", "")
 	x := <-resp

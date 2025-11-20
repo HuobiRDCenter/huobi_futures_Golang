@@ -14,11 +14,11 @@ type WSNotifyClient struct {
 	WebSocketOp
 }
 
-func (wsNf *WSNotifyClient) Init(accessKey string, secretKey string, host string) *WSNotifyClient {
+func (wsNf *WSNotifyClient) Init(accessKey string, secretKey string, host string, sign string) *WSNotifyClient {
 	if host == "" {
 		host = coinfutures.COIN_FUTURES_DEFAULT_HOST
 	}
-	wsNf.open("/notification", host, accessKey, secretKey, true)
+	wsNf.open("/notification", host, accessKey, secretKey, true, sign)
 	return wsNf
 }
 

@@ -29,6 +29,7 @@ func (wsOp *MethonInfo) Init(fun interface{}, param reflect.Type) *MethonInfo {
 type WebSocketOp struct {
 	host string
 	path string
+	sign string
 
 	conn      *websocket.Conn
 	accessKey string
@@ -43,10 +44,11 @@ type WebSocketOp struct {
 	authOk bool
 }
 
-func (wsOp *WebSocketOp) open(path string, host string, accessKey string, secretKey string, autoConnect bool) bool {
+func (wsOp *WebSocketOp) open(path string, host string, accessKey string, secretKey string, autoConnect bool, sign string) bool {
 	if host == "" {
 		wsOp.host = coinfutures.COIN_FUTURES_DEFAULT_HOST
 	}
+	wsOp.sign = sign
 
 	wsOp.host = host
 	wsOp.path = path
@@ -88,7 +90,7 @@ func (wsOp *WebSocketOp) connServer() bool {
 		return true
 	}
 	wsOp.authOk = false
-	return wsOp.sendAuth(wsOp.conn, wsOp.host, wsOp.path, wsOp.accessKey, wsOp.secretKey)
+	return wsOp.sendAuth(wsOp.conn, wsOp.host, wsOp.path, wsOp.accessKey, wsOp.secretKey, wsOp.sign)
 }
 
 func (wsOp *WebSocketOp) onClose(code int, text string) error {
@@ -104,39 +106,75 @@ func (wsOp *WebSocketOp) onClose(code int, text string) error {
 	return fmt.Errorf("")
 }
 
-func (wsOp *WebSocketOp) sendAuth(conn *websocket.Conn, host string, path string, accessKey string, secretKey string) bool {
+func (wsOp *WebSocketOp) sendAuth(conn *websocket.Conn, host string, path string, accessKey string, secretKey string, sign string) bool {
 	if conn == nil {
 		log.Error("websocket conn is null")
 		return false
 	}
+	if sign == "256" {
+		timestamp := time.Now().UTC().Format("2006-01-02T15:04:05")
 
-	timestamp := time.Now().UTC().Format("2006-01-02T15:04:05")
+		req := new(reqbuilder.GetRequest).Init()
+		req.AddParam("AccessKeyId", accessKey)
+		req.AddParam("SignatureMethod", "HmacSHA256")
+		req.AddParam("SignatureVersion", "2")
+		req.AddParam("Timestamp", timestamp)
 
-	req := new(reqbuilder.GetRequest).Init()
-	req.AddParam("AccessKeyId", accessKey)
-	req.AddParam("SignatureMethod", "HmacSHA256")
-	req.AddParam("SignatureVersion", "2")
-	req.AddParam("Timestamp", timestamp)
+		sign := new(reqbuilder.Signer).Init(secretKey)
 
-	sign := new(reqbuilder.Signer).Init(secretKey)
-	signature := sign.Sign("GET", host, path, req.BuildParams())
+		signature, err := sign.Sign("GET", host, path, req.BuildParams())
+		if err != nil {
+			print(err)
+		}
+		auth := wsbase.WSAuthData{
+			Op:               "auth",
+			AtType:           "api",
+			AccessKeyId:      accessKey,
+			SignatureMethod:  "HmacSHA256",
+			SignatureVersion: "2",
+			Timestamp:        timestamp,
+			Signature:        signature}
 
-	auth := wsbase.WSAuthData{
-		Op:               "auth",
-		AtType:           "api",
-		AccessKeyId:      accessKey,
-		SignatureMethod:  "HmacSHA256",
-		SignatureVersion: "2",
-		Timestamp:        timestamp,
-		Signature:        signature}
+		jdata, error := json.Marshal(&auth)
+		if error != nil {
+			log.Error("Auth to json error.")
+			return false
+		}
+		conn.WriteMessage(websocket.TextMessage, jdata)
+		return true
+	} else {
+		timestamp := time.Now().UTC().Format("2006-01-02T15:04:05")
 
-	jdata, error := json.Marshal(&auth)
-	if error != nil {
-		log.Error("Auth to json error.")
-		return false
+		req := new(reqbuilder.GetRequest).Init()
+		req.AddParam("AccessKeyId", accessKey)
+		req.AddParam("SignatureMethod", "Ed25519")
+		req.AddParam("SignatureVersion", "2")
+		req.AddParam("Timestamp", timestamp)
+
+		sign, err := new(reqbuilder.Ed25519Signer).Init(secretKey)
+
+		signature, err := sign.Sign("GET", host, path, req.BuildParams())
+		if err != nil {
+			print(err)
+		}
+		auth := wsbase.WSAuthData{
+			Op:               "auth",
+			AtType:           "api",
+			AccessKeyId:      accessKey,
+			SignatureMethod:  "Ed25519",
+			SignatureVersion: "2",
+			Timestamp:        timestamp,
+			Signature:        signature}
+
+		jdata, error := json.Marshal(&auth)
+		if error != nil {
+			log.Error("Auth to json error.")
+			return false
+		}
+		conn.WriteMessage(websocket.TextMessage, jdata)
+		return true
 	}
-	conn.WriteMessage(websocket.TextMessage, jdata)
-	return true
+
 }
 
 func (wsOp *WebSocketOp) readLoop(conn *websocket.Conn) {

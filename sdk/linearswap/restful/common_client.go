@@ -13,11 +13,11 @@ type CommonClient struct {
 	PUrlBuilder *reqbuilder.PrivateUrlBuilder
 }
 
-func (ac *CommonClient) Init(accessKey string, secretKey string, host string) *CommonClient {
+func (ac *CommonClient) Init(accessKey string, secretKey string, host string, sign string) *CommonClient {
 	if host == "" {
 		host = linearswap.LINEAR_SWAP_DEFAULT_HOST
 	}
-	ac.PUrlBuilder = new(reqbuilder.PrivateUrlBuilder).Init(accessKey, secretKey, host)
+	ac.PUrlBuilder = new(reqbuilder.PrivateUrlBuilder).Init(accessKey, secretKey, host, sign)
 	return ac
 }
 
