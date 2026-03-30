@@ -3,7 +3,6 @@ package restful
 import (
 	"encoding/json"
 	"fmt"
-
 	"github.com/HuobiRDCenter/huobi_futures_Golang/sdk/linearswap"
 	requestorder "github.com/HuobiRDCenter/huobi_futures_Golang/sdk/linearswap/restful/request/order"
 	responseorder "github.com/HuobiRDCenter/huobi_futures_Golang/sdk/linearswap/restful/response/order"
@@ -1347,16 +1346,13 @@ func (ac *AccountClient) GetTradeOrderTradesAsync(data chan responseorder.GetTra
 
 func (ac *AccountClient) GetTradeOrderHistoryAsync(data chan responseorder.GetTradeOrderHistoryResponse,
 	contractCode string, state string, type_ string,
-	priceMatch string, startTime string, endTime string, from int, limit int, direct string, marginMode string, timeInForce string) {
+	priceMatch string, startTime string, endTime string, from int, limit int, direct string, businessType string, marginMode string) {
 	// ulr
 	url := ac.PUrlBuilder.Build(linearswap.GET_METHOD, "/api/v5/trade/order/history", nil)
 	// option
 	option := ""
 	if contractCode != "" {
 		option += fmt.Sprintf("?contract_code=%s", contractCode)
-	}
-	if timeInForce != "" {
-		option += fmt.Sprintf("?time_in_force=%s", timeInForce)
 	}
 	if state != "" {
 		option += fmt.Sprintf("&state=%s", state)
@@ -1372,6 +1368,9 @@ func (ac *AccountClient) GetTradeOrderHistoryAsync(data chan responseorder.GetTr
 	}
 	if endTime != "" {
 		option += fmt.Sprintf("&end_time=%s", endTime)
+	}
+	if businessType != "" {
+		option += fmt.Sprintf("&business_type=%s", businessType)
 	}
 	if marginMode != "" {
 		option += fmt.Sprintf("&margin_mode=%s", marginMode)
