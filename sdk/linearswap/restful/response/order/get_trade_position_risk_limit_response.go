@@ -12,6 +12,7 @@ type GetTradePositionRiskLimitResponse struct {
 		MaintenanceMarginRate string `json:"maintenance_margin_rate"`
 		MaxVolume             string `json:"max_volume"`
 		MinVolume             string `json:"min_volume"`
+		VolumeUnit            string `json:"volume_unit"`
 	} `json:"data,omitempty"`
 
 	Message int `json:"message,omitempty"`

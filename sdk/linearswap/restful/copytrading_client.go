@@ -187,11 +187,11 @@ func (ac *CopytradingClient) CopytradingTraderCurrentPositions(data chan respons
 	if contractCode != "" {
 		option += fmt.Sprintf("&contract_code=%s", contractCode)
 	}
-	option += fmt.Sprintf("&startTime=%s", startTime)
-	option += fmt.Sprintf("&end_time=%s", endTime)
+	option += fmt.Sprintf("&startTime=%d", startTime)
+	option += fmt.Sprintf("&end_time=%d", endTime)
 	option += fmt.Sprintf("&direct=%s", direct)
-	option += fmt.Sprintf("&from_id=%s", fromId)
-	option += fmt.Sprintf("&limit=%s", limit)
+	option += fmt.Sprintf("&from_id=%d", fromId)
+	option += fmt.Sprintf("&limit=%d", limit)
 	if option != "" {
 		url += option
 	}
@@ -216,11 +216,11 @@ func (ac *CopytradingClient) CopytradingTraderPositionPositions(data chan respon
 	if contractCode != "" {
 		option += fmt.Sprintf("&contract_code=%s", contractCode)
 	}
-	option += fmt.Sprintf("&startTime=%s", startTime)
-	option += fmt.Sprintf("&end_time=%s", endTime)
+	option += fmt.Sprintf("&startTime=%d", startTime)
+	option += fmt.Sprintf("&end_time=%d", endTime)
 	option += fmt.Sprintf("&direct=%s", direct)
-	option += fmt.Sprintf("&from_id=%s", fromId)
-	option += fmt.Sprintf("&limit=%s", limit)
+	option += fmt.Sprintf("&from_id=%d", fromId)
+	option += fmt.Sprintf("&limit=%d", limit)
 	if option != "" {
 		url += option
 	}
@@ -300,11 +300,11 @@ func (ac *CopytradingClient) CopytradingTraderProfitHistoryDetails(data chan res
 	url := ac.PUrlBuilder.Build(linearswap.GET_METHOD, "/copytrading/trader/profit_history_details", nil)
 	// option
 	option := "?"
-	option += fmt.Sprintf("&startTime=%s", startTime)
-	option += fmt.Sprintf("&end_time=%s", endTime)
+	option += fmt.Sprintf("&startTime=%d", startTime)
+	option += fmt.Sprintf("&end_time=%d", endTime)
 	option += fmt.Sprintf("&direct=%s", direct)
-	option += fmt.Sprintf("&from_id=%s", fromId)
-	option += fmt.Sprintf("&limit=%s", limit)
+	option += fmt.Sprintf("&from_id=%d", fromId)
+	option += fmt.Sprintf("&limit=%d", limit)
 	if option != "" {
 		url += option
 	}
@@ -346,11 +346,11 @@ func (ac *CopytradingClient) CopytradingTraderQueryFollowers(data chan responsec
 	url := ac.PUrlBuilder.Build(linearswap.GET_METHOD, "/copytrading/trader/query_followers", nil)
 	// option
 	option := "?"
-	option += fmt.Sprintf("&startTime=%s", startTime)
-	option += fmt.Sprintf("&end_time=%s", endTime)
+	option += fmt.Sprintf("&startTime=%d", startTime)
+	option += fmt.Sprintf("&end_time=%d", endTime)
 	option += fmt.Sprintf("&direct=%s", direct)
-	option += fmt.Sprintf("&from_id=%s", fromId)
-	option += fmt.Sprintf("&limit=%s", limit)
+	option += fmt.Sprintf("&from_id=%d", fromId)
+	option += fmt.Sprintf("&limit=%d", limit)
 	if option != "" {
 		url += option
 	}

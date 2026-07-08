@@ -272,3 +272,140 @@ func (wsNf *WSNotifyClient) UnSubContractElements(symbol string, cid string) {
 
 	wsNf.unsub(jdata, ch)
 }
+
+
+// SubAlgoOrders 订阅算法订单频道
+// contractCode: "*" 表示所有合约，或具体的合约代码如 "BTC-USDT"、"BTC-USDT-240909"
+func (wsNf *WSNotifyClient) SubAlgoOrders(contractCode string, callbackFun OnAlgoOrdersSubResponse, cid string) error {
+    if cid == "" {
+        cid = coinfutures.DEFAULT_CID
+    }
+    
+    // 验证合约代码格式
+    if contractCode == "" {
+        return fmt.Errorf("contract_code cannot be empty")
+    }
+    
+    // 构建订阅请求
+    opData := wsbase.WSOpData{
+        Op:           "sub",
+        Cid:          cid,
+        Topic:        "algo_orders",
+        ContractCode: contractCode,
+    }
+    
+    jdata, err := json.Marshal(opData)
+    if err != nil {
+        return fmt.Errorf("marshal subscribe data failed: %v", err)
+    }
+    
+    // 构建频道名称
+    ch := fmt.Sprintf("algo_orders.%s", contractCode)
+    
+    // 调用订阅方法
+    wsNf.sub(jdata, ch, callbackFun, reflect.TypeOf(AlgoOrdersSubResponse{}))
+    return nil
+}
+
+// UnSubAlgoOrders 取消订阅算法订单频道
+func (wsNf *WSNotifyClient) UnSubAlgoOrders(contractCode string, cid string) error {
+    if cid == "" {
+        cid = coinfutures.DEFAULT_CID
+    }
+    
+    // 验证合约代码格式
+    if contractCode == "" {
+        return fmt.Errorf("contract_code cannot be empty")
+    }
+    
+    // 构建取消订阅请求
+    opData := wsbase.WSOpData{
+        Op:           "unsub",
+        Cid:          cid,
+        Topic:        "algo_orders",
+        ContractCode: contractCode,
+    }
+    
+    jdata, err := json.Marshal(opData)
+    if err != nil {
+        return fmt.Errorf("marshal unsubscribe data failed: %v", err)
+    }
+    
+    // 构建频道名称
+    ch := fmt.Sprintf("algo_orders.%s", contractCode)
+    
+    // 调用取消订阅方法
+    wsNf.unsub(jdata, ch)
+    return nil
+}
+
+
+// SubAccount 订阅账户变动数据
+// contractCode: 合约代码，可以为空（订阅所有合约），或指定合约代码如 "BTC-USDT"、"BTC-USDT-240909"
+func (wsNf *WSNotifyClient) SubAccount(contractCode string, callbackFun OnAccountSubResponse, cid string) error {
+    if cid == "" {
+        cid = coinfutures.DEFAULT_CID
+    }
+
+    // 构建订阅请求
+    opData := wsbase.WSOpData{
+        Op:    "sub",
+        Cid:   cid,
+        Topic: "account",
+    }
+    
+    // 如果提供了contractCode，添加到请求中
+    if contractCode != "" {
+        opData.ContractCode = contractCode
+    }
+    
+    jdata, err := json.Marshal(opData)
+    if err != nil {
+        return fmt.Errorf("marshal subscribe data failed: %v", err)
+    }
+    
+    // 构建频道名称
+    ch := "account"
+    if contractCode != "" {
+        ch = fmt.Sprintf("account.%s", contractCode)
+    }
+    
+    // 调用订阅方法
+    wsNf.sub(jdata, ch, callbackFun, reflect.TypeOf(AccountSubResponse{}))
+    return nil
+}
+
+// UnSubAccount 取消订阅账户变动数据
+// contractCode: 合约代码，可以为空（取消订阅所有合约），或指定合约代码如 "BTC-USDT"、"BTC-USDT-240909"
+func (wsNf *WSNotifyClient) UnSubAccount(contractCode string, cid string) error {
+    if cid == "" {
+        cid = coinfutures.DEFAULT_CID
+    }
+    
+    // 构建取消订阅请求
+    opData := wsbase.WSOpData{
+        Op:    "unsub",
+        Cid:   cid,
+        Topic: "account",
+    }
+    
+    // 如果提供了contractCode，添加到请求中
+    if contractCode != "" {
+        opData.ContractCode = contractCode
+    }
+    
+    jdata, err := json.Marshal(opData)
+    if err != nil {
+        return fmt.Errorf("marshal unsubscribe data failed: %v", err)
+    }
+    
+    // 构建频道名称
+    ch := "account"
+    if contractCode != "" {
+        ch = fmt.Sprintf("account.%s", contractCode)
+    }
+    
+    // 调用取消订阅方法
+    wsNf.unsub(jdata, ch)
+    return nil
+}

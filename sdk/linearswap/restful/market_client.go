@@ -1097,7 +1097,7 @@ func (mc *MarketClient) GetBatchMergedV2Async(data chan market.GetBatchMergedV2R
 func (mc *MarketClient) GetMarketRiskLimitAsync(data chan market.GetMarketRiskLimitResponse, contractCode string,
 	contractType string, marginMode string, tier string) {
 	// location
-	location := "/v5/market/risk_limit"
+	location := "/v5/market/risk/limit"
 
 	// option
 	option := ""
@@ -1132,7 +1132,7 @@ func (mc *MarketClient) GetMarketRiskLimitAsync(data chan market.GetMarketRiskLi
 
 func (mc *MarketClient) GetMarketAssetsDeductionCurrencyAsync(data chan market.GetMarketAssetsDeductionCurrencyResponse) {
 	// location
-	location := "/v5/assets_deduction_currency"
+	location := "/v5/market/assets_deduction_currency"
 
 	// option
 	option := ""
@@ -1172,6 +1172,352 @@ func (mc *MarketClient) GetMarketMultiAssetsMarginListAsync(data chan market.Get
 	jsonErr := json.Unmarshal([]byte(getResp), &result)
 	if jsonErr != nil {
 		log.Error("convert json error: %s", getErr)
+	}
+	data <- result
+}
+
+// GetFundingRateAsync 查询当前资金费率
+func (mc *MarketClient) GetFundingRateAsync(data chan market.MarketFundingRateResponse, contractCode string) {
+	// ulr
+	url := mc.PUrlBuilder.Build(linearswap.GET_METHOD, "/v5/market/funding_rate", nil)
+
+	// option
+	option := ""
+	if contractCode != "" {
+		option += fmt.Sprintf("?contract_code=%s", contractCode)
+	}
+	if option != "" {
+		url += option
+	}
+	
+	getResp, getErr := reqbuilder.HttpGet(url)
+	if getErr != nil {
+		log.Error("http get error: %s", getErr)
+	}
+	result := market.MarketFundingRateResponse{}
+	jsonErr := json.Unmarshal([]byte(getResp), &result)
+	if jsonErr != nil {
+		log.Error("convert json error: %s", jsonErr)
+	}
+	data <- result
+}
+
+// GetFundingRateHistoryAsync 查询历史资金费率
+func (mc *MarketClient) GetFundingRateHistoryAsync(data chan market.MarketFundingRateHistoryResponse, 
+    contractCode string, startTime *int64, endTime *int64, from *int64, limit *int, direct string) {
+	// ulr
+	url := mc.PUrlBuilder.Build(linearswap.GET_METHOD, "/v5/market/funding_rate_history", nil)
+
+	// option
+	option := ""
+	if contractCode != "" {
+		option += fmt.Sprintf("?contract_code=%s", contractCode)
+	}
+	if startTime != nil {
+		option += fmt.Sprintf("&start_time=%d", *startTime)
+	}
+	if endTime != nil {
+		option += fmt.Sprintf("&end_time=%d", *endTime)
+	}
+	if from != nil {
+		option += fmt.Sprintf("&from=%d", *from)
+	}
+	if limit != nil {
+		option += fmt.Sprintf("&limit=%d", *limit)
+	}
+	if direct != "" {
+		option += fmt.Sprintf("&direct=%s", direct)
+	}
+	if option != "" {
+		url += option
+	}
+	
+	getResp, getErr := reqbuilder.HttpGet(url)
+	if getErr != nil {
+		log.Error("http get error: %s", getErr)
+	}
+	result := market.MarketFundingRateHistoryResponse{}
+	jsonErr := json.Unmarshal([]byte(getResp), &result)
+	if jsonErr != nil {
+		log.Error("convert json error: %s", jsonErr)
+	}
+	data <- result
+}
+
+// GetOpenInterestAsync 查询当前平台合约持仓总量
+func (mc *MarketClient) GetOpenInterestAsync(data chan market.MarketOpenInterestResponse, contractCode string) {
+	// ulr
+	url := mc.PUrlBuilder.Build(linearswap.GET_METHOD, "/v5/market/open_interest", nil)
+
+	// option
+	option := ""
+	if contractCode != "" {
+		option += fmt.Sprintf("?contract_code=%s", contractCode)
+	}
+	if option != "" {
+		url += option
+	}
+	
+	getResp, getErr := reqbuilder.HttpGet(url)
+	if getErr != nil {
+		log.Error("http get error: %s", getErr)
+	}
+	result := market.MarketOpenInterestResponse{}
+	jsonErr := json.Unmarshal([]byte(getResp), &result)
+	if jsonErr != nil {
+		log.Error("convert json error: %s", jsonErr)
+	}
+	data <- result
+}
+
+// GetPriceLimitAsync 查询限价最高买价与最低卖价
+func (mc *MarketClient) GetPriceLimitAsync(data chan market.MarketPriceLimitResponse, contractCode string) {
+	// ulr
+	url := mc.PUrlBuilder.Build(linearswap.GET_METHOD, "/v5/market/price_limit", nil)
+
+	// option
+	option := ""
+	if contractCode != "" {
+		option += fmt.Sprintf("?contract_code=%s", contractCode)
+	}
+	if option != "" {
+		url += option
+	}
+	
+	getResp, getErr := reqbuilder.HttpGet(url)
+	if getErr != nil {
+		log.Error("http get error: %s", getErr)
+	}
+	result := market.MarketPriceLimitResponse{}
+	jsonErr := json.Unmarshal([]byte(getResp), &result)
+	if jsonErr != nil {
+		log.Error("convert json error: %s", jsonErr)
+	}
+	data <- result
+}
+
+// GetLiquidationOrdersAsync 查询强平订单
+func (mc *MarketClient) GetLiquidationOrdersAsync(data chan market.MarketLiquidationOrdersResponse, 
+    contractCode string, pair string, startTime *int64, endTime *int64, direct string, from *int64, limit *int) {
+	// ulr
+	url := mc.PUrlBuilder.Build(linearswap.GET_METHOD, "/v5/market/liquidation_orders", nil)
+
+	// option
+	option := ""
+	if contractCode != "" {
+		option += fmt.Sprintf("?contract_code=%s", contractCode)
+	}
+	if pair != "" {
+		if option == "" {
+			option += fmt.Sprintf("?pair=%s", pair)
+		} else {
+			option += fmt.Sprintf("&pair=%s", pair)
+		}
+	}
+	if startTime != nil {
+		if option == "" {
+			option += fmt.Sprintf("?start_time=%d", *startTime)
+		} else {
+			option += fmt.Sprintf("&start_time=%d", *startTime)
+		}
+	}
+	if endTime != nil {
+		if option == "" {
+			option += fmt.Sprintf("?end_time=%d", *endTime)
+		} else {
+			option += fmt.Sprintf("&end_time=%d", *endTime)
+		}
+	}
+	if direct != "" {
+		if option == "" {
+			option += fmt.Sprintf("?direct=%s", direct)
+		} else {
+			option += fmt.Sprintf("&direct=%s", direct)
+		}
+	}
+	if from != nil {
+		if option == "" {
+			option += fmt.Sprintf("?from=%d", *from)
+		} else {
+			option += fmt.Sprintf("&from=%d", *from)
+		}
+	}
+	if limit != nil {
+		if option == "" {
+			option += fmt.Sprintf("?limit=%d", *limit)
+		} else {
+			option += fmt.Sprintf("&limit=%d", *limit)
+		}
+	}
+	if option != "" {
+		url += option
+	}
+	
+	getResp, getErr := reqbuilder.HttpGet(url)
+	if getErr != nil {
+		log.Error("http get error: %s", getErr)
+	}
+	result := market.MarketLiquidationOrdersResponse{}
+	jsonErr := json.Unmarshal([]byte(getResp), &result)
+	if jsonErr != nil {
+		log.Error("convert json error: %s", jsonErr)
+	}
+	data <- result
+}
+
+// GetSettlementHistoryAsync 查询平台结算历史
+func (mc *MarketClient) GetSettlementHistoryAsync(data chan market.MarketSettlementHistoryResponse, 
+    contractCode string, startTime *int64, endTime *int64, direct string, from string, limit *int) {
+	// ulr
+	url := mc.PUrlBuilder.Build(linearswap.GET_METHOD, "/v5/market/settlement_history", nil)
+
+	// option
+	option := ""
+	if contractCode != "" {
+		option += fmt.Sprintf("?contract_code=%s", contractCode)
+	}
+	if startTime != nil {
+		if option == "" {
+			option += fmt.Sprintf("?start_time=%d", *startTime)
+		} else {
+			option += fmt.Sprintf("&start_time=%d", *startTime)
+		}
+	}
+	if endTime != nil {
+		if option == "" {
+			option += fmt.Sprintf("?end_time=%d", *endTime)
+		} else {
+			option += fmt.Sprintf("&end_time=%d", *endTime)
+		}
+	}
+	if direct != "" {
+		if option == "" {
+			option += fmt.Sprintf("?direct=%s", direct)
+		} else {
+			option += fmt.Sprintf("&direct=%s", direct)
+		}
+	}
+	if from != "" {
+		if option == "" {
+			option += fmt.Sprintf("?from=%s", from)
+		} else {
+			option += fmt.Sprintf("&from=%s", from)
+		}
+	}
+	if limit != nil {
+		if option == "" {
+			option += fmt.Sprintf("?limit=%d", *limit)
+		} else {
+			option += fmt.Sprintf("&limit=%d", *limit)
+		}
+	}
+	if option != "" {
+		url += option
+	}
+	
+	getResp, getErr := reqbuilder.HttpGet(url)
+	if getErr != nil {
+		log.Error("http get error: %s", getErr)
+	}
+	result := market.MarketSettlementHistoryResponse{}
+	jsonErr := json.Unmarshal([]byte(getResp), &result)
+	if jsonErr != nil {
+		log.Error("convert json error: %s", jsonErr)
+	}
+	data <- result
+}
+
+// GetEliteAccountRatioAsync 查询精英账户多空持仓对比-账户数
+func (mc *MarketClient) GetEliteAccountRatioAsync(data chan market.MarketEliteAccountRatioResponse, 
+    contractCode string, period string) {
+	// ulr
+	url := mc.PUrlBuilder.Build(linearswap.GET_METHOD, "/v5/market/elite_account_ratio", nil)
+
+	// option
+	option := ""
+	if contractCode != "" {
+		option += fmt.Sprintf("?contract_code=%s", contractCode)
+	}
+	if period != "" {
+		if option == "" {
+			option += fmt.Sprintf("?period=%s", period)
+		} else {
+			option += fmt.Sprintf("&period=%s", period)
+		}
+	}
+	if option != "" {
+		url += option
+	}
+	
+	getResp, getErr := reqbuilder.HttpGet(url)
+	if getErr != nil {
+		log.Error("http get error: %s", getErr)
+	}
+	result := market.MarketEliteAccountRatioResponse{}
+	jsonErr := json.Unmarshal([]byte(getResp), &result)
+	if jsonErr != nil {
+		log.Error("convert json error: %s", jsonErr)
+	}
+	data <- result
+}
+
+// GetElitePositionRatioAsync 查询精英账户多空持仓对比-持仓数
+func (mc *MarketClient) GetElitePositionRatioAsync(data chan market.MarketElitePositionRatioResponse, 
+    contractCode string, period string) {
+	// ulr
+	url := mc.PUrlBuilder.Build(linearswap.GET_METHOD, "/v5/market/elite_position_ratio", nil)
+
+	// option
+	option := ""
+	if contractCode != "" {
+		option += fmt.Sprintf("?contract_code=%s", contractCode)
+	}
+	if period != "" {
+		if option == "" {
+			option += fmt.Sprintf("?period=%s", period)
+		} else {
+			option += fmt.Sprintf("&period=%s", period)
+		}
+	}
+	if option != "" {
+		url += option
+	}
+	
+	getResp, getErr := reqbuilder.HttpGet(url)
+	if getErr != nil {
+		log.Error("http get error: %s", getErr)
+	}
+	result := market.MarketElitePositionRatioResponse{}
+	jsonErr := json.Unmarshal([]byte(getResp), &result)
+	if jsonErr != nil {
+		log.Error("convert json error: %s", jsonErr)
+	}
+	data <- result
+}
+
+// GetEstimatedSettlementPriceAsync 查询预估结算价
+func (mc *MarketClient) GetEstimatedSettlementPriceAsync(data chan market.MarketEstimatedSettlementPriceResponse, 
+    contractCode string) {
+	// ulr
+	url := mc.PUrlBuilder.Build(linearswap.GET_METHOD, "/v5/market/estimated_settlement_price", nil)
+
+	// option
+	option := ""
+	if contractCode != "" {
+		option += fmt.Sprintf("?contract_code=%s", contractCode)
+	}
+	if option != "" {
+		url += option
+	}
+	
+	getResp, getErr := reqbuilder.HttpGet(url)
+	if getErr != nil {
+		log.Error("http get error: %s", getErr)
+	}
+	result := market.MarketEstimatedSettlementPriceResponse{}
+	jsonErr := json.Unmarshal([]byte(getResp), &result)
+	if jsonErr != nil {
+		log.Error("convert json error: %s", jsonErr)
 	}
 	data <- result
 }

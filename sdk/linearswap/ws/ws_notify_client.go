@@ -199,7 +199,7 @@ func (wsNf *WSNotifyClient) IsolatedSubMatchOrders(contractCode string, callback
 	}
 
 	contractCode = strings.ToLower(contractCode)
-	ch := fmt.Sprintf("matchOrders.%s", contractCode)
+	ch := fmt.Sprintf("match_orders.%s", contractCode)
 	opData := wsbase.WSOpData{Op: "sub", Cid: cid, Topic: ch}
 	jdata, _ := json.Marshal(opData)
 
@@ -212,7 +212,7 @@ func (wsNf *WSNotifyClient) IsolatedUnsubMathOrders(contractCode string, cid str
 	}
 
 	contractCode = strings.ToLower(contractCode)
-	ch := fmt.Sprintf("matchOrders.%s", contractCode)
+	ch := fmt.Sprintf("match_orders.%s", contractCode)
 	opData := wsbase.WSOpData{Op: "unsub", Cid: cid, Topic: ch}
 	jdata, _ := json.Marshal(opData)
 

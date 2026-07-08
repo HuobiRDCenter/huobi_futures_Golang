@@ -3,6 +3,7 @@ package restful
 import (
 	"encoding/json"
 	"fmt"
+
 	"github.com/HuobiRDCenter/huobi_futures_Golang/sdk/linearswap"
 	requestorder "github.com/HuobiRDCenter/huobi_futures_Golang/sdk/linearswap/restful/request/order"
 	responseorder "github.com/HuobiRDCenter/huobi_futures_Golang/sdk/linearswap/restful/response/order"
@@ -1346,13 +1347,16 @@ func (ac *AccountClient) GetTradeOrderTradesAsync(data chan responseorder.GetTra
 
 func (ac *AccountClient) GetTradeOrderHistoryAsync(data chan responseorder.GetTradeOrderHistoryResponse,
 	contractCode string, state string, type_ string,
-	priceMatch string, startTime string, endTime string, from int, limit int, direct string, businessType string, marginMode string) {
+	priceMatch string, startTime string, endTime string, from int, limit int, direct string, marginMode string, timeInForce string) {
 	// ulr
 	url := ac.PUrlBuilder.Build(linearswap.GET_METHOD, "/api/v5/trade/order/history", nil)
 	// option
 	option := ""
 	if contractCode != "" {
 		option += fmt.Sprintf("?contract_code=%s", contractCode)
+	}
+	if timeInForce != "" {
+		option += fmt.Sprintf("?time_in_force=%s", timeInForce)
 	}
 	if state != "" {
 		option += fmt.Sprintf("&state=%s", state)
@@ -1368,9 +1372,6 @@ func (ac *AccountClient) GetTradeOrderHistoryAsync(data chan responseorder.GetTr
 	}
 	if endTime != "" {
 		option += fmt.Sprintf("&end_time=%s", endTime)
-	}
-	if businessType != "" {
-		option += fmt.Sprintf("&business_type=%s", businessType)
 	}
 	if marginMode != "" {
 		option += fmt.Sprintf("&margin_mode=%s", marginMode)
@@ -1570,7 +1571,7 @@ func (oc *OrderClient) SwapTradePositionModeAsync(data chan responseorder.GetTra
 func (ac *AccountClient) GetTradePositionRiskLimitAsync(data chan responseorder.GetTradePositionRiskLimitResponse,
 	contractCode string, marginMode string, positionSide string) {
 	// ulr
-	url := ac.PUrlBuilder.Build(linearswap.GET_METHOD, "/v5/position/riskLimit", nil)
+	url := ac.PUrlBuilder.Build(linearswap.GET_METHOD, "v5/position/risk/limit", nil)
 	// option
 	option := ""
 	if contractCode != "" {
@@ -1595,6 +1596,77 @@ func (ac *AccountClient) GetTradePositionRiskLimitAsync(data chan responseorder.
 		log.Error("convert json error: %s", jsonErr)
 	}
 	data <- result
+}
+
+// PositionRiskLimitTierAsync 查询风险限额层级
+func (ctc *AccountClient) PositionRiskLimitTierAsync(data chan responseorder.PositionRiskLimitTierResponse, 
+    contractCode string, marginMode string) {
+    
+    url := ctc.PUrlBuilder.Build(linearswap.POST_METHOD, "/v5/position/risk/limit_tier", nil)
+    
+    // 构建请求体
+    content := ""
+    if contractCode != "" {
+        content += fmt.Sprintf(",\"contract_code\": \"%s\"", contractCode)
+    }
+    if marginMode != "" {
+        content += fmt.Sprintf(",\"margin_mode\": \"%s\"", marginMode)
+    }
+    
+    if content != "" {
+        content = fmt.Sprintf("{%s}", content[1:])
+    }
+    
+    getResp, getErr := reqbuilder.HttpPost(url, content)
+    if getErr != nil {
+        log.Error("http post error: %s", getErr)
+    }
+    
+    result := responseorder.PositionRiskLimitTierResponse{}
+    jsonErr := json.Unmarshal([]byte(getResp), &result)
+    if jsonErr != nil {
+        log.Error("convert json to PositionRiskLimitTierResponse error: %s", jsonErr)
+    }
+    data <- result
+}
+
+// PositionMarginAsync 调整逐仓仓位保证金
+func (ctc *AccountClient) PositionMarginAsync(data chan responseorder.PositionMarginResponse, 
+    contractCode string, positionSide string, amount string, marginType string) {
+    
+    url := ctc.PUrlBuilder.Build(linearswap.POST_METHOD, "/v5/position/margin", nil)
+    
+    // 构建请求体
+    content := ""
+    if contractCode != "" {
+        content += fmt.Sprintf(",\"contract_code\": \"%s\"", contractCode)
+    }
+    if positionSide != "" {
+        content += fmt.Sprintf(",\"position_side\": \"%s\"", positionSide)
+    }
+    if amount != "" {
+        content += fmt.Sprintf(",\"amount\": \"%s\"", amount)
+    }
+    if marginType != "" {
+        content += fmt.Sprintf(",\"type\": \"%s\"", marginType)
+    }
+    
+    if content != "" {
+        content = fmt.Sprintf("{%s}", content[1:])
+    }
+    
+    // 发送POST请求
+    getResp, getErr := reqbuilder.HttpPost(url, content)
+    if getErr != nil {
+        log.Error("http post error: %s", getErr)
+    }
+    
+    result := responseorder.PositionMarginResponse{}
+    jsonErr := json.Unmarshal([]byte(getResp), &result)
+    if jsonErr != nil {
+        log.Error("convert json to PositionMarginResponse error: %s", jsonErr)
+    }
+    data <- result
 }
 
 func (ac *AccountClient) GetTradeOrderAsync(data chan responseorder.GetTradeOrderResponse,
@@ -1628,4 +1700,34 @@ func (ac *AccountClient) GetTradeOrderAsync(data chan responseorder.GetTradeOrde
 		log.Error("convert json error: %s", jsonErr)
 	}
 	data <- result
+}
+
+// TradeCancelAfterAsync 设置自成交保护
+func (ctc *AccountClient) TradeCancelAfterAsync(data chan responseorder.TradeCancelAfterResponse,
+    onOff string, timeOut string) {
+    // ulr
+    url := ctc.PUrlBuilder.Build(linearswap.GET_METHOD, "/v5/trade/cancel-after", nil)
+
+    // option
+    option := "?"
+    if onOff != "" {
+        option += fmt.Sprintf("&on_off=%s", onOff)
+    }
+    if timeOut != "" {
+        option += fmt.Sprintf("&time_out=%s", timeOut)
+    }
+    if option != "" {
+        url += option
+    }
+    
+    getResp, getErr := reqbuilder.HttpGet(url)
+    if getErr != nil {
+        log.Error("http get error: %s", getErr)
+    }
+    result := responseorder.TradeCancelAfterResponse{}
+    jsonErr := json.Unmarshal([]byte(getResp), &result)
+    if jsonErr != nil {
+        log.Error("convert json error: %s", jsonErr)
+    }
+    data <- result
 }
