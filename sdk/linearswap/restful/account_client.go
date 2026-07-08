@@ -1058,3 +1058,75 @@ func (ac *AccountClient) SwapMultiAssetsMarginAsync(data chan account.SwapMultiA
 	}
 	data <- result
 }
+
+// SetAssetModeAsync 设置资产模式
+func (ac *AccountClient) SetAssetModeAsync(data chan account.AssetModeResponse, assetMode int) {
+	// ulr
+	url := ac.PUrlBuilder.Build(linearswap.POST_METHOD, "/v5/account/asset_mode", nil)
+	// content
+	content := fmt.Sprintf("{\"asset_mode\": %d}", assetMode)
+	getResp, getErr := reqbuilder.HttpPost(url, content)
+	if getErr != nil {
+		log.Error("http get error: %s", getErr)
+	}
+	result := account.AssetModeResponse{}
+	jsonErr := json.Unmarshal([]byte(getResp), &result)
+	if jsonErr != nil {
+		log.Error("convert json error: %s", jsonErr)
+	}
+	data <- result
+}
+
+// GetAssetModeAsync 查询资产模式
+func (ac *AccountClient) GetAssetModeAsync(data chan account.AssetModeResponse) {
+	// ulr
+	url := ac.PUrlBuilder.Build(linearswap.GET_METHOD, "/v5/account/asset_mode", nil)
+	getResp, getErr := reqbuilder.HttpGet(url)
+	if getErr != nil {
+		log.Error("http get error: %s", getErr)
+	}
+	result := account.AssetModeResponse{}
+	jsonErr := json.Unmarshal([]byte(getResp), &result)
+	if jsonErr != nil {
+		log.Error("convert json error: %s", jsonErr)
+	}
+	data <- result
+}
+
+// FeeDeductionCurrency 设置手续费抵扣币种
+func (ac *AccountClient) FeeDeductionCurrency(data chan account.FeeDeductionCurrencyResponse, feeOption int, deductionCurrency string) {
+	// ulr
+	url := ac.PUrlBuilder.Build(linearswap.POST_METHOD, "/v5/account/fee_deduction_currency", nil)
+	// content
+	content := fmt.Sprintf(",\"fee_option\": %d", feeOption)
+	content += fmt.Sprintf(",\"deduction_currency\": \"%s\"", deductionCurrency)
+	if content != "" {
+		content = fmt.Sprintf("{%s}", content[1:])
+	}
+	getResp, getErr := reqbuilder.HttpPost(url, content)
+	if getErr != nil {
+		log.Error("http get error: %s", getErr)
+	}
+	result := account.FeeDeductionCurrencyResponse{}
+	jsonErr := json.Unmarshal([]byte(getResp), &result)
+	if jsonErr != nil {
+		log.Error("convert json error: %s", jsonErr)
+	}
+	data <- result
+}
+
+// GetFeeDeductionCurrencyAsync 查看手续费抵扣币种
+func (ac *AccountClient) GetFeeDeductionCurrencyAsync(data chan account.FeeDeductionCurrencyResponse) {
+	// ulr
+	url := ac.PUrlBuilder.Build(linearswap.GET_METHOD, "/v5/account/fee_deduction_currency", nil)
+	getResp, getErr := reqbuilder.HttpGet(url)
+	if getErr != nil {
+		log.Error("http get error: %s", getErr)
+	}
+	result := account.FeeDeductionCurrencyResponse{}
+	jsonErr := json.Unmarshal([]byte(getResp), &result)
+	if jsonErr != nil {
+		log.Error("convert json error: %s", jsonErr)
+	}
+	data <- result
+}
