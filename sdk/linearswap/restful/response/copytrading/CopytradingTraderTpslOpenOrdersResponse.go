@@ -2,11 +2,11 @@ package copytrading
 
 type CopytradingTraderTpslOpenOrdersResponse struct {
 	Tid  string                           `json:"tid"`
-	Data []opytradingTraderTpslOpenOrders `json:"data"`
+	Data []CopytradingTraderTpslOpenOrders `json:"data"`
 	Code int64                            `json:"code"`
 }
 
-type opytradingTraderTpslOpenOrders struct {
+type CopytradingTraderTpslOpenOrders struct {
 	// 这里根据实际data字段内容需要补充
 	ContractCode  string `json:"contract_code"`
 	Volume        string `json:"volume"`
