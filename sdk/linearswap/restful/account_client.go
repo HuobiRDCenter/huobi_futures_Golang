@@ -1013,353 +1013,72 @@ func (ac *AccountClient) SwapMultiAssetsMarginAsync(data chan account.SwapMultiA
 
 // SetAssetModeAsync 设置资产模式
 func (ac *AccountClient) SetAssetModeAsync(data chan account.AssetModeResponse, assetMode int) {
-    // ulr
-    url := ac.PUrlBuilder.Build(linearswap.POST_METHOD, "/v5/account/asset_mode", nil)
-    // content
-    content := fmt.Sprintf("{\"asset_mode\": %d}", assetMode)
-    getResp, getErr := reqbuilder.HttpPost(url, content)
-    if getErr != nil {
-        log.Error("http get error: %s", getErr)
-    }
-    result := account.AssetModeResponse{}
-    jsonErr := json.Unmarshal([]byte(getResp), &result)
-    if jsonErr != nil {
-        log.Error("convert json error: %s", jsonErr)
-    }
-    data <- result
+	// ulr
+	url := ac.PUrlBuilder.Build(linearswap.POST_METHOD, "/v5/account/asset_mode", nil)
+	// content
+	content := fmt.Sprintf("{\"asset_mode\": %d}", assetMode)
+	getResp, getErr := reqbuilder.HttpPost(url, content)
+	if getErr != nil {
+		log.Error("http get error: %s", getErr)
+	}
+	result := account.AssetModeResponse{}
+	jsonErr := json.Unmarshal([]byte(getResp), &result)
+	if jsonErr != nil {
+		log.Error("convert json error: %s", jsonErr)
+	}
+	data <- result
 }
 
 // GetAssetModeAsync 查询资产模式
 func (ac *AccountClient) GetAssetModeAsync(data chan account.AssetModeResponse) {
-    // ulr
-    url := ac.PUrlBuilder.Build(linearswap.GET_METHOD, "/v5/account/asset_mode", nil)
-    getResp, getErr := reqbuilder.HttpGet(url)
-    if getErr != nil {
-        log.Error("http get error: %s", getErr)
-    }
-    result := account.AssetModeResponse{}
-    jsonErr := json.Unmarshal([]byte(getResp), &result)
-    if jsonErr != nil {
-        log.Error("convert json error: %s", jsonErr)
-    }
-    data <- result
+	// ulr
+	url := ac.PUrlBuilder.Build(linearswap.GET_METHOD, "/v5/account/asset_mode", nil)
+	getResp, getErr := reqbuilder.HttpGet(url)
+	if getErr != nil {
+		log.Error("http get error: %s", getErr)
+	}
+	result := account.AssetModeResponse{}
+	jsonErr := json.Unmarshal([]byte(getResp), &result)
+	if jsonErr != nil {
+		log.Error("convert json error: %s", jsonErr)
+	}
+	data <- result
 }
 
-// GetAccountBillsAsync 查询流水记录
-func (ac *AccountClient) GetAccountBillsAsync(data chan account.AccountBillsResponse,
-    contractCode string, marginMode string, billType string, startTime string, endTime string,
-    from *int64, limit *int, direct string) {
-    // ulr
-    url := ac.PUrlBuilder.Build(linearswap.GET_METHOD, "/v5/account/bills", nil)
-    // option
-    option := ""
-    if contractCode != "" {
-        option += fmt.Sprintf("?contract_code=%s", contractCode)
-    }
-    if marginMode != "" {
-        option += fmt.Sprintf("&margin_mode=%s", marginMode)
-    }
-    if billType != "" {
-        option += fmt.Sprintf("&type=%s", billType)
-    }
-    if startTime != "" {
-        option += fmt.Sprintf("&start_time=%s", startTime)
-    }
-    if endTime != "" {
-        option += fmt.Sprintf("&end_time=%s", endTime)
-    }
-    if from != nil {
-        option += fmt.Sprintf("&from=%d", *from)
-    }
-    if limit != nil {
-        option += fmt.Sprintf("&limit=%d", *limit)
-    }
-    if direct != "" {
-        option += fmt.Sprintf("&direct=%s", direct)
-    }
-    if option != "" {
-        url += option
-    }
-    getResp, getErr := reqbuilder.HttpGet(url)
-    if getErr != nil {
-        log.Error("http get error: %s", getErr)
-    }
-    result := account.AccountBillsResponse{}
-    jsonErr := json.Unmarshal([]byte(getResp), &result)
-    if jsonErr != nil {
-        log.Error("convert json error: %s", jsonErr)
-    }
-    data <- result
-}
-
-// GetUniversalTransferRecordsAsync 查询划转记录
-func (ac *AccountClient) GetUniversalTransferRecordsAsync(data chan account.UniversalTransferRecordsResponse,
-    userId int64, transferId int64, currency, status string,
-    startTime, endTime int64, from int64, limit int, direct string) {
-    // 构建URL和参数
-    request := new(reqbuilder.GetRequest).Init()
-    request.AddParam("userId", strconv.FormatInt(userId, 10))
-    if transferId != 0 {
-        request.AddParam("transfer_id", strconv.FormatInt(transferId, 10))
-    }
-    if currency != "" {
-        request.AddParam("currency", currency)
-    }
-    if status != "" {
-        request.AddParam("status", status)
-    }
-    if startTime != 0 {
-        request.AddParam("start_time", strconv.FormatInt(startTime, 10))
-    }
-    if endTime != 0 {
-        request.AddParam("end_time", strconv.FormatInt(endTime, 10))
-    }
-    if from != 0 {
-        request.AddParam("from", strconv.FormatInt(from, 10))
-    }
-    if limit != 0 {
-        request.AddParam("limit", strconv.Itoa(limit))
-    }
-    if direct != "" {
-        request.AddParam("direct", direct)
-    }
-    // url
-    url := ac.PUrlBuilder.Build(linearswap.GET_METHOD, "/v5/account/universal_transfer_records", request)
-    getResp, getErr := reqbuilder.HttpGet(url)
-    if getErr != nil {
-        log.Error("http get error: %s", getErr)
-    }
-    result := account.UniversalTransferRecordsResponse{}
-    jsonErr := json.Unmarshal([]byte(getResp), &result)
-    if jsonErr != nil {
-        log.Error("convert json error: %s", jsonErr)
-    }
-    data <- result
-}
-
-// UniversalTransferAsync 执行划转
-func (ac *AccountClient) UniversalTransferAsync(data chan account.UniversalTransferResponse,
-    userId int64, request account.UniversalTransferRequest) {
-    // url
-    url := ac.PUrlBuilder.Build(linearswap.POST_METHOD, "/v5/account/universal_transfer", nil)
-    // 构建请求体
-    content := fmt.Sprintf("\"userId\": %d", userId)
-    content += fmt.Sprintf(",\"currency\": \"%s\"", request.Currency)
-    content += fmt.Sprintf(",\"amount\": \"%s\"", request.Amount)
-    content += fmt.Sprintf(",\"from_account_type\": \"%s\"", request.FromAccountType)
-    content += fmt.Sprintf(",\"to_account_type\": \"%s\"", request.ToAccountType)
-    if request.FromAssetType != "" {
-        content += fmt.Sprintf(",\"from_asset_type\": \"%s\"", request.FromAssetType)
-    }
-    if request.ToAssetType != "" {
-        content += fmt.Sprintf(",\"to_asset_type\": \"%s\"", request.ToAssetType)
-    }
-    if content != "" {
-        content = fmt.Sprintf("{%s}", content)
-    }
-    getResp, getErr := reqbuilder.HttpPost(url, content)
-    if getErr != nil {
-        log.Error("http get error: %s", getErr)
-    }
-    result := account.UniversalTransferResponse{}
-    jsonErr := json.Unmarshal([]byte(getResp), &result)
-    if jsonErr != nil {
-        log.Error("convert json error: %s", jsonErr)
-    }
-    data <- result
-}
-
-func (ac *AccountClient) InviteeRebateAllRebateDetailAsync(data chan account.InviteeRebateAllRebateDetailResponse, direct string, fromId string,
-    limit int64) {
-    // ulr
-    url := ac.PUrlBuilder.Build(linearswap.GET_METHOD, "/v2/invitee/rebate/all_rebate/detail", nil)
-    // option
-    option := ""
-    if direct != "" {
-        option += fmt.Sprintf("?direct=%s", direct)
-    }
-    if fromId != "" {
-        option += fmt.Sprintf("&fromId=%s", fromId)
-    }
-    if limit != 0 {
-        option += fmt.Sprintf("&limit=%d", limit)
-    }
-    if option != "" {
-        url += option
-    }
-    getResp, getErr := reqbuilder.HttpGet(url)
-    if getErr != nil {
-        log.Error("http get error: %s", getErr)
-    }
-    result := account.InviteeRebateAllRebateDetailResponse{}
-    jsonErr := json.Unmarshal([]byte(getResp), &result)
-    if jsonErr != nil {
-        log.Error("convert json error: %s", jsonErr)
-    }
-    data <- result
-}
-
-func (ac *AccountClient) InviteeRebateBatcherRebateDetailAsync(data chan account.InviteeRebateBatcherRebateDetailResponse, inviteeUidList string) {
-    // ulr
-    url := ac.PUrlBuilder.Build(linearswap.GET_METHOD, "/v2/invitee/rebate/batcher_rebate/detail", nil)
-    // option
-    option := ""
-    if inviteeUidList != "" {
-        option += fmt.Sprintf("?inviteeUidList=%s", inviteeUidList)
-    }
-    if option != "" {
-        url += option
-    }
-    getResp, getErr := reqbuilder.HttpGet(url)
-    if getErr != nil {
-        log.Error("http get error: %s", getErr)
-    }
-    result := account.InviteeRebateBatcherRebateDetailResponse{}
-    jsonErr := json.Unmarshal([]byte(getResp), &result)
-    if jsonErr != nil {
-        log.Error("convert json error: %s", jsonErr)
-    }
-    data <- result
-}
-
+// FeeDeductionCurrency 设置手续费抵扣币种
 func (ac *AccountClient) FeeDeductionCurrency(data chan account.FeeDeductionCurrencyResponse, feeOption int, deductionCurrency string) {
-    // ulr
-    url := ac.PUrlBuilder.Build(linearswap.POST_METHOD, "/v5/account/fee_deduction_currency", nil)
-    // content
-    content := fmt.Sprintf(",\"fee_option\": %d", feeOption)
-    content += fmt.Sprintf(",\"deduction_currency\": \"%s\"", deductionCurrency)
-    if content != "" {
-        content = fmt.Sprintf("{%s}", content[1:])
-    }
-    getResp, getErr := reqbuilder.HttpPost(url, content)
-    if getErr != nil {
-        log.Error("http get error: %s", getErr)
-    }
-    result := account.FeeDeductionCurrencyResponse{}
-    jsonErr := json.Unmarshal([]byte(getResp), &result)
-    if jsonErr != nil {
-        log.Error("convert json error: %s", jsonErr)
-    }
-    data <- result
+	// ulr
+	url := ac.PUrlBuilder.Build(linearswap.POST_METHOD, "/v5/account/fee_deduction_currency", nil)
+	// content
+	content := fmt.Sprintf(",\"fee_option\": %d", feeOption)
+	content += fmt.Sprintf(",\"deduction_currency\": \"%s\"", deductionCurrency)
+	if content != "" {
+		content = fmt.Sprintf("{%s}", content[1:])
+	}
+	getResp, getErr := reqbuilder.HttpPost(url, content)
+	if getErr != nil {
+		log.Error("http get error: %s", getErr)
+	}
+	result := account.FeeDeductionCurrencyResponse{}
+	jsonErr := json.Unmarshal([]byte(getResp), &result)
+	if jsonErr != nil {
+		log.Error("convert json error: %s", jsonErr)
+	}
+	data <- result
 }
 
 // GetFeeDeductionCurrencyAsync 查看手续费抵扣币种
 func (ac *AccountClient) GetFeeDeductionCurrencyAsync(data chan account.FeeDeductionCurrencyResponse) {
-    // ulr
-    url := ac.PUrlBuilder.Build(linearswap.GET_METHOD, "/v5/account/fee_deduction_currency", nil)
-    getResp, getErr := reqbuilder.HttpGet(url)
-    if getErr != nil {
-        log.Error("http get error: %s", getErr)
-    }
-    result := account.FeeDeductionCurrencyResponse{}
-    jsonErr := json.Unmarshal([]byte(getResp), &result)
-    if jsonErr != nil {
-        log.Error("convert json error: %s", jsonErr)
-    }
-    data <- result
-}
-
-func (ac *AccountClient) QueryEarnProjectList(data chan account.QueryEarnProjectListResponse, currency string, pageNum int, pageSize int) {
-    // ulr
-    url := ac.PUrlBuilder.Build(linearswap.GET_METHOD, "/v1/earn/project/queryEarnProjectList", nil)
-    // option
-    option := ""
-    if currency != "" {
-        option += fmt.Sprintf("?currency=%s", currency)
-    }
-    if pageNum != 0 {
-        option += fmt.Sprintf("&pageNum=%d", pageNum)
-    }
-    if pageSize != 0 {
-        option += fmt.Sprintf("&pageSize=%d", pageSize)
-    }
-    if option != "" {
-        url += option
-    }
-    getResp, getErr := reqbuilder.HttpGet(url)
-    if getErr != nil {
-        log.Error("http get error: %s", getErr)
-    }
-    result := account.QueryEarnProjectListResponse{}
-    jsonErr := json.Unmarshal([]byte(getResp), &result)
-    if jsonErr != nil {
-        log.Error("convert json error: %s", jsonErr)
-    }
-    data <- result
-}
-
-func (ac *AccountClient) EarnOrderDemandAdd(data chan account.EarnOrderDemandAddResponse, id int64, amount int64, requestId string) {
-    // ulr
-    url := ac.PUrlBuilder.Build(linearswap.POST_METHOD, "/v1/earn/order/demand/add", nil)
-    // content
-    content := fmt.Sprintf(",\"id\": %d", id)
-    content += fmt.Sprintf(",\"amount\": %d", amount)
-    content += fmt.Sprintf(",\"requestId\": \"%s\"", requestId)
-    if content != "" {
-        content = fmt.Sprintf("{%s}", content[1:])
-    }
-    getResp, getErr := reqbuilder.HttpPost(url, content)
-    if getErr != nil {
-        log.Error("http get error: %s", getErr)
-    }
-    result := account.EarnOrderDemandAddResponse{}
-    jsonErr := json.Unmarshal([]byte(getResp), &result)
-    if jsonErr != nil {
-        log.Error("convert json error: %s", jsonErr)
-    }
-    data <- result
-}
-
-func (ac *AccountClient) DemandRedeemOrder(data chan account.DemandRedeemOrderResponse, orderId int64, requestId int64, amount string) {
-    // ulr
-    url := ac.PUrlBuilder.Build(linearswap.POST_METHOD, "/v1/earn/order/demand/redeem-order", nil)
-    // content
-    content := fmt.Sprintf(",\"orderId\": %d", orderId)
-    content += fmt.Sprintf(",\"amount\": \"%s\"", amount)
-    content += fmt.Sprintf(",\"requestId\": %d", requestId)
-    if content != "" {
-        content = fmt.Sprintf("{%s}", content[1:])
-    }
-    getResp, getErr := reqbuilder.HttpPost(url, content)
-    if getErr != nil {
-        log.Error("http get error: %s", getErr)
-    }
-    result := account.DemandRedeemOrderResponse{}
-    jsonErr := json.Unmarshal([]byte(getResp), &result)
-    if jsonErr != nil {
-        log.Error("convert json error: %s", jsonErr)
-    }
-    data <- result
-}
-
-func (ac *AccountClient) EarnOrderUserAssetsList(data chan account.EarnOrderUserAssetsListResponse, projectType int, currency string, pageNum int, pageSize int) {
-    // ulr
-    url := ac.PUrlBuilder.Build(linearswap.GET_METHOD, "/v1/earn/order/user/assets/list", nil)
-    // option
-    option := ""
-    if currency != "" {
-        option += fmt.Sprintf("?currency=%s", currency)
-    }
-    if pageNum != 0 {
-        option += fmt.Sprintf("&pageNum=%d", pageNum)
-    }
-    if pageSize != 0 {
-        option += fmt.Sprintf("&pageSize=%d", pageSize)
-    }
-    if projectType != 0 {
-        option += fmt.Sprintf("&projectType=%d", projectType)
-    }
-    if option != "" {
-        url += option
-    }
-    getResp, getErr := reqbuilder.HttpGet(url)
-    if getErr != nil {
-        log.Error("http get error: %s", getErr)
-    }
-    result := account.EarnOrderUserAssetsListResponse{}
-    jsonErr := json.Unmarshal([]byte(getResp), &result)
-    if jsonErr != nil {
-        log.Error("convert json error: %s", jsonErr)
-    }
-    data <- result
+	// ulr
+	url := ac.PUrlBuilder.Build(linearswap.GET_METHOD, "/v5/account/fee_deduction_currency", nil)
+	getResp, getErr := reqbuilder.HttpGet(url)
+	if getErr != nil {
+		log.Error("http get error: %s", getErr)
+	}
+	result := account.FeeDeductionCurrencyResponse{}
+	jsonErr := json.Unmarshal([]byte(getResp), &result)
+	if jsonErr != nil {
+		log.Error("convert json error: %s", jsonErr)
+	}
+	data <- result
 }
