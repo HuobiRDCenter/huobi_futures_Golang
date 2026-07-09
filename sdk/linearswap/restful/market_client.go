@@ -1132,7 +1132,7 @@ func (mc *MarketClient) GetMarketRiskLimitAsync(data chan market.GetMarketRiskLi
 
 func (mc *MarketClient) GetMarketAssetsDeductionCurrencyAsync(data chan market.GetMarketAssetsDeductionCurrencyResponse) {
 	// location
-	location := "/v5/assets_deduction_currency"
+	location := "/v5/market/assets_deduction_currency"
 
 	// option
 	option := ""
