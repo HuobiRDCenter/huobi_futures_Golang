@@ -3,7 +3,6 @@ package restful
 import (
     "encoding/json"
     "fmt"
-    "strconv"
     "github.com/HuobiRDCenter/huobi_futures_Golang/sdk/linearswap"
     "github.com/HuobiRDCenter/huobi_futures_Golang/sdk/linearswap/restful/response/account"
     "github.com/HuobiRDCenter/huobi_futures_Golang/sdk/log"
@@ -1076,6 +1075,51 @@ func (ac *AccountClient) GetFeeDeductionCurrencyAsync(data chan account.FeeDeduc
 		log.Error("http get error: %s", getErr)
 	}
 	result := account.FeeDeductionCurrencyResponse{}
+	jsonErr := json.Unmarshal([]byte(getResp), &result)
+	if jsonErr != nil {
+		log.Error("convert json error: %s", jsonErr)
+	}
+	data <- result
+}
+
+// GetAccountBillsAsync 查询账户流水
+// 业务参数必须参与签名，故收尾用 BuildWithQuery（不签名会 401 校验失败，已生产实测确认）
+func (ac *AccountClient) GetAccountBillsAsync(data chan account.AccountBillsResponse, contractCode string,
+	marginMode string, type_ string, startTime string, endTime string, from int, limit int, direct string) {
+	// option
+	option := ""
+	if contractCode != "" {
+		option += fmt.Sprintf("?contract_code=%s", contractCode)
+	}
+	if marginMode != "" {
+		option += fmt.Sprintf("&margin_mode=%s", marginMode)
+	}
+	if type_ != "" {
+		option += fmt.Sprintf("&type=%s", type_)
+	}
+	if startTime != "" {
+		option += fmt.Sprintf("&start_time=%s", startTime)
+	}
+	if endTime != "" {
+		option += fmt.Sprintf("&end_time=%s", endTime)
+	}
+	// from/limit 为 0 时不传，交给服务端用默认值（与 C++ 版一致）
+	if from != 0 {
+		option += fmt.Sprintf("&from=%d", from)
+	}
+	if limit != 0 {
+		option += fmt.Sprintf("&limit=%d", limit)
+	}
+	if direct != "" {
+		option += fmt.Sprintf("&direct=%s", direct)
+	}
+
+	url := ac.PUrlBuilder.BuildWithQuery(linearswap.GET_METHOD, "/v5/account/bills", nil, option)
+	getResp, getErr := reqbuilder.HttpGet(url)
+	if getErr != nil {
+		log.Error("http get error: %s", getErr)
+	}
+	result := account.AccountBillsResponse{}
 	jsonErr := json.Unmarshal([]byte(getResp), &result)
 	if jsonErr != nil {
 		log.Error("convert json error: %s", jsonErr)

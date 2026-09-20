@@ -1,7 +1,7 @@
 package order
 
 type GetTradePositionRiskLimitResponse struct {
-	Code string `json:"code"`
+	Code int `json:"code"`
 
 	Data []struct {
 		ContractCode          string `json:"contract_code"`
@@ -15,7 +15,7 @@ type GetTradePositionRiskLimitResponse struct {
 		VolumeUnit            string `json:"volume_unit"`
 	} `json:"data,omitempty"`
 
-	Message int `json:"message,omitempty"`
+	Message string `json:"message,omitempty"`
 
 	Ts int64 `json:"ts"`
 }

@@ -1,13 +1,14 @@
 package order
 
 type GetTradePositionModeResponse struct {
-	Code string `json:"code"`
+	Code int `json:"code"`
 
-	Data []struct {
+	// V5 查询持仓模式：data 为**对象** {"position_mode":"dual_side"}
+	Data struct {
 		PositionMode string `json:"position_mode"`
 	} `json:"data,omitempty"`
 
-	Message int `json:"message,omitempty"`
+	Message string `json:"message,omitempty"`
 
 	Ts int64 `json:"ts"`
 }

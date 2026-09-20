@@ -1,7 +1,7 @@
 package order
 
 type GetTradeOrderHistoryResponse struct {
-	Code string `json:"code"`
+	Code int `json:"code"`
 
 	Data []struct {
 		ID                 string `json:"id"`
@@ -16,7 +16,7 @@ type GetTradeOrderHistoryResponse struct {
 		Price              string `json:"price"`
 		CancelReason       string `json:"cancel_reason"`
 		Volume             string `json:"volume"`
-		LeverRate          string `json:"lever_rate"`
+		LeverRate          int64  `json:"lever_rate"`
 		State              string `json:"state"`
 		CanceledSource     string `json:"canceled_source"`
 		OrderSource        string `json:"order_source"`
@@ -25,11 +25,11 @@ type GetTradeOrderHistoryResponse struct {
 		TpTriggerPrice     string `json:"tp_trigger_price"`
 		TpOrderPrice       string `json:"tp_order_price"`
 		TpType             string `json:"tp_type"`
-		TpTriggerPriceType int    `json:"tp_trigger_price_type"`
+		TpTriggerPriceType string `json:"tp_trigger_price_type"`
 		SlTriggerPrice     string `json:"sl_trigger_price"`
 		SlOrderPrice       string `json:"sl_order_price"`
 		SlType             string `json:"sl_type"`
-		SlTriggerPriceType int    `json:"sl_trigger_price_type"`
+		SlTriggerPriceType string `json:"sl_trigger_price_type"`
 		TradeAvgPrice      string `json:"trade_avg_price"`
 		TradeVolume        string `json:"trade_volume"`
 		TradeTurnover      string `json:"trade_turnover"`
@@ -43,7 +43,7 @@ type GetTradeOrderHistoryResponse struct {
 		UpdatedTime        string `json:"updated_time"`
 	} `json:"data,omitempty"`
 
-	Message int `json:"message,omitempty"`
+	Message string `json:"message,omitempty"`
 
 	Ts int64 `json:"ts"`
 }

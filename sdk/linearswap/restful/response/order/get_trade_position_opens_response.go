@@ -1,7 +1,7 @@
 package order
 
 type GetTradePositionOpensResponse struct {
-	Code string `json:"code"`
+	Code int `json:"code"`
 
 	Data []struct {
 		ContractCode      string  `json:"contract_code"`
@@ -10,7 +10,7 @@ type GetTradePositionOpensResponse struct {
 		CostOpen          string  `json:"cost_open"`
 		Volume            string  `json:"volume"`
 		Available         string  `json:"available"`
-		LeverRate         string  `json:"lever_rate"`
+		LeverRate         int64   `json:"lever_rate"`
 		AdlRiskPercent    string  `json:"adl_risk_percent"`
 		LiquidationPrice  string  `json:"liquidation_price"`
 		InitialMargin     string  `json:"initial_margin"`
@@ -26,7 +26,7 @@ type GetTradePositionOpensResponse struct {
 		UpdatedTime       string  `json:"updated_time"`
 	} `json:"data,omitempty"`
 
-	Message int `json:"message,omitempty"`
+	Message string `json:"message,omitempty"`
 
 	Ts int64 `json:"ts"`
 }

@@ -1,9 +1,10 @@
 package order
 
 type GetTradeOrderResponse struct {
-	Code string `json:"code"`
+	Code int `json:"code"`
 
-	Data []struct {
+	// V5 查询订单：data 为**单个订单对象**，不是数组
+	Data struct {
 		ID                 string `json:"id,omitempty"`
 		ContractCode       string `json:"contract_code,omitempty"`
 		Side               string `json:"side,omitempty"`
@@ -36,8 +37,9 @@ type GetTradeOrderResponse struct {
 		PriceProtect       bool   `json:"price_protect,omitempty"`
 		Profit             string `json:"profit,omitempty"`
 		ContractType       string `json:"contract_type,omitempty"`
-		CreatedTime        int64  `json:"created_time,omitempty"`
-		UpdatedTime        int64  `json:"updated_time,omitempty"`
+		// 线上返回的是字符串毫秒时间戳："created_time":"1789880078388"
+		CreatedTime string `json:"created_time,omitempty"`
+		UpdatedTime string `json:"updated_time,omitempty"`
 	} `json:"data,omitempty"`
 
 	Message string `json:"message,omitempty"`

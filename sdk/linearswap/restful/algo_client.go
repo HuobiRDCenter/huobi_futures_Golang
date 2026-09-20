@@ -4,8 +4,8 @@ import (
     "encoding/json"
     "fmt"
     "github.com/HuobiRDCenter/huobi_futures_Golang/sdk/linearswap"
-	"github.com/HuobiRDCenter/huobi_futures_Golang/sdk/linearswap/restful/request/algo"
-    "github.com/HuobiRDCenter/huobi_futures_Golang/sdk/linearswap/restful/response/algo"
+    "github.com/HuobiRDCenter/huobi_futures_Golang/sdk/linearswap/restful/request/algo"
+    responsealgo "github.com/HuobiRDCenter/huobi_futures_Golang/sdk/linearswap/restful/response/algo"
     "github.com/HuobiRDCenter/huobi_futures_Golang/sdk/log"
     "github.com/HuobiRDCenter/huobi_futures_Golang/sdk/reqbuilder"
     "strings"
@@ -24,12 +24,12 @@ func (ac *AlgoClient) Init(accessKey string, secretKey string, host string) *Alg
 }
 
 // AlgoOrderAsync 策略订单委托
-func (ac *AlgoClient) AlgoOrderAsync(data chan algo.AlgoOrderResponse, request algo.AlgoOrderRequest) {
+func (ac *AlgoClient) AlgoOrderAsync(data chan responsealgo.AlgoOrderResponse, request algo.AlgoOrderRequest) {
     url := ac.PUrlBuilder.Build(linearswap.POST_METHOD, "/v5/algo/order", nil)
-    
+
     // 构建请求内容
     content := ""
-    
+
     // 必填字段
     if request.ContractCode != "" {
         content += fmt.Sprintf(",\"contract_code\":\"%s\"", request.ContractCode)
@@ -46,7 +46,7 @@ func (ac *AlgoClient) AlgoOrderAsync(data chan algo.AlgoOrderResponse, request a
     if request.MarginMode != "" {
         content += fmt.Sprintf(",\"margin_mode\":\"%s\"", request.MarginMode)
     }
-    
+
     // 可选字段
     if request.AlgoClientOrderId != "" {
         content += fmt.Sprintf(",\"algo_client_order_id\":\"%s\"", request.AlgoClientOrderId)
@@ -54,7 +54,7 @@ func (ac *AlgoClient) AlgoOrderAsync(data chan algo.AlgoOrderResponse, request a
     if request.Volume != "" {
         content += fmt.Sprintf(",\"volume\":\"%s\"", request.Volume)
     }
-    
+
     // 止盈相关参数
     if request.TpTriggerPrice != "" {
         content += fmt.Sprintf(",\"tp_trigger_price\":\"%s\"", request.TpTriggerPrice)
@@ -68,7 +68,7 @@ func (ac *AlgoClient) AlgoOrderAsync(data chan algo.AlgoOrderResponse, request a
     if request.TpTriggerPriceType != "" {
         content += fmt.Sprintf(",\"tp_trigger_price_type\":\"%s\"", request.TpTriggerPriceType)
     }
-    
+
     // 止损相关参数
     if request.SlTriggerPrice != "" {
         content += fmt.Sprintf(",\"sl_trigger_price\":\"%s\"", request.SlTriggerPrice)
@@ -82,7 +82,7 @@ func (ac *AlgoClient) AlgoOrderAsync(data chan algo.AlgoOrderResponse, request a
     if request.SlTriggerPriceType != "" {
         content += fmt.Sprintf(",\"sl_trigger_price_type\":\"%s\"", request.SlTriggerPriceType)
     }
-    
+
     // 计划委托相关参数
     if request.Price != "" {
         content += fmt.Sprintf(",\"price\":\"%s\"", request.Price)
@@ -96,7 +96,7 @@ func (ac *AlgoClient) AlgoOrderAsync(data chan algo.AlgoOrderResponse, request a
     if request.TriggerPriceType != "" {
         content += fmt.Sprintf(",\"trigger_price_type\":\"%s\"", request.TriggerPriceType)
     }
-    
+
     // 跟踪委托相关参数
     if request.ActivePrice != "" {
         content += fmt.Sprintf(",\"active_price\":\"%s\"", request.ActivePrice)
@@ -110,33 +110,33 @@ func (ac *AlgoClient) AlgoOrderAsync(data chan algo.AlgoOrderResponse, request a
     if request.ReduceOnly != nil {
         content += fmt.Sprintf(",\"reduce_only\":%v", *request.ReduceOnly)
     }
-    
+
     if content != "" {
         content = fmt.Sprintf("{%s}", content[1:])
     }
-    
+
     getResp, getErr := reqbuilder.HttpPost(url, content)
     if getErr != nil {
         log.Error("http post error: %s", getErr)
         return
     }
-    
-    var result algo.AlgoOrderResponse
+
+    var result responsealgo.AlgoOrderResponse
     jsonErr := json.Unmarshal([]byte(getResp), &result)
     if jsonErr != nil {
         log.Error("convert json to AlgoOrderResponse error: %s", jsonErr)
         return
     }
-    
+
     data <- result
 }
 
 // CancelAlgoOrderAsync 撤销策略订单
-func (ac *AlgoClient) CancelAlgoOrderAsync(data chan algo.CancelAlgoOrdersResponse, request algo.CancelAlgoOrdersRequest) {
-    url := ac.PUrlBuilder.Build(linearswap.POST_METHOD, "/v5/algo/cancel-orders", nil)
-    
+func (ac *AlgoClient) CancelAlgoOrderAsync(data chan responsealgo.CancelAlgoOrdersResponse, request algo.CancelAlgoOrdersRequest) {
+    url := ac.PUrlBuilder.Build(linearswap.POST_METHOD, "/v5/algo/cancel_orders", nil)
+
     content := ""
-    
+
     if request.AlgoId != "" {
         content += fmt.Sprintf(",\"algo_id\":\"%s\"", request.AlgoId)
     }
@@ -146,37 +146,38 @@ func (ac *AlgoClient) CancelAlgoOrderAsync(data chan algo.CancelAlgoOrdersRespon
     if request.ContractCode != "" {
         content += fmt.Sprintf(",\"contract_code\":\"%s\"", request.ContractCode)
     }
-    
+
     if content != "" {
-        content = fmt.Sprintf("{%s}", content[1:])
+        // V5 策略撤单的 body 是**顶层数组** [{...}]，对象形式服务端直接 400
+        // （Cannot deserialize ArrayList<CancelAlgoOrdersReq> from Object value）。
+        // 口径对齐 C++ AlgoClient.hpp「单对象包装进顶层数组」。
+        content = fmt.Sprintf("[{%s}]", content[1:])
     }
-    
+
     getResp, getErr := reqbuilder.HttpPost(url, content)
     if getErr != nil {
         log.Error("http post error: %s", getErr)
         return
     }
-    
-    var result algo.CancelAlgoOrdersResponse
+
+    var result responsealgo.CancelAlgoOrdersResponse
     jsonErr := json.Unmarshal([]byte(getResp), &result)
     if jsonErr != nil {
         log.Error("convert json to CancelAlgoOrdersResponse error: %s", jsonErr)
         return
     }
-    
+
     data <- result
 }
 
 // QueryAlgoOrderAsync 查询策略订单
-func (ac *AlgoClient) QueryAlgoOrderAsync(data chan algo.QueryAlgoOrdersResponse, request algo.QueryAlgoOrdersRequest) {
+func (ac *AlgoClient) QueryAlgoOrderAsync(data chan responsealgo.QueryAlgoOrdersResponse, request algo.QueryAlgoOrdersRequest) {
     // 参数校验
     if request.Type == "" {
         log.Error("type参数为必填项")
         return
     }
-    
-    url := ac.PUrlBuilder.Build(linearswap.GET_METHOD, "/v5/algo/order", nil)
-    
+
     // option
     option := ""
     if request.Type != "" {
@@ -203,31 +204,28 @@ func (ac *AlgoClient) QueryAlgoOrderAsync(data chan algo.QueryAlgoOrdersResponse
             option += fmt.Sprintf("&contract_code=%s", request.ContractCode)
         }
     }
-    
-    if option != "" {
-        url += option
-    }
-    
+
+    url := ac.PUrlBuilder.BuildWithQuery(linearswap.GET_METHOD, "/v5/algo/order", nil, option)
+
     getResp, getErr := reqbuilder.HttpGet(url)
     if getErr != nil {
         log.Error("http get error: %s", getErr)
         return
     }
-    
-    var result algo.QueryAlgoOrdersResponse
+
+    var result responsealgo.QueryAlgoOrdersResponse
     jsonErr := json.Unmarshal([]byte(getResp), &result)
     if jsonErr != nil {
         log.Error("convert json to QueryAlgoOrdersResponse error: %s", jsonErr)
         return
     }
-    
+
     data <- result
 }
 
 // QueryOpenAlgoOrdersAsync 查询当前未触发策略订单
-func (ac *AlgoClient) QueryOpenAlgoOrdersAsync(data chan algo.QueryOpenAlgoOrdersResponse, request algo.QueryOpenAlgoOrdersRequest) {
-    url := ac.PUrlBuilder.Build(linearswap.GET_METHOD, "/v5/algo/order/opens", nil)
-    
+func (ac *AlgoClient) QueryOpenAlgoOrdersAsync(data chan responsealgo.QueryOpenAlgoOrdersResponse, request algo.QueryOpenAlgoOrdersRequest) {
+
     // option
     option := ""
     if request.Type != "" {
@@ -254,14 +252,14 @@ func (ac *AlgoClient) QueryOpenAlgoOrdersAsync(data chan algo.QueryOpenAlgoOrder
             option += fmt.Sprintf("&algo_client_order_id=%s", request.AlgoClientOrderId)
         }
     }
-    if request.From != nil {
+    if request.From != nil && *request.From > 0 {
         if option == "" {
             option += fmt.Sprintf("?from=%d", *request.From)
         } else {
             option += fmt.Sprintf("&from=%d", *request.From)
         }
     }
-    if request.Limit != nil {
+    if request.Limit != nil && *request.Limit > 0 {
         if option == "" {
             option += fmt.Sprintf("?limit=%d", *request.Limit)
         } else {
@@ -275,37 +273,33 @@ func (ac *AlgoClient) QueryOpenAlgoOrdersAsync(data chan algo.QueryOpenAlgoOrder
             option += fmt.Sprintf("&direct=%s", request.Direct)
         }
     }
-    
-    if option != "" {
-        url += option
-    }
-    
+
+    url := ac.PUrlBuilder.BuildWithQuery(linearswap.GET_METHOD, "/v5/algo/order/opens", nil, option)
+
     getResp, getErr := reqbuilder.HttpGet(url)
     if getErr != nil {
         log.Error("http get error: %s", getErr)
         return
     }
-    
-    var result algo.QueryOpenAlgoOrdersResponse
+
+    var result responsealgo.QueryOpenAlgoOrdersResponse
     jsonErr := json.Unmarshal([]byte(getResp), &result)
     if jsonErr != nil {
         log.Error("convert json to QueryOpenAlgoOrdersResponse error: %s", jsonErr)
         return
     }
-    
+
     data <- result
 }
 
 // QueryAlgoOrderHistoryAsync 查询历史策略订单
-func (ac *AlgoClient) QueryAlgoOrderHistoryAsync(data chan algo.QueryAlgoOrderHistoryResponse, request algo.QueryAlgoOrderHistoryRequest) {
+func (ac *AlgoClient) QueryAlgoOrderHistoryAsync(data chan responsealgo.QueryAlgoOrderHistoryResponse, request algo.QueryAlgoOrderHistoryRequest) {
     // 参数校验
     if request.Type == "" {
         log.Error("type参数为必填项")
         return
     }
-    
-    url := ac.PUrlBuilder.Build(linearswap.GET_METHOD, "/v5/algo/order/history", nil)
-    
+
     // option
     option := ""
     if request.Type != "" {
@@ -346,14 +340,14 @@ func (ac *AlgoClient) QueryAlgoOrderHistoryAsync(data chan algo.QueryAlgoOrderHi
             option += fmt.Sprintf("&end_time=%d", *request.EndTime)
         }
     }
-    if request.From != nil {
+    if request.From != nil && *request.From > 0 {
         if option == "" {
             option += fmt.Sprintf("?from=%d", *request.From)
         } else {
             option += fmt.Sprintf("&from=%d", *request.From)
         }
     }
-    if request.Limit != nil {
+    if request.Limit != nil && *request.Limit > 0 {
         if option == "" {
             option += fmt.Sprintf("?limit=%d", *request.Limit)
         } else {
@@ -367,23 +361,21 @@ func (ac *AlgoClient) QueryAlgoOrderHistoryAsync(data chan algo.QueryAlgoOrderHi
             option += fmt.Sprintf("&direct=%s", request.Direct)
         }
     }
-    
-    if option != "" {
-        url += option
-    }
-    
+
+    url := ac.PUrlBuilder.BuildWithQuery(linearswap.GET_METHOD, "/v5/algo/order/history", nil, option)
+
     getResp, getErr := reqbuilder.HttpGet(url)
     if getErr != nil {
         log.Error("http get error: %s", getErr)
         return
     }
-    
-    var result algo.QueryAlgoOrderHistoryResponse
+
+    var result responsealgo.QueryAlgoOrderHistoryResponse
     jsonErr := json.Unmarshal([]byte(getResp), &result)
     if jsonErr != nil {
         log.Error("convert json to QueryAlgoOrderHistoryResponse error: %s", jsonErr)
         return
     }
-    
+
     data <- result
 }

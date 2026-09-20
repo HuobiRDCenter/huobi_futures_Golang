@@ -1,15 +1,16 @@
 package order
 
 type SwapTradePositionLeverResponse struct {
-	Code string `json:"code"`
+	Code int `json:"code"`
 
-	Data []struct {
+	// V5 设置杠杆：data 为对象 {"contract_code":"...","margin_mode":"...","lever_rate":13}
+	Data struct {
 		ContractCode string `json:"contract_code"`
 		MarginMode   string `json:"margin_mode"`
-		LeverRate    string `json:"lever_rate"`
+		LeverRate    int64  `json:"lever_rate"`
 	} `json:"data,omitempty"`
 
-	Message int `json:"message,omitempty"`
+	Message string `json:"message,omitempty"`
 
 	Ts int64 `json:"ts"`
 }

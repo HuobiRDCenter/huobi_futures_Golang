@@ -983,7 +983,7 @@ func (oc *OrderClient) SwapTradeOrderAsync(data chan responseorder.SwapTradeOrde
 	if volume != "" {
 		content += fmt.Sprintf(",\"volume\": \"%s\"", volume)
 	}
-	content += fmt.Sprintf(",\"reduce_only\": \"%s\"", reduceOnly)
+	content += fmt.Sprintf(",\"reduce_only\": %d", reduceOnly)
 	if timeInForce != "" {
 		content += fmt.Sprintf(",\"time_in_force\": \"%s\"", timeInForce)
 	}
@@ -1011,8 +1011,8 @@ func (oc *OrderClient) SwapTradeOrderAsync(data chan responseorder.SwapTradeOrde
 	if slTriggerPriceType != "" {
 		content += fmt.Sprintf(",\"sl_trigger_price_type\": \"%s\"", slTriggerPriceType)
 	}
-	content += fmt.Sprintf(",\"price_protect\": \"%s\"", priceProtect)
-	content += fmt.Sprintf(",\"trigger_protect\": \"%s\"", triggerProtect)
+	content += fmt.Sprintf(",\"price_protect\": %t", priceProtect)
+	content += fmt.Sprintf(",\"trigger_protect\": %t", triggerProtect)
 	if content != "" {
 		content = fmt.Sprintf("{%s}", content[1:])
 	}
@@ -1024,15 +1024,15 @@ func (oc *OrderClient) SwapTradeOrderAsync(data chan responseorder.SwapTradeOrde
 	result := responseorder.SwapTradeOrderResponse{}
 	jsonErr := json.Unmarshal([]byte(getResp), &result)
 	if jsonErr != nil {
-		log.Error("convert json error: %s", getErr)
+		log.Error("convert json error: %s", jsonErr)
 	}
 	data <- result
 }
 
 func (oc *OrderClient) SwapTradeBatchOrderAsync(data chan responseorder.SwapTradeBatchOrderResponse, contractCode string, marginMode string,
-	side string, type_ string, priceMatch string, clientOrderId string, price string, volume string, reduceOnly int, timeInForce string,
-	tpTriggerPrice string, tpOrderPrice string, tpType string, tpTriggerPriceType string, slTriggerPrice string, slOrderPrice string,
-	slType string, slTriggerPriceType string) {
+	positionSide string, side string, type_ string, priceMatch string, clientOrderId string, price string, volume string, reduceOnly int,
+	timeInForce string, tpTriggerPrice string, tpOrderPrice string, tpType string, tpTriggerPriceType string, slTriggerPrice string,
+	slOrderPrice string, slType string, slTriggerPriceType string, priceProtect bool) {
 	// url
 	url := oc.PUrlBuilder.Build(linearswap.POST_METHOD, "/v5/trade/batch_orders", nil)
 
@@ -1043,6 +1043,9 @@ func (oc *OrderClient) SwapTradeBatchOrderAsync(data chan responseorder.SwapTrad
 	}
 	if marginMode != "" {
 		content += fmt.Sprintf(",\"margin_mode\": \"%s\"", marginMode)
+	}
+	if positionSide != "" {
+		content += fmt.Sprintf(",\"position_side\": \"%s\"", positionSide)
 	}
 	if side != "" {
 		content += fmt.Sprintf(",\"side\": \"%s\"", side)
@@ -1062,7 +1065,7 @@ func (oc *OrderClient) SwapTradeBatchOrderAsync(data chan responseorder.SwapTrad
 	if volume != "" {
 		content += fmt.Sprintf(",\"volume\": \"%s\"", volume)
 	}
-	content += fmt.Sprintf(",\"reduce_only\": \"%s\"", reduceOnly)
+	content += fmt.Sprintf(",\"reduce_only\": %d", reduceOnly)
 	if timeInForce != "" {
 		content += fmt.Sprintf(",\"time_in_force\": \"%s\"", timeInForce)
 	}
@@ -1090,9 +1093,14 @@ func (oc *OrderClient) SwapTradeBatchOrderAsync(data chan responseorder.SwapTrad
 	if slTriggerPriceType != "" {
 		content += fmt.Sprintf(",\"sl_trigger_price_type\": \"%s\"", slTriggerPriceType)
 	}
+	content += fmt.Sprintf(",\"price_protect\": %t", priceProtect)
 
+	// V5 批量下单的 body 是**顶层数组** [{...}]，与单笔下单的对象 {...} 不同。
+	// 口径对齐 Java TradeAPIServiceImpl（orderList 直接作为 body）与
+	// C++ OrderClient.hpp（data << "[{" << ... << "}]"）。
+	// 早期 Go 版把元素当对象直接发，服务端按参数错误处理，已实测确认。
 	if content != "" {
-		content = fmt.Sprintf("{%s}", content[1:])
+		content = fmt.Sprintf("[{%s}]", content[1:])
 	}
 
 	getResp, getErr := reqbuilder.HttpPost(url, content)
@@ -1102,7 +1110,7 @@ func (oc *OrderClient) SwapTradeBatchOrderAsync(data chan responseorder.SwapTrad
 	result := responseorder.SwapTradeBatchOrderResponse{}
 	jsonErr := json.Unmarshal([]byte(getResp), &result)
 	if jsonErr != nil {
-		log.Error("convert json error: %s", getErr)
+		log.Error("convert json error: %s", jsonErr)
 	}
 	data <- result
 }
@@ -1135,29 +1143,29 @@ func (oc *OrderClient) SwapTradeCancelOrderAsync(data chan responseorder.SwapTra
 	result := responseorder.SwapTradeCancelOrderResponse{}
 	jsonErr := json.Unmarshal([]byte(getResp), &result)
 	if jsonErr != nil {
-		log.Error("convert json error: %s", getErr)
+		log.Error("convert json error: %s", jsonErr)
 	}
 	data <- result
 }
 
 func (oc *OrderClient) SwapTradeCancelBatchOrdersAsync(data chan responseorder.SwapTradeCancelBatchOrdersResponse, contractCode string,
-	orderId string, clientOrderId string, priceProtect bool, triggerProtect bool) {
+	orderId string, clientOrderId string) {
 	// url
 	url := oc.PUrlBuilder.Build(linearswap.POST_METHOD, "/v5/trade/cancel_batch_orders", nil)
 
 	// content
+	// order_id / client_order_id 在 V5 批量撤单里是**数组**，与单笔撤单的字符串不同
+	// （口径对齐 Java TradeAPIServiceImpl 的 singletonList 与 C++ OrderClient.hpp 的 "[\"" << id << "\"]"）。
 	content := ""
 	if contractCode != "" {
 		content += fmt.Sprintf(",\"contract_code\": \"%s\"", contractCode)
 	}
 	if orderId != "" {
-		content += fmt.Sprintf(",\"order_id\": \"%s\"", orderId)
+		content += fmt.Sprintf(",\"order_id\": [\"%s\"]", orderId)
 	}
 	if clientOrderId != "" {
-		content += fmt.Sprintf(",\"client_order_id\": \"%s\"", clientOrderId)
+		content += fmt.Sprintf(",\"client_order_id\": [\"%s\"]", clientOrderId)
 	}
-	content += fmt.Sprintf(",\"price_protect\": \"%s\"", priceProtect)
-	content += fmt.Sprintf(",\"trigger_protect\": \"%s\"", triggerProtect)
 	if content != "" {
 		content = fmt.Sprintf("{%s}", content[1:])
 	}
@@ -1169,7 +1177,7 @@ func (oc *OrderClient) SwapTradeCancelBatchOrdersAsync(data chan responseorder.S
 	result := responseorder.SwapTradeCancelBatchOrdersResponse{}
 	jsonErr := json.Unmarshal([]byte(getResp), &result)
 	if jsonErr != nil {
-		log.Error("convert json error: %s", getErr)
+		log.Error("convert json error: %s", jsonErr)
 	}
 	data <- result
 }
@@ -1202,7 +1210,7 @@ func (oc *OrderClient) SwapTradeAllOrdersAsync(data chan responseorder.SwapTrade
 	result := responseorder.SwapTradeAllOrdersResponse{}
 	jsonErr := json.Unmarshal([]byte(getResp), &result)
 	if jsonErr != nil {
-		log.Error("convert json error: %s", getErr)
+		log.Error("convert json error: %s", jsonErr)
 	}
 	data <- result
 }
@@ -1238,7 +1246,7 @@ func (oc *OrderClient) SwapTradePositionAsync(data chan responseorder.SwapTradeP
 	result := responseorder.SwapTradePositionResponse{}
 	jsonErr := json.Unmarshal([]byte(getResp), &result)
 	if jsonErr != nil {
-		log.Error("convert json error: %s", getErr)
+		log.Error("convert json error: %s", jsonErr)
 	}
 	data <- result
 }
@@ -1261,7 +1269,7 @@ func (oc *OrderClient) SwapTradePositionAllAsync(data chan responseorder.SwapTra
 	result := responseorder.SwapTradePositionAllResponse{}
 	jsonErr := json.Unmarshal([]byte(getResp), &result)
 	if jsonErr != nil {
-		log.Error("convert json error: %s", getErr)
+		log.Error("convert json error: %s", jsonErr)
 	}
 	data <- result
 }
@@ -1269,7 +1277,6 @@ func (oc *OrderClient) SwapTradePositionAllAsync(data chan responseorder.SwapTra
 func (ac *AccountClient) GetTradeOpensAsync(data chan responseorder.GetTradeOpensResponse, contractCode string,
 	marginMode string, orderId string, clientOrderId string, from int, limit int, direct string) {
 	// ulr
-	url := ac.PUrlBuilder.Build(linearswap.GET_METHOD, "/v5/trade/order/opens", nil)
 	// option
 	option := ""
 	if contractCode != "" {
@@ -1284,14 +1291,18 @@ func (ac *AccountClient) GetTradeOpensAsync(data chan responseorder.GetTradeOpen
 	if clientOrderId != "" {
 		option += fmt.Sprintf("&client_order_id=%s", clientOrderId)
 	}
-	option += fmt.Sprintf("&from=%s", from)
-	option += fmt.Sprintf("&limit=%s", limit)
+	// V5 GET 的 from/limit 下发 0 会被判非法（1067 The limit field is invalid），
+	// 故仅在 >0 时下发（实测确认：省略两者返回 200）。
+	if from > 0 {
+		option += fmt.Sprintf("&from=%d", from)
+	}
+	if limit > 0 {
+		option += fmt.Sprintf("&limit=%d", limit)
+	}
 	if direct != "" {
 		option += fmt.Sprintf("&direct=%s", direct)
 	}
-	if option != "" {
-		url += option
-	}
+	url := ac.PUrlBuilder.BuildWithQuery(linearswap.GET_METHOD, "/v5/trade/order/opens", nil, option)
 	getResp, getErr := reqbuilder.HttpGet(url)
 	if getErr != nil {
 		log.Error("http get error: %s", getErr)
@@ -1304,10 +1315,9 @@ func (ac *AccountClient) GetTradeOpensAsync(data chan responseorder.GetTradeOpen
 	data <- result
 }
 
-func (ac *AccountClient) GetTradeOrderTradesAsync(data chan responseorder.GetTradeOpensResponse, contractCode string, side string,
+func (ac *AccountClient) GetTradeOrderTradesAsync(data chan responseorder.GetTradeOrderTradesResponse, contractCode string, side string,
 	marginMode string, orderId string, clientOrderId string, from int, limit int, direct string) {
 	// ulr
-	url := ac.PUrlBuilder.Build(linearswap.GET_METHOD, "/api/V5/trade/order/details", nil)
 	// option
 	option := ""
 	if contractCode != "" {
@@ -1325,19 +1335,23 @@ func (ac *AccountClient) GetTradeOrderTradesAsync(data chan responseorder.GetTra
 	if clientOrderId != "" {
 		option += fmt.Sprintf("&client_order_id=%s", clientOrderId)
 	}
-	option += fmt.Sprintf("&from=%s", from)
-	option += fmt.Sprintf("&limit=%s", limit)
+	// V5 GET 的 from/limit 下发 0 会被判非法（1067 The limit field is invalid），
+	// 故仅在 >0 时下发（实测确认：省略两者返回 200）。
+	if from > 0 {
+		option += fmt.Sprintf("&from=%d", from)
+	}
+	if limit > 0 {
+		option += fmt.Sprintf("&limit=%d", limit)
+	}
 	if direct != "" {
 		option += fmt.Sprintf("&direct=%s", direct)
 	}
-	if option != "" {
-		url += option
-	}
+	url := ac.PUrlBuilder.BuildWithQuery(linearswap.GET_METHOD, "/v5/trade/order/details", nil, option)
 	getResp, getErr := reqbuilder.HttpGet(url)
 	if getErr != nil {
 		log.Error("http get error: %s", getErr)
 	}
-	result := responseorder.GetTradeOpensResponse{}
+	result := responseorder.GetTradeOrderTradesResponse{}
 	jsonErr := json.Unmarshal([]byte(getResp), &result)
 	if jsonErr != nil {
 		log.Error("convert json error: %s", jsonErr)
@@ -1349,14 +1363,18 @@ func (ac *AccountClient) GetTradeOrderHistoryAsync(data chan responseorder.GetTr
 	contractCode string, state string, type_ string,
 	priceMatch string, startTime string, endTime string, from int, limit int, direct string, marginMode string, timeInForce string) {
 	// ulr
-	url := ac.PUrlBuilder.Build(linearswap.GET_METHOD, "/api/v5/trade/order/history", nil)
 	// option
 	option := ""
 	if contractCode != "" {
 		option += fmt.Sprintf("?contract_code=%s", contractCode)
 	}
 	if timeInForce != "" {
-		option += fmt.Sprintf("?time_in_force=%s", timeInForce)
+		if option == "" {
+			option += "?"
+		} else {
+			option += "&"
+		}
+		option += fmt.Sprintf("time_in_force=%s", timeInForce)
 	}
 	if state != "" {
 		option += fmt.Sprintf("&state=%s", state)
@@ -1376,14 +1394,18 @@ func (ac *AccountClient) GetTradeOrderHistoryAsync(data chan responseorder.GetTr
 	if marginMode != "" {
 		option += fmt.Sprintf("&margin_mode=%s", marginMode)
 	}
-	option += fmt.Sprintf("&from=%s", from)
-	option += fmt.Sprintf("&limit=%s", limit)
+	// V5 GET 的 from/limit 下发 0 会被判非法（1067 The limit field is invalid），
+	// 故仅在 >0 时下发（实测确认：省略两者返回 200）。
+	if from > 0 {
+		option += fmt.Sprintf("&from=%d", from)
+	}
+	if limit > 0 {
+		option += fmt.Sprintf("&limit=%d", limit)
+	}
 	if direct != "" {
 		option += fmt.Sprintf("&direct=%s", direct)
 	}
-	if option != "" {
-		url += option
-	}
+	url := ac.PUrlBuilder.BuildWithQuery(linearswap.GET_METHOD, "/v5/trade/order/history", nil, option)
 	getResp, getErr := reqbuilder.HttpGet(url)
 	if getErr != nil {
 		log.Error("http get error: %s", getErr)
@@ -1399,15 +1421,12 @@ func (ac *AccountClient) GetTradeOrderHistoryAsync(data chan responseorder.GetTr
 func (ac *AccountClient) GetTradePositionOpensAsync(data chan responseorder.GetTradePositionOpensResponse,
 	contractCode string) {
 	// ulr
-	url := ac.PUrlBuilder.Build(linearswap.GET_METHOD, "/v5/trade/position/opens", nil)
 	// option
 	option := ""
 	if contractCode != "" {
 		option += fmt.Sprintf("?contract_code=%s", contractCode)
 	}
-	if option != "" {
-		url += option
-	}
+	url := ac.PUrlBuilder.BuildWithQuery(linearswap.GET_METHOD, "/v5/trade/position/opens", nil, option)
 	getResp, getErr := reqbuilder.HttpGet(url)
 	if getErr != nil {
 		log.Error("http get error: %s", getErr)
@@ -1424,7 +1443,6 @@ func (ac *AccountClient) GetTradePositionHistoryAsync(data chan responseorder.Ge
 	contractCode string, contractType string, marginMode string, startTime string, endTime string, from int,
 	limit int, direct string) {
 	// ulr
-	url := ac.PUrlBuilder.Build(linearswap.GET_METHOD, "/v5/trade/position/history", nil)
 	// option
 	option := ""
 	if contractCode != "" {
@@ -1442,14 +1460,18 @@ func (ac *AccountClient) GetTradePositionHistoryAsync(data chan responseorder.Ge
 	if endTime != "" {
 		option += fmt.Sprintf("&end_time=%s", endTime)
 	}
-	option += fmt.Sprintf("&from=%s", from)
-	option += fmt.Sprintf("&limit=%s", limit)
+	// V5 GET 的 from/limit 下发 0 会被判非法（1067 The limit field is invalid），
+	// 故仅在 >0 时下发（实测确认：省略两者返回 200）。
+	if from > 0 {
+		option += fmt.Sprintf("&from=%d", from)
+	}
+	if limit > 0 {
+		option += fmt.Sprintf("&limit=%d", limit)
+	}
 	if direct != "" {
 		option += fmt.Sprintf("&direct=%s", direct)
 	}
-	if option != "" {
-		url += option
-	}
+	url := ac.PUrlBuilder.BuildWithQuery(linearswap.GET_METHOD, "/v5/trade/position/history", nil, option)
 	getResp, getErr := reqbuilder.HttpGet(url)
 	if getErr != nil {
 		log.Error("http get error: %s", getErr)
@@ -1465,7 +1487,6 @@ func (ac *AccountClient) GetTradePositionHistoryAsync(data chan responseorder.Ge
 func (ac *AccountClient) GetTradePositionLeverAsync(data chan responseorder.GetTradePositionLeverResponse,
 	contractCode string, marginMode string) {
 	// ulr
-	url := ac.PUrlBuilder.Build(linearswap.GET_METHOD, "/v5/position/lever", nil)
 	// option
 	option := ""
 	if contractCode != "" {
@@ -1474,9 +1495,7 @@ func (ac *AccountClient) GetTradePositionLeverAsync(data chan responseorder.GetT
 	if marginMode != "" {
 		option += fmt.Sprintf("&margin_mode=%s", marginMode)
 	}
-	if option != "" {
-		url += option
-	}
+	url := ac.PUrlBuilder.BuildWithQuery(linearswap.GET_METHOD, "/v5/position/lever", nil, option)
 	getResp, getErr := reqbuilder.HttpGet(url)
 	if getErr != nil {
 		log.Error("http get error: %s", getErr)
@@ -1517,19 +1536,16 @@ func (oc *OrderClient) SwapTradePositionLeverAsync(data chan responseorder.SwapT
 	result := responseorder.SwapTradePositionLeverResponse{}
 	jsonErr := json.Unmarshal([]byte(getResp), &result)
 	if jsonErr != nil {
-		log.Error("convert json error: %s", getErr)
+		log.Error("convert json error: %s", jsonErr)
 	}
 	data <- result
 }
 
 func (ac *AccountClient) GetTradePositionModeAsync(data chan responseorder.GetTradePositionModeResponse) {
 	// ulr
-	url := ac.PUrlBuilder.Build(linearswap.GET_METHOD, "/api/v5/position/mode", nil)
 	// option
 	option := ""
-	if option != "" {
-		url += option
-	}
+	url := ac.PUrlBuilder.BuildWithQuery(linearswap.GET_METHOD, "/v5/position/mode", nil, option)
 	getResp, getErr := reqbuilder.HttpGet(url)
 	if getErr != nil {
 		log.Error("http get error: %s", getErr)
@@ -1544,7 +1560,7 @@ func (ac *AccountClient) GetTradePositionModeAsync(data chan responseorder.GetTr
 
 func (oc *OrderClient) SwapTradePositionModeAsync(data chan responseorder.GetTradePositionModeResponse, positionMode string) {
 	// url
-	url := oc.PUrlBuilder.Build(linearswap.POST_METHOD, "/api/v5/position/mode", nil)
+	url := oc.PUrlBuilder.Build(linearswap.POST_METHOD, "/v5/position/mode", nil)
 
 	// content
 	content := ""
@@ -1563,7 +1579,7 @@ func (oc *OrderClient) SwapTradePositionModeAsync(data chan responseorder.GetTra
 	result := responseorder.GetTradePositionModeResponse{}
 	jsonErr := json.Unmarshal([]byte(getResp), &result)
 	if jsonErr != nil {
-		log.Error("convert json error: %s", getErr)
+		log.Error("convert json error: %s", jsonErr)
 	}
 	data <- result
 }
@@ -1571,7 +1587,6 @@ func (oc *OrderClient) SwapTradePositionModeAsync(data chan responseorder.GetTra
 func (ac *AccountClient) GetTradePositionRiskLimitAsync(data chan responseorder.GetTradePositionRiskLimitResponse,
 	contractCode string, marginMode string, positionSide string) {
 	// ulr
-	url := ac.PUrlBuilder.Build(linearswap.GET_METHOD, "v5/position/risk/limit", nil)
 	// option
 	option := ""
 	if contractCode != "" {
@@ -1583,9 +1598,7 @@ func (ac *AccountClient) GetTradePositionRiskLimitAsync(data chan responseorder.
 	if positionSide != "" {
 		option += fmt.Sprintf("&position_side=%s", positionSide)
 	}
-	if option != "" {
-		url += option
-	}
+	url := ac.PUrlBuilder.BuildWithQuery(linearswap.GET_METHOD, "/v5/position/risk/limit", nil, option)
 	getResp, getErr := reqbuilder.HttpGet(url)
 	if getErr != nil {
 		log.Error("http get error: %s", getErr)
@@ -1599,27 +1612,28 @@ func (ac *AccountClient) GetTradePositionRiskLimitAsync(data chan responseorder.
 }
 
 // PositionRiskLimitTierAsync 查询风险限额层级
+// V5 该接口是 GET 带 query 参数（POST 会 404，已用生产 API 实测确认）
 func (ctc *AccountClient) PositionRiskLimitTierAsync(data chan responseorder.PositionRiskLimitTierResponse, 
     contractCode string, marginMode string) {
     
-    url := ctc.PUrlBuilder.Build(linearswap.POST_METHOD, "/v5/position/risk/limit_tier", nil)
-    
-    // 构建请求体
-    content := ""
+    // query 参数
+    option := ""
     if contractCode != "" {
-        content += fmt.Sprintf(",\"contract_code\": \"%s\"", contractCode)
+        option += fmt.Sprintf("?contract_code=%s", contractCode)
     }
     if marginMode != "" {
-        content += fmt.Sprintf(",\"margin_mode\": \"%s\"", marginMode)
+        if option == "" {
+            option += "?"
+        } else {
+            option += "&"
     }
-    
-    if content != "" {
-        content = fmt.Sprintf("{%s}", content[1:])
+        option += fmt.Sprintf("margin_mode=%s", marginMode)
     }
+    url := ctc.PUrlBuilder.BuildWithQuery(linearswap.GET_METHOD, "/v5/position/risk/limit_tier", nil, option)
     
-    getResp, getErr := reqbuilder.HttpPost(url, content)
+    getResp, getErr := reqbuilder.HttpGet(url)
     if getErr != nil {
-        log.Error("http post error: %s", getErr)
+        log.Error("http get error: %s", getErr)
     }
     
     result := responseorder.PositionRiskLimitTierResponse{}
@@ -1672,7 +1686,6 @@ func (ctc *AccountClient) PositionMarginAsync(data chan responseorder.PositionMa
 func (ac *AccountClient) GetTradeOrderAsync(data chan responseorder.GetTradeOrderResponse,
 	contractCode string, marginMode string, orderId string, clientOrderId string) {
 	// ulr
-	url := ac.PUrlBuilder.Build(linearswap.GET_METHOD, "/api/v5/trade/order/history", nil)
 	// option
 	option := ""
 	if contractCode != "" {
@@ -1687,9 +1700,7 @@ func (ac *AccountClient) GetTradeOrderAsync(data chan responseorder.GetTradeOrde
 	if marginMode != "" {
 		option += fmt.Sprintf("&margin_mode=%s", marginMode)
 	}
-	if option != "" {
-		url += option
-	}
+	url := ac.PUrlBuilder.BuildWithQuery(linearswap.GET_METHOD, "/v5/trade/order", nil, option)
 	getResp, getErr := reqbuilder.HttpGet(url)
 	if getErr != nil {
 		log.Error("http get error: %s", getErr)
@@ -1703,26 +1714,27 @@ func (ac *AccountClient) GetTradeOrderAsync(data chan responseorder.GetTradeOrde
 }
 
 // TradeCancelAfterAsync 设置自成交保护
+// V5 该接口只支持 POST body（GET 返回 405，已用生产 API 实测确认）
 func (ctc *AccountClient) TradeCancelAfterAsync(data chan responseorder.TradeCancelAfterResponse,
     onOff string, timeOut string) {
-    // ulr
-    url := ctc.PUrlBuilder.Build(linearswap.GET_METHOD, "/v5/trade/cancel-after", nil)
+    // url
+    url := ctc.PUrlBuilder.Build(linearswap.POST_METHOD, "/v5/trade/cancel-after", nil)
 
-    // option
-    option := "?"
+    // 构建请求体
+    content := ""
     if onOff != "" {
-        option += fmt.Sprintf("&on_off=%s", onOff)
+        content += fmt.Sprintf(",\"on_off\": \"%s\"", onOff)
     }
     if timeOut != "" {
-        option += fmt.Sprintf("&time_out=%s", timeOut)
+        content += fmt.Sprintf(",\"time_out\": \"%s\"", timeOut)
     }
-    if option != "" {
-        url += option
+    if content != "" {
+        content = fmt.Sprintf("{%s}", content[1:])
     }
     
-    getResp, getErr := reqbuilder.HttpGet(url)
+    getResp, getErr := reqbuilder.HttpPost(url, content)
     if getErr != nil {
-        log.Error("http get error: %s", getErr)
+        log.Error("http post error: %s", getErr)
     }
     result := responseorder.TradeCancelAfterResponse{}
     jsonErr := json.Unmarshal([]byte(getResp), &result)

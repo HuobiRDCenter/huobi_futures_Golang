@@ -1125,7 +1125,7 @@ func (mc *MarketClient) GetMarketRiskLimitAsync(data chan market.GetMarketRiskLi
 	result := market.GetMarketRiskLimitResponse{}
 	jsonErr := json.Unmarshal([]byte(getResp), &result)
 	if jsonErr != nil {
-		log.Error("convert json error: %s", getErr)
+		log.Error("convert json error: %s", jsonErr)
 	}
 	data <- result
 }
@@ -1148,7 +1148,7 @@ func (mc *MarketClient) GetMarketAssetsDeductionCurrencyAsync(data chan market.G
 	result := market.GetMarketAssetsDeductionCurrencyResponse{}
 	jsonErr := json.Unmarshal([]byte(getResp), &result)
 	if jsonErr != nil {
-		log.Error("convert json error: %s", getErr)
+		log.Error("convert json error: %s", jsonErr)
 	}
 	data <- result
 }
@@ -1171,15 +1171,15 @@ func (mc *MarketClient) GetMarketMultiAssetsMarginListAsync(data chan market.Get
 	result := market.GetMarketMultiAssetsMarginListResponse{}
 	jsonErr := json.Unmarshal([]byte(getResp), &result)
 	if jsonErr != nil {
-		log.Error("convert json error: %s", getErr)
+		log.Error("convert json error: %s", jsonErr)
 	}
 	data <- result
 }
 
 // GetFundingRateAsync 查询当前资金费率
-func (mc *MarketClient) GetFundingRateAsync(data chan market.MarketFundingRateResponse, contractCode string) {
+func (mc *MarketClient) GetMarketFundingRateAsync(data chan market.MarketFundingRateResponse, contractCode string) {
 	// ulr
-	url := mc.PUrlBuilder.Build(linearswap.GET_METHOD, "/v5/market/funding_rate", nil)
+	url := mc.PUrlBuilder.Build("/v5/market/funding_rate", nil)
 
 	// option
 	option := ""
@@ -1206,7 +1206,7 @@ func (mc *MarketClient) GetFundingRateAsync(data chan market.MarketFundingRateRe
 func (mc *MarketClient) GetFundingRateHistoryAsync(data chan market.MarketFundingRateHistoryResponse, 
     contractCode string, startTime *int64, endTime *int64, from *int64, limit *int, direct string) {
 	// ulr
-	url := mc.PUrlBuilder.Build(linearswap.GET_METHOD, "/v5/market/funding_rate_history", nil)
+	url := mc.PUrlBuilder.Build("/v5/market/funding_rate_history", nil)
 
 	// option
 	option := ""
@@ -1245,9 +1245,9 @@ func (mc *MarketClient) GetFundingRateHistoryAsync(data chan market.MarketFundin
 }
 
 // GetOpenInterestAsync 查询当前平台合约持仓总量
-func (mc *MarketClient) GetOpenInterestAsync(data chan market.MarketOpenInterestResponse, contractCode string) {
+func (mc *MarketClient) GetMarketOpenInterestAsync(data chan market.MarketOpenInterestResponse, contractCode string) {
 	// ulr
-	url := mc.PUrlBuilder.Build(linearswap.GET_METHOD, "/v5/market/open_interest", nil)
+	url := mc.PUrlBuilder.Build("/v5/market/open_interest", nil)
 
 	// option
 	option := ""
@@ -1271,9 +1271,9 @@ func (mc *MarketClient) GetOpenInterestAsync(data chan market.MarketOpenInterest
 }
 
 // GetPriceLimitAsync 查询限价最高买价与最低卖价
-func (mc *MarketClient) GetPriceLimitAsync(data chan market.MarketPriceLimitResponse, contractCode string) {
+func (mc *MarketClient) GetMarketPriceLimitAsync(data chan market.MarketPriceLimitResponse, contractCode string) {
 	// ulr
-	url := mc.PUrlBuilder.Build(linearswap.GET_METHOD, "/v5/market/price_limit", nil)
+	url := mc.PUrlBuilder.Build("/v5/market/price_limit", nil)
 
 	// option
 	option := ""
@@ -1297,10 +1297,10 @@ func (mc *MarketClient) GetPriceLimitAsync(data chan market.MarketPriceLimitResp
 }
 
 // GetLiquidationOrdersAsync 查询强平订单
-func (mc *MarketClient) GetLiquidationOrdersAsync(data chan market.MarketLiquidationOrdersResponse, 
+func (mc *MarketClient) GetMarketLiquidationOrdersAsync(data chan market.MarketLiquidationOrdersResponse,
     contractCode string, pair string, startTime *int64, endTime *int64, direct string, from *int64, limit *int) {
 	// ulr
-	url := mc.PUrlBuilder.Build(linearswap.GET_METHOD, "/v5/market/liquidation_orders", nil)
+	url := mc.PUrlBuilder.Build("/v5/market/liquidation_orders", nil)
 
 	// option
 	option := ""
@@ -1369,7 +1369,7 @@ func (mc *MarketClient) GetLiquidationOrdersAsync(data chan market.MarketLiquida
 func (mc *MarketClient) GetSettlementHistoryAsync(data chan market.MarketSettlementHistoryResponse, 
     contractCode string, startTime *int64, endTime *int64, direct string, from string, limit *int) {
 	// ulr
-	url := mc.PUrlBuilder.Build(linearswap.GET_METHOD, "/v5/market/settlement_history", nil)
+	url := mc.PUrlBuilder.Build("/v5/market/settlement_history", nil)
 
 	// option
 	option := ""
@@ -1428,10 +1428,10 @@ func (mc *MarketClient) GetSettlementHistoryAsync(data chan market.MarketSettlem
 }
 
 // GetEliteAccountRatioAsync 查询精英账户多空持仓对比-账户数
-func (mc *MarketClient) GetEliteAccountRatioAsync(data chan market.MarketEliteAccountRatioResponse, 
+func (mc *MarketClient) GetMarketEliteAccountRatioAsync(data chan market.MarketEliteAccountRatioResponse,
     contractCode string, period string) {
 	// ulr
-	url := mc.PUrlBuilder.Build(linearswap.GET_METHOD, "/v5/market/elite_account_ratio", nil)
+	url := mc.PUrlBuilder.Build("/v5/market/elite_account_ratio", nil)
 
 	// option
 	option := ""
@@ -1462,10 +1462,10 @@ func (mc *MarketClient) GetEliteAccountRatioAsync(data chan market.MarketEliteAc
 }
 
 // GetElitePositionRatioAsync 查询精英账户多空持仓对比-持仓数
-func (mc *MarketClient) GetElitePositionRatioAsync(data chan market.MarketElitePositionRatioResponse, 
+func (mc *MarketClient) GetMarketElitePositionRatioAsync(data chan market.MarketElitePositionRatioResponse,
     contractCode string, period string) {
 	// ulr
-	url := mc.PUrlBuilder.Build(linearswap.GET_METHOD, "/v5/market/elite_position_ratio", nil)
+	url := mc.PUrlBuilder.Build("/v5/market/elite_position_ratio", nil)
 
 	// option
 	option := ""
@@ -1496,10 +1496,10 @@ func (mc *MarketClient) GetElitePositionRatioAsync(data chan market.MarketEliteP
 }
 
 // GetEstimatedSettlementPriceAsync 查询预估结算价
-func (mc *MarketClient) GetEstimatedSettlementPriceAsync(data chan market.MarketEstimatedSettlementPriceResponse, 
+func (mc *MarketClient) GetMarketEstimatedSettlementPriceAsync(data chan market.MarketEstimatedSettlementPriceResponse,
     contractCode string) {
 	// ulr
-	url := mc.PUrlBuilder.Build(linearswap.GET_METHOD, "/v5/market/estimated_settlement_price", nil)
+	url := mc.PUrlBuilder.Build("/v5/market/estimated_settlement_price", nil)
 
 	// option
 	option := ""

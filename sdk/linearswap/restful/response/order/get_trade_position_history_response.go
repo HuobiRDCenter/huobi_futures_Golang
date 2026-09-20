@@ -1,7 +1,7 @@
 package order
 
 type GetTradePositionHistoryResponse struct {
-	Code string `json:"code"`
+	Code int `json:"code"`
 
 	Data []struct {
 		ID             string  `json:"id"`
@@ -12,7 +12,7 @@ type GetTradePositionHistoryResponse struct {
 		CloseAvgPrice  string  `json:"close_avg_price"`
 		Volume         string  `json:"volume"`
 		Available      string  `json:"available"`
-		LeverRate      string  `json:"lever_rate"`
+		LeverRate      int64   `json:"lever_rate"`
 		Profit         string  `json:"profit"`
 		ProfitRatio    string  `json:"profit_ratio"`
 		State          string  `json:"state"`
@@ -26,7 +26,7 @@ type GetTradePositionHistoryResponse struct {
 		UpdatedTime    string  `json:"updated_time"`
 	} `json:"data,omitempty"`
 
-	Message int `json:"message,omitempty"`
+	Message string `json:"message,omitempty"`
 
 	Ts int64 `json:"ts"`
 }
