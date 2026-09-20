@@ -41,6 +41,12 @@ type WebSocketOp struct {
 	onReqCallbackFuns map[string]*MethonInfo
 
 	authOk bool
+
+	// v5Mode 由 V5 客户端（WSV5NotifyClient）Init 时置位。
+	// V5 推送把订阅/退订应答（op=sub/unsub）也按 topic 路由交回调，调用方据此判断订阅就绪；
+	// 口径对齐 C++ WSSwapNotificationClient（"sub/unsub ack 按 topic 路由交 callback"）。
+	// v3 旧端点（/linear-swap-notification 等）沿用只记日志的原行为，避免给既有用户多出一次回调。
+	v5Mode bool
 }
 
 func (wsOp *WebSocketOp) open(path string, host string, accessKey string, secretKey string, autoConnect bool) bool {
@@ -208,10 +214,21 @@ func (wsOp *WebSocketOp) readLoop(conn *websocket.Conn) {
 			case "sub":
 				topic := jdata["topic"]
 				log.Info("sub: \"%s\"", topic)
+
+				// V5 推送把订阅应答也交给 topic 回调，调用方据此判断订阅就绪
+				// （v3 只记日志，理由见 WebSocketOp.v5Mode 注释）
+				if wsOp.v5Mode {
+					if t, ok := topic.(string); ok {
+						wsOp.handleSubAckFun(t, message)
+					}
+				}
 			case "unsub":
 				topic := jdata["topic"].(string)
 				log.Info("unsub: \"%s\"", topic)
 
+				if wsOp.v5Mode {
+					wsOp.handleSubAckFun(topic, message)
+				}
 				if _, found := wsOp.onSubCallbackFuns[topic]; found {
 					delete(wsOp.onSubCallbackFuns, topic)
 				}
@@ -231,8 +248,9 @@ func (wsOp *WebSocketOp) readLoop(conn *websocket.Conn) {
 			wsOp.handleSubCallbackFun(topic.(string), message, jdata)
 		} else if topic, found := jdata["rep"]; found { // market request reply data
 			wsOp.handleReqCallbackFun(topic.(string), message, jdata)
+		} else if cid, found := jdata["cid"]; found { // V5 交易指令应答：无 op 字段，靠 cid 关联请求
+			wsOp.handleReqCallbackFun(fmt.Sprintf("%v", cid), message, jdata)
 		} else if code, found := jdata["err-code"]; found { // market request reply data
-			code = code
 			msg := jdata["err-msg"]
 			log.Error("%d:%s", code, msg)
 		} else {
@@ -326,6 +344,16 @@ func (wsOp *WebSocketOp) handleSubCallbackFun(ch string, data string, jdata map[
 	wsOp.runFunction(mi, data)
 }
 
+// handleSubAckFun 把 V5 的订阅/退订应答帧（op=sub/unsub）按 topic 交回调。
+// 应答帧只带 topic、不带 data，不能复用 handleSubCallbackFun：那里的隔离/通配分支会去取 data 字段。
+func (wsOp *WebSocketOp) handleSubAckFun(topic string, message string) {
+	mi, found := wsOp.onSubCallbackFuns[strings.ToLower(topic)]
+	if !found || mi == nil {
+		return
+	}
+	wsOp.runFunction(mi, message)
+}
+
 func (wsOp *WebSocketOp) handleReqCallbackFun(ch string, data string, jdata map[string]interface{}) {
 	var mi *MethonInfo = nil
 	var found bool = false
@@ -346,7 +374,11 @@ func (wsOp *WebSocketOp) handleReqCallbackFun(ch string, data string, jdata map[
 
 func (wsOp *WebSocketOp) runFunction(mi *MethonInfo, data string) {
 	param := reflect.New(mi.param).Interface()
-	json.Unmarshal([]byte(data), &param)
+	if err := json.Unmarshal([]byte(data), &param); err != nil {
+		// 解析失败时仍回调（与 Java/C++ 的"原样交回调"口径一致），但必须留下日志，
+		// 否则 DTO 与线上字段不一致会完全静默
+		log.Error("unmarshal ws response error: %s, raw: %s", err, data)
+	}
 
 	rargs := make([]reflect.Value, 1)
 	rargs[0] = reflect.ValueOf(param)
@@ -355,10 +387,32 @@ func (wsOp *WebSocketOp) runFunction(mi *MethonInfo, data string) {
 	fun.Call(rargs)
 }
 
+// wsAuthTimeout 是等待 WS 鉴权完成的上限。
+const wsAuthTimeout = 15 * time.Second
+
+// waitAuth 等待鉴权完成，返回 false 表示超时或连接已断开。
+// 原实现是 `for !authOk { time.Sleep(10) }`：10 是 10 纳秒（未乘毫秒）的忙等，
+// 且没有超时——一旦连接失败或鉴权被拒，调用方会永久卡死。
+func (wsOp *WebSocketOp) waitAuth(timeout time.Duration) bool {
+	deadline := time.Now().Add(timeout)
+	for !wsOp.authOk {
+		if wsOp.conn == nil {
+			log.Error("websocket 未连接或连接已断开，订阅/请求无法发送")
+			return false
+		}
+		if time.Now().After(deadline) {
+			log.Error("websocket 鉴权等待超时（%s），请检查网络与 AccessKey/SecretKey", timeout)
+			return false
+		}
+		time.Sleep(10 * time.Millisecond)
+	}
+	return true
+}
+
 func (wsOp *WebSocketOp) sub(subStr []byte, ch string, fun interface{}, param reflect.Type) bool {
 
-	for !wsOp.authOk {
-		time.Sleep(10)
+	if !wsOp.waitAuth(wsAuthTimeout) {
+		return false
 	}
 	ch = strings.ToLower(ch)
 
@@ -382,8 +436,8 @@ func (wsOp *WebSocketOp) sub(subStr []byte, ch string, fun interface{}, param re
 
 func (wsOp *WebSocketOp) unsub(unsubStr []byte, ch string) bool {
 
-	for !wsOp.authOk {
-		time.Sleep(10)
+	if !wsOp.waitAuth(wsAuthTimeout) {
+		return false
 	}
 	ch = strings.ToLower(ch)
 
@@ -407,8 +461,8 @@ func (wsOp *WebSocketOp) unsub(unsubStr []byte, ch string) bool {
 
 func (wsOp *WebSocketOp) req(subStr []byte, ch string, fun interface{}, param reflect.Type) bool {
 
-	for !wsOp.authOk {
-		time.Sleep(10)
+	if !wsOp.waitAuth(wsAuthTimeout) {
+		return false
 	}
 	ch = strings.ToLower(ch)
 
@@ -430,8 +484,8 @@ func (wsOp *WebSocketOp) req(subStr []byte, ch string, fun interface{}, param re
 
 func (wsOp *WebSocketOp) unreq(unsubStr []byte, ch string) bool {
 
-	for !wsOp.authOk {
-		time.Sleep(10)
+	if !wsOp.waitAuth(wsAuthTimeout) {
+		return false
 	}
 	ch = strings.ToLower(ch)
 
