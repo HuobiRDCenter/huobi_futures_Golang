@@ -232,7 +232,6 @@ func (wsOp *WebSocketOp) readLoop(conn *websocket.Conn) {
 		} else if topic, found := jdata["rep"]; found { // market request reply data
 			wsOp.handleReqCallbackFun(topic.(string), message, jdata)
 		} else if code, found := jdata["err-code"]; found { // market request reply data
-			code = code
 			msg := jdata["err-msg"]
 			log.Error("%d:%s", code, msg)
 		} else {
@@ -355,10 +354,32 @@ func (wsOp *WebSocketOp) runFunction(mi *MethonInfo, data string) {
 	fun.Call(rargs)
 }
 
+// wsAuthTimeout 是等待 WS 鉴权完成的上限。
+const wsAuthTimeout = 15 * time.Second
+
+// waitAuth 等待鉴权完成，返回 false 表示超时或连接已断开。
+// 原实现是 `for !authOk { time.Sleep(10) }`：10 是 10 纳秒（未乘毫秒）的忙等，
+// 且没有超时——一旦连接失败或鉴权被拒，调用方会永久卡死。
+func (wsOp *WebSocketOp) waitAuth(timeout time.Duration) bool {
+	deadline := time.Now().Add(timeout)
+	for !wsOp.authOk {
+		if wsOp.conn == nil {
+			log.Error("websocket 未连接或连接已断开，订阅/请求无法发送")
+			return false
+		}
+		if time.Now().After(deadline) {
+			log.Error("websocket 鉴权等待超时（%s），请检查网络与 AccessKey/SecretKey", timeout)
+			return false
+		}
+		time.Sleep(10 * time.Millisecond)
+	}
+	return true
+}
+
 func (wsOp *WebSocketOp) sub(subStr []byte, ch string, fun interface{}, param reflect.Type) bool {
 
-	for !wsOp.authOk {
-		time.Sleep(10)
+	if !wsOp.waitAuth(wsAuthTimeout) {
+		return false
 	}
 	ch = strings.ToLower(ch)
 
@@ -382,8 +403,8 @@ func (wsOp *WebSocketOp) sub(subStr []byte, ch string, fun interface{}, param re
 
 func (wsOp *WebSocketOp) unsub(unsubStr []byte, ch string) bool {
 
-	for !wsOp.authOk {
-		time.Sleep(10)
+	if !wsOp.waitAuth(wsAuthTimeout) {
+		return false
 	}
 	ch = strings.ToLower(ch)
 
@@ -407,8 +428,8 @@ func (wsOp *WebSocketOp) unsub(unsubStr []byte, ch string) bool {
 
 func (wsOp *WebSocketOp) req(subStr []byte, ch string, fun interface{}, param reflect.Type) bool {
 
-	for !wsOp.authOk {
-		time.Sleep(10)
+	if !wsOp.waitAuth(wsAuthTimeout) {
+		return false
 	}
 	ch = strings.ToLower(ch)
 
@@ -430,8 +451,8 @@ func (wsOp *WebSocketOp) req(subStr []byte, ch string, fun interface{}, param re
 
 func (wsOp *WebSocketOp) unreq(unsubStr []byte, ch string) bool {
 
-	for !wsOp.authOk {
-		time.Sleep(10)
+	if !wsOp.waitAuth(wsAuthTimeout) {
+		return false
 	}
 	ch = strings.ToLower(ch)
 

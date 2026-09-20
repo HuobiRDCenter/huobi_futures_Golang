@@ -2,11 +2,10 @@ package restful
 
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/HuobiRDCenter/huobi_futures_Golang/sdk/linearswap"
+	"github.com/HuobiRDCenter/huobi_futures_Golang/sdk/linearswap/restful/response/rebate"
 	"github.com/HuobiRDCenter/huobi_futures_Golang/sdk/log"
 	"github.com/HuobiRDCenter/huobi_futures_Golang/sdk/reqbuilder"
-	"github.com/HuobiRDCenter/huobi_futures_Golang/sdk/linearswap/restful/response/rebate"
 	"strconv"
 )
 
@@ -32,11 +31,11 @@ func (rc *RebateClient) GetReferralsAsync(data chan rebate.InviteeRebateReferral
 	direct string,
 	fromId string,
 	limit int64) {
-	
+
 	// 构建URL和参数
 	request := new(reqbuilder.GetRequest).Init()
 	request.AddParam("userId", strconv.FormatInt(userId, 10))
-	
+
 	if inviteeUidList != "" {
 		request.AddParam("inviteeUidList", inviteeUidList)
 	}
@@ -58,15 +57,15 @@ func (rc *RebateClient) GetReferralsAsync(data chan rebate.InviteeRebateReferral
 	if limit != 0 {
 		request.AddParam("limit", strconv.FormatInt(limit, 10))
 	}
-	
+
 	// url
 	url := rc.PUrlBuilder.Build(linearswap.GET_METHOD, "/v2/invitee/rebate/referrals", request)
-	
+
 	getResp, getErr := reqbuilder.HttpGet(url)
 	if getErr != nil {
 		log.Error("http get error: %s", getErr)
 	}
-	
+
 	result := rebate.InviteeRebateReferralsResponse{}
 	jsonErr := json.Unmarshal([]byte(getResp), &result)
 	if jsonErr != nil {

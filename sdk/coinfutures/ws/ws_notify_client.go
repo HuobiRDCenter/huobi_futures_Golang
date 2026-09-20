@@ -273,10 +273,9 @@ func (wsNf *WSNotifyClient) UnSubContractElements(symbol string, cid string) {
 	wsNf.unsub(jdata, ch)
 }
 
-
 // SubAlgoOrders 订阅算法订单频道
 // contractCode: "*" 表示所有合约，或具体的合约代码如 "BTC-USDT"、"BTC-USDT-240909"
-func (wsNf *WSNotifyClient) SubAlgoOrders(contractCode string, callbackFun OnAlgoOrdersSubResponse, cid string) error {
+func (wsNf *WSNotifyClient) SubAlgoOrders(contractCode string, callbackFun notify.OnAlgoOrdersSubResponse, cid string) error {
     if cid == "" {
         cid = coinfutures.DEFAULT_CID
     }
@@ -303,7 +302,7 @@ func (wsNf *WSNotifyClient) SubAlgoOrders(contractCode string, callbackFun OnAlg
     ch := fmt.Sprintf("algo_orders.%s", contractCode)
     
     // 调用订阅方法
-    wsNf.sub(jdata, ch, callbackFun, reflect.TypeOf(AlgoOrdersSubResponse{}))
+    wsNf.sub(jdata, ch, callbackFun, reflect.TypeOf(notify.AlgoOrdersSubResponse{}))
     return nil
 }
 
@@ -339,10 +338,9 @@ func (wsNf *WSNotifyClient) UnSubAlgoOrders(contractCode string, cid string) err
     return nil
 }
 
-
 // SubAccount 订阅账户变动数据
 // contractCode: 合约代码，可以为空（订阅所有合约），或指定合约代码如 "BTC-USDT"、"BTC-USDT-240909"
-func (wsNf *WSNotifyClient) SubAccount(contractCode string, callbackFun OnAccountSubResponse, cid string) error {
+func (wsNf *WSNotifyClient) SubAccount(contractCode string, callbackFun notify.OnAccountSubResponse, cid string) error {
     if cid == "" {
         cid = coinfutures.DEFAULT_CID
     }
@@ -371,7 +369,7 @@ func (wsNf *WSNotifyClient) SubAccount(contractCode string, callbackFun OnAccoun
     }
     
     // 调用订阅方法
-    wsNf.sub(jdata, ch, callbackFun, reflect.TypeOf(AccountSubResponse{}))
+    wsNf.sub(jdata, ch, callbackFun, reflect.TypeOf(notify.AccountSubResponse{}))
     return nil
 }
 
